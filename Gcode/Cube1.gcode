@@ -1,20 +1,21 @@
 ; HEADER_BLOCK_START
-; BambuStudio 01.07.04.52
-; model printing time: 11m 39s; total estimated time: 18m 25s
-; total layer number: 128
-; model label id: 58
+; BambuStudio 01.07.06.92
+; model printing time: 8m 57s; total estimated time: 15m 42s
+; total layer number: 92
+; model label id: 1379
 ; HEADER_BLOCK_END
 
 ; CONFIG_BLOCK_START
 ; accel_to_decel_enable = 0
 ; accel_to_decel_factor = 50%
+; activate_air_filtration = 0,0,0,0,0,0,0,0,0,0
 ; additional_cooling_fan_speed = 70,70,70,70,70,70,70,70,70,70
 ; auxiliary_fan = 1
 ; bed_custom_model = 
 ; bed_custom_texture = 
 ; bed_exclude_area = 0x0,18x0,18x28,0x28
-; bed_temperature_difference = 10,10,10,10,10,10,10,10,10,10
 ; before_layer_change_gcode = 
+; best_object_pos = 0.5,0.5
 ; bottom_shell_layers = 3
 ; bottom_shell_thickness = 0
 ; bottom_surface_pattern = monotonic
@@ -28,6 +29,7 @@
 ; chamber_temperatures = 0,0,0,0,0,0,0,0,0,0
 ; change_filament_gcode = M620 S[next_extruder]A\nM204 S9000\n{if toolchange_count > 1 && (z_hop_types[current_extruder] == 0 || z_hop_types[current_extruder] == 3)}\nG17\nG2 Z{z_after_toolchange + 0.4} I0.86 J0.86 P1 F10000 ; spiral lift a little from second lift\n{endif}\nG1 Z{max_layer_z + 3.0} F1200\n\nG1 X70 F21000\nG1 Y245\nG1 Y265 F3000\nM400\nM106 P1 S0\nM106 P2 S0\n{if old_filament_temp > 142 && next_extruder < 255}\nM104 S[old_filament_temp]\n{endif}\nG1 X90 F3000\nG1 Y255 F4000\nG1 X100 F5000\nG1 X120 F15000\n\nG1 X20 Y50 F21000\nG1 Y-3\n{if toolchange_count == 2}\n; get travel path for change filament\nM620.1 X[travel_point_1_x] Y[travel_point_1_y] F21000 P0\nM620.1 X[travel_point_2_x] Y[travel_point_2_y] F21000 P1\nM620.1 X[travel_point_3_x] Y[travel_point_3_y] F21000 P2\n{endif}\nM620.1 E F[old_filament_e_feedrate] T{nozzle_temperature_range_high[previous_extruder]}\nT[next_extruder]\nM620.1 E F[new_filament_e_feedrate] T{nozzle_temperature_range_high[next_extruder]}\n\n{if next_extruder < 255}\nM400\n\nG92 E0\n{if flush_length_1 > 1}\n; FLUSH_START\n; always use highest temperature to flush\nM400\nM109 S[nozzle_temperature_range_high]\n{if flush_length_1 > 23.7}\nG1 E23.7 F{old_filament_e_feedrate} ; do not need pulsatile flushing for start part\nG1 E{(flush_length_1 - 23.7) * 0.02} F50\nG1 E{(flush_length_1 - 23.7) * 0.23} F{old_filament_e_feedrate}\nG1 E{(flush_length_1 - 23.7) * 0.02} F50\nG1 E{(flush_length_1 - 23.7) * 0.23} F{new_filament_e_feedrate}\nG1 E{(flush_length_1 - 23.7) * 0.02} F50\nG1 E{(flush_length_1 - 23.7) * 0.23} F{new_filament_e_feedrate}\nG1 E{(flush_length_1 - 23.7) * 0.02} F50\nG1 E{(flush_length_1 - 23.7) * 0.23} F{new_filament_e_feedrate}\n{else}\nG1 E{flush_length_1} F{old_filament_e_feedrate}\n{endif}\n; FLUSH_END\nG1 E-[old_retract_length_toolchange] F1800\nG1 E[old_retract_length_toolchange] F300\n{endif}\n\n{if flush_length_2 > 1}\n; FLUSH_START\nG1 E{flush_length_2 * 0.18} F{new_filament_e_feedrate}\nG1 E{flush_length_2 * 0.02} F50\nG1 E{flush_length_2 * 0.18} F{new_filament_e_feedrate}\nG1 E{flush_length_2 * 0.02} F50\nG1 E{flush_length_2 * 0.18} F{new_filament_e_feedrate}\nG1 E{flush_length_2 * 0.02} F50\nG1 E{flush_length_2 * 0.18} F{new_filament_e_feedrate}\nG1 E{flush_length_2 * 0.02} F50\nG1 E{flush_length_2 * 0.18} F{new_filament_e_feedrate}\nG1 E{flush_length_2 * 0.02} F50\n; FLUSH_END\nG1 E-[new_retract_length_toolchange] F1800\nG1 E[new_retract_length_toolchange] F300\n{endif}\n\n{if flush_length_3 > 1}\n; FLUSH_START\nG1 E{flush_length_3 * 0.18} F{new_filament_e_feedrate}\nG1 E{flush_length_3 * 0.02} F50\nG1 E{flush_length_3 * 0.18} F{new_filament_e_feedrate}\nG1 E{flush_length_3 * 0.02} F50\nG1 E{flush_length_3 * 0.18} F{new_filament_e_feedrate}\nG1 E{flush_length_3 * 0.02} F50\nG1 E{flush_length_3 * 0.18} F{new_filament_e_feedrate}\nG1 E{flush_length_3 * 0.02} F50\nG1 E{flush_length_3 * 0.18} F{new_filament_e_feedrate}\nG1 E{flush_length_3 * 0.02} F50\n; FLUSH_END\nG1 E-[new_retract_length_toolchange] F1800\nG1 E[new_retract_length_toolchange] F300\n{endif}\n\n{if flush_length_4 > 1}\n; FLUSH_START\nG1 E{flush_length_4 * 0.18} F{new_filament_e_feedrate}\nG1 E{flush_length_4 * 0.02} F50\nG1 E{flush_length_4 * 0.18} F{new_filament_e_feedrate}\nG1 E{flush_length_4 * 0.02} F50\nG1 E{flush_length_4 * 0.18} F{new_filament_e_feedrate}\nG1 E{flush_length_4 * 0.02} F50\nG1 E{flush_length_4 * 0.18} F{new_filament_e_feedrate}\nG1 E{flush_length_4 * 0.02} F50\nG1 E{flush_length_4 * 0.18} F{new_filament_e_feedrate}\nG1 E{flush_length_4 * 0.02} F50\n; FLUSH_END\n{endif}\n; FLUSH_START\nM400\nM109 S[new_filament_temp]\nG1 E2 F{new_filament_e_feedrate} ;Compensate for filament spillage during waiting temperature\n; FLUSH_END\nM400\nG92 E0\nG1 E-[new_retract_length_toolchange] F1800\nM106 P1 S255\nM400 S3\nG1 X80 F15000\nG1 X60 F15000\nG1 X80 F15000\nG1 X60 F15000; shake to put down garbage\n\nG1 X70 F5000\nG1 X90 F3000\nG1 Y255 F4000\nG1 X100 F5000\nG1 Y265 F5000\nG1 X70 F10000\nG1 X100 F5000\nG1 X70 F10000\nG1 X100 F5000\nG1 X165 F15000; wipe and shake\nG1 Y256 ; move Y to aside, prevent collision\nM400\nG1 Z{max_layer_z + 3.0} F3000\n{if layer_z <= (initial_layer_print_height + 0.001)}\nM204 S[initial_layer_acceleration]\n{else}\nM204 S[default_acceleration]\n{endif}\n{else}\nG1 X[x_after_toolchange] Y[y_after_toolchange] Z[z_after_toolchange] F12000\n{endif}\nM621 S[next_extruder]A
 ; close_fan_the_first_x_layers = 1,1,1,1,1,1,1,1,1,1
+; complete_print_exhaust_fan_speed = 70,70,70,70,70,70,70,70,70,70
 ; cool_plate_temp = 35,35,35,35,35,35,35,35,35,35
 ; cool_plate_temp_initial_layer = 35,35,35,35,35,35,35,35,35,35
 ; curr_bed_type = Textured PEI Plate
@@ -41,6 +43,7 @@
 ; detect_overhang_wall = 1
 ; detect_thin_wall = 0
 ; draft_shield = disabled
+; during_print_exhaust_fan_speed = 70,70,70,70,70,70,70,70,70,70
 ; elefant_foot_compensation = 0.15
 ; enable_arc_fitting = 1
 ; enable_overhang_bridge_fan = 1,1,1,1,1,1,1,1,1,1
@@ -75,7 +78,7 @@
 ; filament_minimal_purge_on_wipe_tower = 15,15,15,15,15,15,15,15,15,15
 ; filament_settings_id = "Bambu PLA Basic @BBL X1C";"Bambu PLA Basic @BBL X1C";"Bambu PLA Basic @BBL X1C";"Bambu PLA Basic @BBL X1C";"Bambu PLA Basic @BBL X1C";"Bambu PLA Basic @BBL X1C";"Bambu PLA Basic @BBL X1C";"Bambu PLA Basic @BBL X1C";"Bambu PLA Basic @BBL X1C";"Bambu PLA Basic @BBL X1C"
 ; filament_soluble = 0,0,0,0,0,0,0,0,0,0
-; filament_start_gcode = "; filament start gcode\n{if  (bed_temperature[current_extruder] >55)||(bed_temperature_initial_layer[current_extruder] >55)}M106 P3 S200\n{elsif(bed_temperature[current_extruder] >50)||(bed_temperature_initial_layer[current_extruder] >50)}M106 P3 S150\n{elsif(bed_temperature[current_extruder] >45)||(bed_temperature_initial_layer[current_extruder] >45)}M106 P3 S50\n{endif}";"; filament start gcode\n{if  (bed_temperature[current_extruder] >55)||(bed_temperature_initial_layer[current_extruder] >55)}M106 P3 S200\n{elsif(bed_temperature[current_extruder] >50)||(bed_temperature_initial_layer[current_extruder] >50)}M106 P3 S150\n{elsif(bed_temperature[current_extruder] >45)||(bed_temperature_initial_layer[current_extruder] >45)}M106 P3 S50\n{endif}";"; filament start gcode\n{if  (bed_temperature[current_extruder] >55)||(bed_temperature_initial_layer[current_extruder] >55)}M106 P3 S200\n{elsif(bed_temperature[current_extruder] >50)||(bed_temperature_initial_layer[current_extruder] >50)}M106 P3 S150\n{elsif(bed_temperature[current_extruder] >45)||(bed_temperature_initial_layer[current_extruder] >45)}M106 P3 S50\n{endif}";"; filament start gcode\n{if  (bed_temperature[current_extruder] >55)||(bed_temperature_initial_layer[current_extruder] >55)}M106 P3 S200\n{elsif(bed_temperature[current_extruder] >50)||(bed_temperature_initial_layer[current_extruder] >50)}M106 P3 S150\n{elsif(bed_temperature[current_extruder] >45)||(bed_temperature_initial_layer[current_extruder] >45)}M106 P3 S50\n{endif}";"; filament start gcode\n{if  (bed_temperature[current_extruder] >55)||(bed_temperature_initial_layer[current_extruder] >55)}M106 P3 S200\n{elsif(bed_temperature[current_extruder] >50)||(bed_temperature_initial_layer[current_extruder] >50)}M106 P3 S150\n{elsif(bed_temperature[current_extruder] >45)||(bed_temperature_initial_layer[current_extruder] >45)}M106 P3 S50\n{endif}";"; filament start gcode\n{if  (bed_temperature[current_extruder] >55)||(bed_temperature_initial_layer[current_extruder] >55)}M106 P3 S200\n{elsif(bed_temperature[current_extruder] >50)||(bed_temperature_initial_layer[current_extruder] >50)}M106 P3 S150\n{elsif(bed_temperature[current_extruder] >45)||(bed_temperature_initial_layer[current_extruder] >45)}M106 P3 S50\n{endif}";"; filament start gcode\n{if  (bed_temperature[current_extruder] >55)||(bed_temperature_initial_layer[current_extruder] >55)}M106 P3 S200\n{elsif(bed_temperature[current_extruder] >50)||(bed_temperature_initial_layer[current_extruder] >50)}M106 P3 S150\n{elsif(bed_temperature[current_extruder] >45)||(bed_temperature_initial_layer[current_extruder] >45)}M106 P3 S50\n{endif}";"; filament start gcode\n{if  (bed_temperature[current_extruder] >55)||(bed_temperature_initial_layer[current_extruder] >55)}M106 P3 S200\n{elsif(bed_temperature[current_extruder] >50)||(bed_temperature_initial_layer[current_extruder] >50)}M106 P3 S150\n{elsif(bed_temperature[current_extruder] >45)||(bed_temperature_initial_layer[current_extruder] >45)}M106 P3 S50\n{endif}";"; filament start gcode\n{if  (bed_temperature[current_extruder] >55)||(bed_temperature_initial_layer[current_extruder] >55)}M106 P3 S200\n{elsif(bed_temperature[current_extruder] >50)||(bed_temperature_initial_layer[current_extruder] >50)}M106 P3 S150\n{elsif(bed_temperature[current_extruder] >45)||(bed_temperature_initial_layer[current_extruder] >45)}M106 P3 S50\n{endif}";"; filament start gcode\n{if  (bed_temperature[current_extruder] >55)||(bed_temperature_initial_layer[current_extruder] >55)}M106 P3 S200\n{elsif(bed_temperature[current_extruder] >50)||(bed_temperature_initial_layer[current_extruder] >50)}M106 P3 S150\n{elsif(bed_temperature[current_extruder] >45)||(bed_temperature_initial_layer[current_extruder] >45)}M106 P3 S50\n{endif}"
+; filament_start_gcode = "; filament start gcode\n{if  (bed_temperature[current_extruder] >55)||(bed_temperature_initial_layer[current_extruder] >55)}M106 P3 S200\n{elsif(bed_temperature[current_extruder] >50)||(bed_temperature_initial_layer[current_extruder] >50)}M106 P3 S150\n{elsif(bed_temperature[current_extruder] >45)||(bed_temperature_initial_layer[current_extruder] >45)}M106 P3 S50\n{endif}\n\n{if activate_air_filtration[current_extruder] && support_air_filtration}\nM106 P3 S{during_print_exhaust_fan_speed_num[current_extruder]} \n{endif}";"; filament start gcode\n{if  (bed_temperature[current_extruder] >55)||(bed_temperature_initial_layer[current_extruder] >55)}M106 P3 S200\n{elsif(bed_temperature[current_extruder] >50)||(bed_temperature_initial_layer[current_extruder] >50)}M106 P3 S150\n{elsif(bed_temperature[current_extruder] >45)||(bed_temperature_initial_layer[current_extruder] >45)}M106 P3 S50\n{endif}\n\n{if activate_air_filtration[current_extruder] && support_air_filtration}\nM106 P3 S{during_print_exhaust_fan_speed_num[current_extruder]} \n{endif}";"; filament start gcode\n{if  (bed_temperature[current_extruder] >55)||(bed_temperature_initial_layer[current_extruder] >55)}M106 P3 S200\n{elsif(bed_temperature[current_extruder] >50)||(bed_temperature_initial_layer[current_extruder] >50)}M106 P3 S150\n{elsif(bed_temperature[current_extruder] >45)||(bed_temperature_initial_layer[current_extruder] >45)}M106 P3 S50\n{endif}\n\n{if activate_air_filtration[current_extruder] && support_air_filtration}\nM106 P3 S{during_print_exhaust_fan_speed_num[current_extruder]} \n{endif}";"; filament start gcode\n{if  (bed_temperature[current_extruder] >55)||(bed_temperature_initial_layer[current_extruder] >55)}M106 P3 S200\n{elsif(bed_temperature[current_extruder] >50)||(bed_temperature_initial_layer[current_extruder] >50)}M106 P3 S150\n{elsif(bed_temperature[current_extruder] >45)||(bed_temperature_initial_layer[current_extruder] >45)}M106 P3 S50\n{endif}\n\n{if activate_air_filtration[current_extruder] && support_air_filtration}\nM106 P3 S{during_print_exhaust_fan_speed_num[current_extruder]} \n{endif}";"; filament start gcode\n{if  (bed_temperature[current_extruder] >55)||(bed_temperature_initial_layer[current_extruder] >55)}M106 P3 S200\n{elsif(bed_temperature[current_extruder] >50)||(bed_temperature_initial_layer[current_extruder] >50)}M106 P3 S150\n{elsif(bed_temperature[current_extruder] >45)||(bed_temperature_initial_layer[current_extruder] >45)}M106 P3 S50\n{endif}\n\n{if activate_air_filtration[current_extruder] && support_air_filtration}\nM106 P3 S{during_print_exhaust_fan_speed_num[current_extruder]} \n{endif}";"; filament start gcode\n{if  (bed_temperature[current_extruder] >55)||(bed_temperature_initial_layer[current_extruder] >55)}M106 P3 S200\n{elsif(bed_temperature[current_extruder] >50)||(bed_temperature_initial_layer[current_extruder] >50)}M106 P3 S150\n{elsif(bed_temperature[current_extruder] >45)||(bed_temperature_initial_layer[current_extruder] >45)}M106 P3 S50\n{endif}\n\n{if activate_air_filtration[current_extruder] && support_air_filtration}\nM106 P3 S{during_print_exhaust_fan_speed_num[current_extruder]} \n{endif}";"; filament start gcode\n{if  (bed_temperature[current_extruder] >55)||(bed_temperature_initial_layer[current_extruder] >55)}M106 P3 S200\n{elsif(bed_temperature[current_extruder] >50)||(bed_temperature_initial_layer[current_extruder] >50)}M106 P3 S150\n{elsif(bed_temperature[current_extruder] >45)||(bed_temperature_initial_layer[current_extruder] >45)}M106 P3 S50\n{endif}\n\n{if activate_air_filtration[current_extruder] && support_air_filtration}\nM106 P3 S{during_print_exhaust_fan_speed_num[current_extruder]} \n{endif}";"; filament start gcode\n{if  (bed_temperature[current_extruder] >55)||(bed_temperature_initial_layer[current_extruder] >55)}M106 P3 S200\n{elsif(bed_temperature[current_extruder] >50)||(bed_temperature_initial_layer[current_extruder] >50)}M106 P3 S150\n{elsif(bed_temperature[current_extruder] >45)||(bed_temperature_initial_layer[current_extruder] >45)}M106 P3 S50\n{endif}\n\n{if activate_air_filtration[current_extruder] && support_air_filtration}\nM106 P3 S{during_print_exhaust_fan_speed_num[current_extruder]} \n{endif}";"; filament start gcode\n{if  (bed_temperature[current_extruder] >55)||(bed_temperature_initial_layer[current_extruder] >55)}M106 P3 S200\n{elsif(bed_temperature[current_extruder] >50)||(bed_temperature_initial_layer[current_extruder] >50)}M106 P3 S150\n{elsif(bed_temperature[current_extruder] >45)||(bed_temperature_initial_layer[current_extruder] >45)}M106 P3 S50\n{endif}\n\n{if activate_air_filtration[current_extruder] && support_air_filtration}\nM106 P3 S{during_print_exhaust_fan_speed_num[current_extruder]} \n{endif}";"; filament start gcode\n{if  (bed_temperature[current_extruder] >55)||(bed_temperature_initial_layer[current_extruder] >55)}M106 P3 S200\n{elsif(bed_temperature[current_extruder] >50)||(bed_temperature_initial_layer[current_extruder] >50)}M106 P3 S150\n{elsif(bed_temperature[current_extruder] >45)||(bed_temperature_initial_layer[current_extruder] >45)}M106 P3 S50\n{endif}\n\n{if activate_air_filtration[current_extruder] && support_air_filtration}\nM106 P3 S{during_print_exhaust_fan_speed_num[current_extruder]} \n{endif}"
 ; filament_type = PLA;PLA;PLA;PLA;PLA;PLA;PLA;PLA;PLA;PLA
 ; filament_vendor = "Bambu Lab";"Bambu Lab";"Bambu Lab";"Bambu Lab";"Bambu Lab";"Bambu Lab";"Bambu Lab";"Bambu Lab";"Bambu Lab";"Bambu Lab"
 ; filename_format = {input_filename_base}_{filament_type[0]}_{print_time}.gcode
@@ -91,7 +94,7 @@
 ; fuzzy_skin = none
 ; fuzzy_skin_point_distance = 0.8
 ; fuzzy_skin_thickness = 0.3
-; gap_infill_speed = 250
+; gap_infill_speed = 200
 ; gcode_add_line_number = 0
 ; gcode_flavor = marlin
 ; host_type = octoprint
@@ -112,19 +115,19 @@
 ; inner_wall_acceleration = 0
 ; inner_wall_jerk = 9
 ; inner_wall_line_width = 0.45
-; inner_wall_speed = 300
+; inner_wall_speed = 200
 ; interface_shells = 0
 ; internal_bridge_support_thickness = 0.8
 ; internal_solid_infill_line_width = 0.42
 ; internal_solid_infill_pattern = zig-zag
-; internal_solid_infill_speed = 250
+; internal_solid_infill_speed = 200
 ; ironing_flow = 10%
 ; ironing_pattern = zig-zag
 ; ironing_spacing = 0.15
 ; ironing_speed = 30
 ; ironing_type = no ironing
 ; layer_change_gcode = ; layer num/total_layer_count: {layer_num+1}/[total_layer_count]\nM622.1 S1 ; for prev firware, default turned on\nM1002 judge_flag timelapse_record_flag\nM622 J1\n{if timelapse_type == 0} ; timelapse without wipe tower\nM971 S11 C10 O0\n{elsif timelapse_type == 1} ; timelapse with wipe tower\nG92 E0\nG1 E-[retraction_length] F1800\nG17\nG2 Z{layer_z + 0.4} I0.86 J0.86 P1 F20000 ; spiral lift a little\nG1 X65 Y245 F20000 ; move to safe pos\nG17\nG2 Z{layer_z} I0.86 J0.86 P1 F20000\nG1 Y265 F3000\nM400 P300\nM971 S11 C10 O0\nG92 E0\nG1 E[retraction_length] F300\nG1 X100 F5000\nG1 Y255 F20000\n{endif}\nM623\n; update layer progress\nM73 L{layer_num+1}\nM991 S0 P{layer_num} ;notify layer change
-; layer_height = 0.2
+; layer_height = 0.28
 ; line_width = 0.42
 ; machine_end_gcode = ;===== date: 20230428 =====================\nM400 ; wait for buffer to clear\nG92 E0 ; zero the extruder\nG1 E-0.8 F1800 ; retract\nG1 Z{max_layer_z + 0.5} F900 ; lower z a little\nG1 X65 Y245 F12000 ; move to safe pos \nG1 Y265 F3000\n\nG1 X65 Y245 F12000\nG1 Y265 F3000\nM140 S0 ; turn off bed\nM106 S0 ; turn off fan\nM106 P2 S0 ; turn off remote part cooling fan\nM106 P3 S0 ; turn off chamber cooling fan\n\nG1 X100 F12000 ; wipe\n; pull back filament to AMS\nM620 S255\nG1 X20 Y50 F12000\nG1 Y-3\nT255\nG1 X65 F12000\nG1 Y265\nG1 X100 F12000 ; wipe\nM621 S255\nM104 S0 ; turn off hotend\n\nM622.1 S1 ; for prev firware, default turned on\nM1002 judge_flag timelapse_record_flag\nM622 J1\n    M400 ; wait all motion done\n    M991 S0 P-1 ;end smooth timelapse at safe pos\n    M400 S3 ;wait for last picture to be taken\nM623; end of "timelapse_record_flag"\n\nM400 ; wait all motion done\nM17 S\nM17 Z0.4 ; lower z motor current to reduce impact if there is something in the bottom\n{if (max_layer_z + 100.0) < 250}\n    G1 Z{max_layer_z + 100.0} F600\n    G1 Z{max_layer_z +98.0}\n{else}\n    G1 Z250 F600\n    G1 Z248\n{endif}\nM400 P100\nM17 R ; restore z current\n\nG90\nG1 X128 Y250 F3600\n\nM220 S100  ; Reset feedrate magnitude\nM201.2 K1.0 ; Reset acc magnitude\nM73.2   R1.0 ;Reset left time magnitude\nM1002 set_gcode_claim_speed_level : 0\n\nM17 X0.8 Y0.8 Z0.5 ; lower motor current to 45% power\n
 ; machine_load_filament_time = 29
@@ -184,11 +187,12 @@
 ; print_host = 
 ; print_host_webui = 
 ; print_sequence = by layer
-; print_settings_id = 0.20mm Standard @BBL X1C
+; print_settings_id = 0.28mm Extra Draft @BBL X1C
 ; printable_area = 0x0,256x0,256x256,0x256
 ; printable_height = 250
 ; printer_model = Bambu Lab X1 Carbon
 ; printer_settings_id = Bambu Lab X1 Carbon 0.4 nozzle
+; printer_structure = corexy
 ; printer_technology = FFF
 ; printer_variant = 0.4
 ; printhost_apikey = 
@@ -210,6 +214,8 @@
 ; resolution = 0.012
 ; retract_before_wipe = 0%
 ; retract_length_toolchange = 2
+; retract_lift_above = 0
+; retract_lift_below = 249
 ; retract_restart_extra = 0
 ; retract_restart_extra_toolchange = 0
 ; retract_when_changing_layer = 1
@@ -237,15 +243,17 @@
 ; sparse_infill_filament = 1
 ; sparse_infill_line_width = 0.45
 ; sparse_infill_pattern = grid
-; sparse_infill_speed = 270
+; sparse_infill_speed = 200
 ; spiral_mode = 0
 ; standby_temperature_delta = -5
 ; start_end_points = 30x-3,54x245
+; support_air_filtration = 0
 ; support_angle = 0
 ; support_base_pattern = default
 ; support_base_pattern_spacing = 2.5
 ; support_bottom_interface_spacing = 0.5
 ; support_bottom_z_distance = 0.2
+; support_chamber_temp_control = 0
 ; support_critical_regions_only = 0
 ; support_expansion = 0
 ; support_filament = 0
@@ -262,7 +270,7 @@
 ; support_remove_small_overhang = 1
 ; support_speed = 150
 ; support_style = default
-; support_threshold_angle = 30
+; support_threshold_angle = 40
 ; support_top_z_distance = 0.2
 ; support_type = normal(auto)
 ; temperature_vitrification = 55,55,55,55,55,55,55,55,55,55
@@ -270,6 +278,8 @@
 ; textured_plate_temp = 55,55,55,55,55,55,55,55,55,55
 ; textured_plate_temp_initial_layer = 55,55,55,55,55,55,55,55,55,55
 ; thick_bridges = 0
+; thumbnail_size = 50x50
+; time_lapse_gcode = 
 ; timelapse_type = 0
 ; top_one_wall_type = all top
 ; top_shell_layers = 3
@@ -277,7 +287,7 @@
 ; top_solid_infill_flow_ratio = 1
 ; top_surface_acceleration = 2000
 ; top_surface_jerk = 9
-; top_surface_line_width = 0.42
+; top_surface_line_width = 0.45
 ; top_surface_pattern = monotonicline
 ; top_surface_speed = 200
 ; travel_jerk = 9
@@ -288,7 +298,7 @@
 ; tree_support_branch_distance = 5
 ; tree_support_brim_width = 0
 ; tree_support_wall_count = 1
-; upward_compatible_machine = "Bambu Lab P1P 0.4 nozzle";"Bambu Lab P1S 0.4 nozzle";"Bambu Lab X1 0.4 nozzle"
+; upward_compatible_machine = "Bambu Lab P1S 0.4 nozzle";"Bambu Lab P1P 0.4 nozzle";"Bambu Lab X1 0.4 nozzle"
 ; use_relative_e_distances = 1
 ; wall_distribution_count = 1
 ; wall_filament = 1
@@ -312,7 +322,7 @@
 ; CONFIG_BLOCK_END
 
 ; EXECUTABLE_BLOCK_START
-M73 P0 R18
+M73 P0 R15
 M201 X20000 Y20000 Z500 E5000
 M203 X500 Y500 Z20 E30
 M204 P20000 R5000 T20000
@@ -367,7 +377,7 @@ G0 Z10 F1200
 G90
 G28 X
 M975 S1 ; turn on
-M73 P23 R14
+M73 P27 R11
 G1 X60 F12000
 G1 Y245
 G1 Y265 F3000
@@ -380,6 +390,7 @@ M620 S0A   ; switch material if AMS exist
     G1 Y-3
     T0
     G1 X54 F12000
+M73 P28 R11
     G1 Y265
     M400
 M621 S0A
@@ -394,19 +405,17 @@ G1 E50 F200
 M400
 M104 S220
 G92 E0
-M73 P24 R14
 G1 E50 F200
 M400
 M106 P1 S255
 G92 E0
-M73 P24 R13
 G1 E5 F300
 M109 S200 ; drop nozzle temp, make filament shink a bit
 G92 E0
-M73 P25 R13
+M73 P29 R11
 G1 E-0.5 F300
 
-M73 P26 R13
+M73 P31 R10
 G1 X70 F9000
 G1 X76 F15000
 G1 X65 F15000
@@ -425,7 +434,6 @@ M106 P1 S0
 M1002 gcode_claim_action : 14
 M975 S1
 M106 S255
-M73 P27 R13
 G1 X65 Y230 F18000
 G1 Y264 F6000
 M109 S200
@@ -445,6 +453,7 @@ G1 X100 F5000
 G1 X70 F15000
 G1 X100 F5000
 G1 X70 F15000
+M73 P32 R10
 G1 X100 F5000
 G1 X70 F15000
 G1 X90 F5000
@@ -523,7 +532,7 @@ M1002 judge_flag g29_before_print_flag
 M622 J1
 
     M1002 gcode_claim_action : 1
-    G29 A X117.2 Y117.2 I25.6 J25.6
+    G29 A X24.9396 Y201.469 I25.6 J25.6
     M400
     M500 ; save cali data
 
@@ -553,12 +562,12 @@ M106 P2 S100 ; turn on big fan ,to cool down toolhead
 M104 S220 ; set extrude temp earlier, to reduce wait time
 
 ;===== mech mode fast check============================
-M73 P28 R13
 G1 X128 Y128 Z10 F20000
 M400 P200
 M970.3 Q1 A7 B30 C80  H15 K0
 M974 Q1 S2 P0
 
+M73 P33 R10
 G1 X128 Y128 Z10 F20000
 M400 P200
 M970.3 Q0 A7 B30 C90 Q0 H15 K0
@@ -646,20 +655,19 @@ M622 J1
     G1 X75.000 E0.31181 F6033.27
     G1 X80.000 E0.31181 F1508.32
     G1 X85.000 E0.31181 F6033.27
-M73 P29 R13
+M73 P34 R10
     G1 X90.000 E0.31181 F1508.32
     G1 X95.000 E0.31181 F6033.27
     G1 X100.000 E0.31181 F1508.32
     G1 X105.000 E0.31181 F6033.27
     G1 X110.000 E0.31181 F1508.32
     G1 X115.000 E0.31181 F6033.27
-M73 P29 R12
     G1 X120.000 E0.31181 F1508.32
     G1 X125.000 E0.31181 F6033.27
     G1 X130.000 E0.31181 F1508.32
     G1 X135.000 E0.31181 F6033.27
     G1 X140.000 E0.31181 F1508.32
-M73 P30 R12
+M73 P35 R10
     G1 X145.000 E0.31181 F6033.27
     G1 X150.000 E0.31181 F1508.32
     G1 X155.000 E0.31181 F6033.27
@@ -689,12 +697,13 @@ M73 P30 R12
     G1 X90.000 E0.31181 F1508.32
     G1 X95.000 E0.31181 F6033.27
     G1 X100.000 E0.31181 F1508.32
+M73 P36 R10
     G1 X105.000 E0.31181 F6033.27
     G1 X110.000 E0.31181 F1508.32
     G1 X115.000 E0.31181 F6033.27
     G1 X120.000 E0.31181 F1508.32
     G1 X125.000 E0.31181 F6033.27
-M73 P31 R12
+M73 P36 R9
     G1 X130.000 E0.31181 F1508.32
     G1 X135.000 E0.31181 F6033.27
     G1 X140.000 E0.31181 F1508.32
@@ -707,6 +716,7 @@ M73 P31 R12
     G1 X175.000 E0.31181 F6033.27
     G1 X180.000 E0.31181 F6033.27
     G1 F1500.000 E-0.800
+M73 P37 R9
     G1 X183 Z0.15 F30000
     G1 X185
     G1 Z1.0
@@ -735,7 +745,6 @@ M73 P31 R12
     G1 X130.000 E0.31181 F1508.32
     G1 X135.000 E0.31181 F6033.27
     G1 X140.000 E0.31181 F1508.32
-M73 P32 R12
     G1 X145.000 E0.31181 F6033.27
     G1 X150.000 E0.31181 F1508.32
     G1 X155.000 E0.31181 F6033.27
@@ -924,6 +933,7 @@ M622 J1
         M900 K0.02 M0.125481
     M623
 
+M73 P38 R9
     G1 X140.000 E0.31181 F1508.32
     G1 X145.000 E0.31181 F6033.27
     G1 X150.000 E0.31181 F1508.32
@@ -976,12 +986,14 @@ G21
 M83 ; use relative distances for extrusion
 ; filament start gcode
 M106 P3 S150
+
+
 M981 S1 P20000 ;open spaghetti detector
 ; CHANGE_LAYER
 ; Z_HEIGHT: 0.2
 ; LAYER_HEIGHT: 0.2
 G1 E-.8 F1800
-; layer num/total_layer_count: 1/128
+; layer num/total_layer_count: 1/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -995,195 +1007,197 @@ M991 S0 P0 ;notify layer change
 M106 S0
 M106 P2 S0
 M204 S500
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
-G1 X141.943 Y139.943 F30000
+G1 X49.683 Y224.212 F30000
 G1 Z.4
 G1 Z.2
 G1 E.8 F1800
 ; FEATURE: Inner wall
 ; LINE_WIDTH: 0.5
 G1 F3000
-G1 X118.057 Y139.943 E.88966
-G1 X118.057 Y116.057 E.88966
-G1 X141.943 Y116.057 E.88966
-G1 X141.943 Y139.883 E.88742
-G1 X142.4 Y140.4 F30000
+G1 X25.797 Y224.212 E.88966
+G1 X25.797 Y200.326 E.88966
+G1 X49.683 Y200.326 E.88966
+G1 X49.683 Y224.152 E.88742
+G1 X50.14 Y224.669 F30000
 ; FEATURE: Outer wall
 G1 F3000
-G1 X117.6 Y140.4 E.92371
-G1 X117.6 Y115.6 E.92371
-G1 X142.4 Y115.6 E.92371
-G1 X142.4 Y140.34 E.92147
+G1 X25.34 Y224.669 E.92371
+G1 X25.34 Y199.869 E.92371
+G1 X50.14 Y199.869 E.92371
+G1 X50.14 Y224.609 E.92147
 ; WIPE_START
 G1 F24000
-G1 X140.4 Y140.345 E-.76
+G1 X48.14 Y224.614 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.534 Y132.714 Z.6 F30000
-G1 X140.824 Y116.24 Z.6
+G1 X48.274 Y216.983 Z.6 F30000
+G1 X48.563 Y200.509 Z.6
 G1 Z.2
 G1 E.8 F1800
 ; FEATURE: Bottom surface
 ; LINE_WIDTH: 0.505798
 G1 F6300
-G1 X141.554 Y116.97 E.03897
-G1 X141.554 Y117.625 E.02469
-G1 X140.375 Y116.446 E.06292
-G1 X139.72 Y116.446 E.02469
-G1 X141.554 Y118.28 E.09784
-G1 X141.554 Y118.934 E.02469
-G1 X139.066 Y116.446 E.13275
-G1 X138.411 Y116.446 E.02469
-G1 X141.554 Y119.589 E.16767
-M73 P33 R12
-G1 X141.554 Y120.244 E.02469
-G1 X137.756 Y116.446 E.20259
-G1 X137.102 Y116.446 E.02469
-G1 X141.554 Y120.898 E.23751
-G1 X141.554 Y121.553 E.02469
-G1 X136.447 Y116.446 E.27243
-G1 X135.793 Y116.446 E.02469
-G1 X141.554 Y122.207 E.30735
-G1 X141.554 Y122.862 E.02469
-G1 X135.138 Y116.446 E.34226
-G1 X134.483 Y116.446 E.02469
-G1 X141.554 Y123.517 E.37718
-G1 X141.554 Y124.171 E.02469
-G1 X133.829 Y116.446 E.4121
-G1 X133.174 Y116.446 E.02469
-G1 X141.554 Y124.826 E.44702
-G1 X141.554 Y125.48 E.02469
-G1 X132.52 Y116.446 E.48194
-G1 X131.865 Y116.446 E.02469
-G1 X141.554 Y126.135 E.51686
-G1 X141.554 Y126.79 E.02469
-G1 X131.21 Y116.446 E.55177
-G1 X130.556 Y116.446 E.02469
-M73 P35 R11
-G1 X141.554 Y127.444 E.58669
-G1 X141.554 Y128.099 E.02469
-G1 X129.901 Y116.446 E.62161
-G1 X129.247 Y116.446 E.02469
-G1 X141.554 Y128.753 E.65653
-G1 X141.554 Y129.408 E.02469
-G1 X128.592 Y116.446 E.69145
-G1 X127.937 Y116.446 E.02469
-G1 X141.554 Y130.063 E.72637
-G1 X141.554 Y130.717 E.02469
-G1 X127.283 Y116.446 E.76128
-G1 X126.628 Y116.446 E.02469
-G1 X141.554 Y131.372 E.7962
-G1 X141.554 Y132.026 E.02469
-G1 X125.974 Y116.446 E.83112
-G1 X125.319 Y116.446 E.02469
-G1 X141.554 Y132.681 E.86604
-G1 X141.554 Y133.336 E.02469
-G1 X124.664 Y116.446 E.90096
-G1 X124.01 Y116.446 E.02469
-G1 X141.554 Y133.99 E.93588
-G1 X141.554 Y134.645 E.02469
-G1 X123.355 Y116.446 E.97079
-G1 X122.7 Y116.446 E.02469
-G1 X141.554 Y135.3 E1.00571
-G1 X141.554 Y135.954 E.02469
-G1 X122.046 Y116.446 E1.04063
-G1 X121.391 Y116.446 E.02469
-G1 X141.554 Y136.609 E1.07555
-G1 X141.554 Y137.263 E.02469
-G1 X120.737 Y116.446 E1.11047
-G1 X120.082 Y116.446 E.02469
-G1 X141.554 Y137.918 E1.14539
-G1 X141.554 Y138.573 E.02469
-G1 X119.427 Y116.446 E1.1803
-G1 X118.773 Y116.446 E.02469
-G1 X141.554 Y139.227 E1.21522
-G1 X141.554 Y139.554 E.01234
-G1 X141.227 Y139.554 E.01235
-G1 X118.446 Y116.773 E1.21522
-G1 X118.446 Y117.428 E.02469
-G1 X140.572 Y139.554 E1.1803
-M73 P36 R11
-G1 X139.918 Y139.554 E.02469
-G1 X118.446 Y118.082 E1.14538
-G1 X118.446 Y118.737 E.02469
-G1 X139.263 Y139.554 E1.11046
-G1 X138.609 Y139.554 E.02469
-G1 X118.446 Y119.391 E1.07554
-G1 X118.446 Y120.046 E.02469
-G1 X137.954 Y139.554 E1.04062
-G1 X137.299 Y139.554 E.02469
-G1 X118.446 Y120.701 E1.00571
-G1 X118.446 Y121.355 E.02469
-G1 X136.645 Y139.554 E.97079
-G1 X135.99 Y139.554 E.02469
-G1 X118.446 Y122.01 E.93587
-G1 X118.446 Y122.664 E.02469
-G1 X135.336 Y139.554 E.90095
-G1 X134.681 Y139.554 E.02469
-G1 X118.446 Y123.319 E.86603
-G1 X118.446 Y123.974 E.02469
-G1 X134.026 Y139.554 E.83111
-G1 X133.372 Y139.554 E.02469
-M73 P37 R11
-G1 X118.446 Y124.628 E.7962
-G1 X118.446 Y125.283 E.02469
-G1 X132.717 Y139.554 E.76128
-G1 X132.063 Y139.554 E.02469
-G1 X118.446 Y125.937 E.72636
-G1 X118.446 Y126.592 E.02469
-G1 X131.408 Y139.554 E.69144
-G1 X130.753 Y139.554 E.02469
-G1 X118.446 Y127.247 E.65652
-G1 X118.446 Y127.901 E.02469
-G1 X130.099 Y139.554 E.6216
-G1 X129.444 Y139.554 E.02469
-G1 X118.446 Y128.556 E.58669
-G1 X118.446 Y129.211 E.02469
-G1 X128.789 Y139.554 E.55177
-G1 X128.135 Y139.554 E.02469
-G1 X118.446 Y129.865 E.51685
-G1 X118.446 Y130.52 E.02469
-G1 X127.48 Y139.554 E.48193
-G1 X126.826 Y139.554 E.02469
-G1 X118.446 Y131.174 E.44701
-G1 X118.446 Y131.829 E.02469
-G1 X126.171 Y139.554 E.41209
-G1 X125.516 Y139.554 E.02469
-G1 X118.446 Y132.484 E.37718
-G1 X118.446 Y133.138 E.02469
-G1 X124.862 Y139.554 E.34226
-G1 X124.207 Y139.554 E.02469
-G1 X118.446 Y133.793 E.30734
-G1 X118.446 Y134.447 E.02469
-G1 X123.553 Y139.554 E.27242
-G1 X122.898 Y139.554 E.02469
-G1 X118.446 Y135.102 E.2375
-G1 X118.446 Y135.757 E.02469
-G1 X122.243 Y139.554 E.20258
-G1 X121.589 Y139.554 E.02469
-G1 X118.446 Y136.411 E.16767
-G1 X118.446 Y137.066 E.02469
-G1 X120.934 Y139.554 E.13275
-G1 X120.28 Y139.554 E.02469
-G1 X118.446 Y137.72 E.09783
-G1 X118.446 Y138.375 E.02469
-G1 X119.625 Y139.554 E.06291
-G1 X118.97 Y139.554 E.02469
-G1 X118.24 Y138.824 E.03896
+G1 X49.294 Y201.24 E.03897
+G1 X49.294 Y201.894 E.02469
+G1 X48.115 Y200.715 E.06292
+G1 X47.46 Y200.715 E.02469
+G1 X49.294 Y202.549 E.09784
+G1 X49.294 Y203.203 E.02469
+G1 X46.805 Y200.715 E.13275
+G1 X46.151 Y200.715 E.02469
+G1 X49.294 Y203.858 E.16767
+G1 X49.294 Y204.513 E.02469
+G1 X45.496 Y200.715 E.20259
+G1 X44.841 Y200.715 E.02469
+M73 P39 R9
+G1 X49.294 Y205.167 E.23751
+G1 X49.294 Y205.822 E.02469
+G1 X44.187 Y200.715 E.27243
+G1 X43.532 Y200.715 E.02469
+G1 X49.294 Y206.477 E.30735
+G1 X49.294 Y207.131 E.02469
+G1 X42.878 Y200.715 E.34226
+G1 X42.223 Y200.715 E.02469
+G1 X49.294 Y207.786 E.37718
+G1 X49.294 Y208.44 E.02469
+G1 X41.568 Y200.715 E.4121
+G1 X40.914 Y200.715 E.02469
+G1 X49.294 Y209.095 E.44702
+G1 X49.294 Y209.75 E.02469
+G1 X40.259 Y200.715 E.48194
+G1 X39.605 Y200.715 E.02469
+G1 X49.294 Y210.404 E.51686
+G1 X49.294 Y211.059 E.02469
+G1 X38.95 Y200.715 E.55177
+G1 X38.295 Y200.715 E.02469
+M73 P41 R9
+G1 X49.294 Y211.713 E.58669
+G1 X49.294 Y212.368 E.02469
+G1 X37.641 Y200.715 E.62161
+G1 X36.986 Y200.715 E.02469
+G1 X49.294 Y213.023 E.65653
+G1 X49.294 Y213.677 E.02469
+G1 X36.332 Y200.715 E.69145
+G1 X35.677 Y200.715 E.02469
+G1 X49.294 Y214.332 E.72637
+G1 X49.294 Y214.986 E.02469
+G1 X35.022 Y200.715 E.76128
+G1 X34.368 Y200.715 E.02469
+G1 X49.294 Y215.641 E.7962
+G1 X49.294 Y216.296 E.02469
+G1 X33.713 Y200.715 E.83112
+G1 X33.059 Y200.715 E.02469
+G1 X49.294 Y216.95 E.86604
+G1 X49.294 Y217.605 E.02469
+G1 X32.404 Y200.715 E.90096
+G1 X31.749 Y200.715 E.02469
+G1 X49.294 Y218.259 E.93588
+G1 X49.294 Y218.914 E.02469
+G1 X31.095 Y200.715 E.97079
+G1 X30.44 Y200.715 E.02469
+G1 X49.294 Y219.569 E1.00571
+G1 X49.294 Y220.223 E.02469
+G1 X29.786 Y200.715 E1.04063
+M73 P42 R9
+G1 X29.131 Y200.715 E.02469
+G1 X49.294 Y220.878 E1.07555
+G1 X49.294 Y221.533 E.02469
+G1 X28.476 Y200.715 E1.11047
+G1 X27.822 Y200.715 E.02469
+G1 X49.294 Y222.187 E1.14539
+G1 X49.294 Y222.842 E.02469
+G1 X27.167 Y200.715 E1.1803
+G1 X26.512 Y200.715 E.02469
+G1 X49.294 Y223.496 E1.21522
+G1 X49.294 Y223.824 E.01234
+G1 X48.967 Y223.824 E.01235
+G1 X26.185 Y201.042 E1.21522
+G1 X26.185 Y201.697 E.02469
+G1 X48.312 Y223.824 E1.1803
+G1 X47.657 Y223.824 E.02469
+G1 X26.185 Y202.351 E1.14538
+G1 X26.185 Y203.006 E.02469
+G1 X47.003 Y223.824 E1.11046
+G1 X46.348 Y223.824 E.02469
+G1 X26.185 Y203.661 E1.07554
+M73 P42 R8
+G1 X26.185 Y204.315 E.02469
+G1 X45.694 Y223.824 E1.04062
+M73 P43 R8
+G1 X45.039 Y223.824 E.02469
+G1 X26.185 Y204.97 E1.00571
+G1 X26.185 Y205.624 E.02469
+G1 X44.384 Y223.824 E.97079
+G1 X43.73 Y223.824 E.02469
+G1 X26.185 Y206.279 E.93587
+G1 X26.185 Y206.934 E.02469
+G1 X43.075 Y223.824 E.90095
+G1 X42.421 Y223.824 E.02469
+G1 X26.185 Y207.588 E.86603
+G1 X26.185 Y208.243 E.02469
+G1 X41.766 Y223.824 E.83111
+G1 X41.111 Y223.824 E.02469
+G1 X26.185 Y208.897 E.7962
+G1 X26.185 Y209.552 E.02469
+G1 X40.457 Y223.824 E.76128
+G1 X39.802 Y223.824 E.02469
+G1 X26.185 Y210.207 E.72636
+G1 X26.185 Y210.861 E.02469
+G1 X39.148 Y223.824 E.69144
+G1 X38.493 Y223.824 E.02469
+G1 X26.185 Y211.516 E.65652
+G1 X26.185 Y212.17 E.02469
+G1 X37.838 Y223.824 E.6216
+G1 X37.184 Y223.824 E.02469
+G1 X26.185 Y212.825 E.58669
+G1 X26.185 Y213.48 E.02469
+G1 X36.529 Y223.824 E.55177
+G1 X35.875 Y223.824 E.02469
+G1 X26.185 Y214.134 E.51685
+G1 X26.185 Y214.789 E.02469
+G1 X35.22 Y223.824 E.48193
+G1 X34.565 Y223.824 E.02469
+G1 X26.185 Y215.444 E.44701
+G1 X26.185 Y216.098 E.02469
+G1 X33.911 Y223.824 E.41209
+G1 X33.256 Y223.824 E.02469
+G1 X26.185 Y216.753 E.37718
+G1 X26.185 Y217.407 E.02469
+G1 X32.601 Y223.824 E.34226
+G1 X31.947 Y223.824 E.02469
+G1 X26.185 Y218.062 E.30734
+G1 X26.185 Y218.717 E.02469
+G1 X31.292 Y223.824 E.27242
+G1 X30.638 Y223.824 E.02469
+G1 X26.185 Y219.371 E.2375
+G1 X26.185 Y220.026 E.02469
+G1 X29.983 Y223.824 E.20258
+G1 X29.328 Y223.824 E.02469
+G1 X26.185 Y220.68 E.16767
+G1 X26.185 Y221.335 E.02469
+G1 X28.674 Y223.824 E.13275
+G1 X28.019 Y223.824 E.02469
+G1 X26.185 Y221.99 E.09783
+G1 X26.185 Y222.644 E.02469
+G1 X27.365 Y223.824 E.06291
+G1 X26.71 Y223.824 E.02469
+M73 P44 R8
+G1 X25.98 Y223.093 E.03896
 ; CHANGE_LAYER
-; Z_HEIGHT: 0.4
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 0.48
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X118.97 Y139.554 E-.39255
-G1 X119.625 Y139.554 E-.24875
-G1 X119.404 Y139.334 E-.11869
+G1 X26.71 Y223.824 E-.39255
+G1 X27.365 Y223.824 E-.24875
+G1 X27.144 Y223.603 E-.11869
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 2/128
+; layer num/total_layer_count: 2/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -1203,231 +1217,239 @@ M400 P100
 G1 E.8
 M204 S10000
 G1 E-.8
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
-G1 X127.031 Y139.623 Z.6 F30000
-G1 X142.198 Y140.198 Z.6
-G1 Z.4
+G1 X34.771 Y223.897 Z.6 F30000
+G1 X49.955 Y224.484 Z.6
+G1 Z.48
 G1 E.8 F1800
 ; FEATURE: Inner wall
 ; LINE_WIDTH: 0.45
-G1 F15476.087
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F11541.081
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
 G1 F12000
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-M73 P38 R11
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.268 Y140.034 Z.8 F30000
-G1 Z.4
+G1 X49.063 Y224.328 Z.88 F30000
+G1 Z.48
 G1 E.8 F1800
 ; FEATURE: Internal solid infill
-; LINE_WIDTH: 0.421715
-G1 F15000
-G1 X141.865 Y139.438 E.02603
-G1 X141.865 Y138.902 E.01654
-G1 X140.902 Y139.865 E.042
-G1 X140.367 Y139.865 E.01654
-G1 X141.865 Y138.367 E.06539
-G1 X141.865 Y137.831 E.01654
-G1 X139.831 Y139.865 E.08877
-G1 X139.295 Y139.865 E.01654
-G1 X141.865 Y137.295 E.11216
-G1 X141.865 Y136.76 E.01654
-G1 X138.76 Y139.865 E.13554
-G1 X138.224 Y139.865 E.01654
-G1 X141.865 Y136.224 E.15893
-G1 X141.865 Y135.688 E.01654
-G1 X137.688 Y139.865 E.18231
-G1 X137.153 Y139.865 E.01654
-G1 X141.865 Y135.153 E.2057
-G1 X141.865 Y134.617 E.01654
-G1 X136.617 Y139.865 E.22908
-G1 X136.081 Y139.865 E.01654
-G1 X141.865 Y134.081 E.25246
-G1 X141.865 Y133.545 E.01654
-G1 X135.545 Y139.865 E.27585
-G1 X135.01 Y139.865 E.01654
-G1 X141.865 Y133.01 E.29923
-G1 X141.865 Y132.474 E.01654
-G1 X134.474 Y139.865 E.32262
-G1 X133.938 Y139.865 E.01654
-G1 X141.865 Y131.938 E.346
-G1 X141.865 Y131.403 E.01654
-G1 X133.403 Y139.865 E.36939
-G1 X132.867 Y139.865 E.01654
-G1 X141.865 Y130.867 E.39277
-G1 X141.865 Y130.331 E.01654
-G1 X132.331 Y139.865 E.41616
-G1 X131.796 Y139.865 E.01654
-G1 X141.865 Y129.796 E.43954
-G1 X141.865 Y129.26 E.01654
-G1 X131.26 Y139.865 E.46293
-G1 X130.724 Y139.865 E.01654
-G1 X141.865 Y128.724 E.48631
-G1 X141.865 Y128.188 E.01654
-G1 X130.188 Y139.865 E.50969
-G1 X129.653 Y139.865 E.01654
-G1 X141.865 Y127.653 E.53308
-M73 P39 R11
-G1 X141.865 Y127.117 E.01654
-G1 X129.117 Y139.865 E.55646
-G1 X128.581 Y139.865 E.01654
-G1 X141.865 Y126.581 E.57985
-G1 X141.865 Y126.046 E.01654
-G1 X128.046 Y139.865 E.60323
-G1 X127.51 Y139.865 E.01654
-G1 X141.865 Y125.51 E.62662
-G1 X141.865 Y124.974 E.01654
-G1 X126.974 Y139.865 E.65
-G1 X126.439 Y139.865 E.01654
-G1 X141.865 Y124.439 E.67339
-G1 X141.865 Y123.903 E.01654
-G1 X125.903 Y139.865 E.69677
-G1 X125.367 Y139.865 E.01654
-G1 X141.865 Y123.367 E.72016
-G1 X141.865 Y122.832 E.01654
-G1 X124.832 Y139.865 E.74354
-G1 X124.296 Y139.865 E.01654
-G1 X141.865 Y122.296 E.76692
-G1 X141.865 Y121.76 E.01654
-G1 X123.76 Y139.865 E.79031
-G1 X123.224 Y139.865 E.01654
-G1 X141.865 Y121.224 E.81369
-G1 X141.865 Y120.689 E.01654
-G1 X122.689 Y139.865 E.83708
-G1 X122.153 Y139.865 E.01654
-G1 X141.865 Y120.153 E.86046
-G1 X141.865 Y119.617 E.01654
-G1 X121.617 Y139.865 E.88385
-G1 X121.082 Y139.865 E.01654
-G1 X141.865 Y119.082 E.90723
-G1 X141.865 Y118.546 E.01654
-G1 X120.546 Y139.865 E.93062
-G1 X120.01 Y139.865 E.01654
-G1 X141.865 Y118.01 E.954
-G1 X141.865 Y117.475 E.01654
-G1 X119.475 Y139.865 E.97739
-G1 X118.939 Y139.865 E.01654
-G1 X141.865 Y116.939 E1.00077
-G1 X141.865 Y116.403 E.01654
-G1 X118.403 Y139.865 E1.02415
-G1 X118.135 Y139.865 E.00827
-G1 X118.135 Y139.597 E.00827
-G1 X141.597 Y116.135 E1.02415
-G1 X141.061 Y116.135 E.01654
-G1 X118.135 Y139.061 E1.00077
-G1 X118.135 Y138.525 E.01654
-G1 X140.525 Y116.135 E.97738
-G1 X139.99 Y116.135 E.01654
-G1 X118.135 Y137.99 E.954
-G1 X118.135 Y137.454 E.01654
-G1 X139.454 Y116.135 E.93061
-G1 X138.918 Y116.135 E.01654
-G1 X118.135 Y136.918 E.90723
-G1 X118.135 Y136.383 E.01654
-G1 X138.383 Y116.135 E.88384
-G1 X137.847 Y116.135 E.01654
-G1 X118.135 Y135.847 E.86046
-G1 X118.135 Y135.311 E.01654
-G1 X137.311 Y116.135 E.83707
-G1 X136.775 Y116.135 E.01654
-G1 X118.135 Y134.775 E.81369
-G1 X118.135 Y134.24 E.01654
-G1 X136.24 Y116.135 E.7903
-G1 X135.704 Y116.135 E.01654
-G1 X118.135 Y133.704 E.76692
-G1 X118.135 Y133.168 E.01654
-G1 X135.168 Y116.135 E.74354
-G1 X134.633 Y116.135 E.01654
-G1 X118.135 Y132.633 E.72015
-G1 X118.135 Y132.097 E.01654
-G1 X134.097 Y116.135 E.69677
-G1 X133.561 Y116.135 E.01654
-G1 X118.135 Y131.561 E.67338
-G1 X118.135 Y131.026 E.01654
-G1 X133.026 Y116.135 E.65
-G1 X132.49 Y116.135 E.01654
-G1 X118.135 Y130.49 E.62661
-G1 X118.135 Y129.954 E.01654
-G1 X131.954 Y116.135 E.60323
-G1 X131.419 Y116.135 E.01654
-G1 X118.135 Y129.419 E.57984
-G1 X118.135 Y128.883 E.01654
-G1 X130.883 Y116.135 E.55646
-G1 X130.347 Y116.135 E.01654
-G1 X118.135 Y128.347 E.53308
-G1 X118.135 Y127.811 E.01654
-G1 X129.811 Y116.135 E.50969
-G1 X129.276 Y116.135 E.01654
-G1 X118.135 Y127.276 E.48631
-G1 X118.135 Y126.74 E.01654
-G1 X128.74 Y116.135 E.46292
-G1 X128.204 Y116.135 E.01654
-G1 X118.135 Y126.204 E.43954
-G1 X118.135 Y125.669 E.01654
-G1 X127.669 Y116.135 E.41615
-G1 X127.133 Y116.135 E.01654
-G1 X118.135 Y125.133 E.39277
-G1 X118.135 Y124.597 E.01654
-G1 X126.597 Y116.135 E.36938
-G1 X126.062 Y116.135 E.01654
-G1 X118.135 Y124.062 E.346
-G1 X118.135 Y123.526 E.01654
-G1 X125.526 Y116.135 E.32261
-G1 X124.99 Y116.135 E.01654
-G1 X118.135 Y122.99 E.29923
-G1 X118.135 Y122.454 E.01654
-G1 X124.454 Y116.135 E.27585
-G1 X123.919 Y116.135 E.01654
-G1 X118.135 Y121.919 E.25246
-G1 X118.135 Y121.383 E.01654
-G1 X123.383 Y116.135 E.22908
-G1 X122.847 Y116.135 E.01654
-G1 X118.135 Y120.847 E.20569
-G1 X118.135 Y120.312 E.01654
-G1 X122.312 Y116.135 E.18231
-G1 X121.776 Y116.135 E.01654
-G1 X118.135 Y119.776 E.15892
-G1 X118.135 Y119.24 E.01654
-G1 X121.24 Y116.135 E.13554
-G1 X120.705 Y116.135 E.01654
-G1 X118.135 Y118.705 E.11215
-G1 X118.135 Y118.169 E.01654
-G1 X120.169 Y116.135 E.08877
-G1 X119.633 Y116.135 E.01654
-G1 X118.135 Y117.633 E.06538
-G1 X118.135 Y117.097 E.01654
-G1 X119.097 Y116.135 E.042
-G1 X118.562 Y116.135 E.01654
-G1 X117.966 Y116.731 E.02602
+; LINE_WIDTH: 0.423462
+G1 F12000
+G1 X49.636 Y223.755 E.03359
+G1 X49.636 Y223.241 E.0213
+G1 X48.711 Y224.166 E.05422
+G1 X48.197 Y224.166 E.0213
+G1 X49.636 Y222.727 E.08435
+G1 X49.636 Y222.213 E.0213
+G1 X47.683 Y224.166 E.11448
+G1 X47.17 Y224.166 E.0213
+G1 X49.636 Y221.699 E.1446
+G1 X49.636 Y221.185 E.0213
+G1 X46.656 Y224.166 E.17473
+G1 X46.142 Y224.166 E.0213
+M73 P45 R8
+G1 X49.636 Y220.671 E.20486
+G1 X49.636 Y220.157 E.0213
+G1 X45.628 Y224.166 E.23498
+G1 X45.114 Y224.166 E.0213
+G1 X49.636 Y219.643 E.26511
+G1 X49.636 Y219.13 E.0213
+G1 X44.6 Y224.166 E.29524
+G1 X44.086 Y224.166 E.0213
+G1 X49.636 Y218.616 E.32536
+G1 X49.636 Y218.102 E.0213
+G1 X43.572 Y224.166 E.35549
+G1 X43.058 Y224.166 E.0213
+G1 X49.636 Y217.588 E.38562
+G1 X49.636 Y217.074 E.0213
+G1 X42.545 Y224.166 E.41574
+G1 X42.031 Y224.166 E.0213
+G1 X49.636 Y216.56 E.44587
+G1 X49.636 Y216.046 E.0213
+G1 X41.517 Y224.166 E.476
+G1 X41.003 Y224.166 E.0213
+G1 X49.636 Y215.532 E.50612
+G1 X49.636 Y215.019 E.0213
+G1 X40.489 Y224.166 E.53625
+G1 X39.975 Y224.166 E.0213
+G1 X49.636 Y214.505 E.56638
+G1 X49.636 Y213.991 E.0213
+G1 X39.461 Y224.166 E.5965
+G1 X38.947 Y224.166 E.0213
+G1 X49.636 Y213.477 E.62663
+G1 X49.636 Y212.963 E.0213
+G1 X38.433 Y224.166 E.65676
+G1 X37.92 Y224.166 E.0213
+G1 X49.636 Y212.449 E.68688
+G1 X49.636 Y211.935 E.0213
+G1 X37.406 Y224.166 E.71701
+G1 X36.892 Y224.166 E.0213
+G1 X49.636 Y211.421 E.74714
+G1 X49.636 Y210.907 E.0213
+G1 X36.378 Y224.166 E.77727
+G1 X35.864 Y224.166 E.0213
+G1 X49.636 Y210.394 E.80739
+G1 X49.636 Y209.88 E.0213
+G1 X35.35 Y224.166 E.83752
+G1 X34.836 Y224.166 E.0213
+G1 X49.636 Y209.366 E.86765
+G1 X49.636 Y208.852 E.0213
+G1 X34.322 Y224.166 E.89777
+G1 X33.808 Y224.166 E.0213
+G1 X49.636 Y208.338 E.9279
+G1 X49.636 Y207.824 E.0213
+M73 P46 R8
+G1 X33.295 Y224.166 E.95803
+G1 X32.781 Y224.166 E.0213
+G1 X49.636 Y207.31 E.98815
+G1 X49.636 Y206.796 E.0213
+G1 X32.267 Y224.166 E1.01828
+G1 X31.753 Y224.166 E.0213
+G1 X49.636 Y206.282 E1.04841
+G1 X49.636 Y205.769 E.0213
+G1 X31.239 Y224.166 E1.07853
+G1 X30.725 Y224.166 E.0213
+G1 X49.636 Y205.255 E1.10866
+G1 X49.636 Y204.741 E.0213
+G1 X30.211 Y224.166 E1.13879
+G1 X29.697 Y224.166 E.0213
+G1 X49.636 Y204.227 E1.16891
+G1 X49.636 Y203.713 E.0213
+G1 X29.183 Y224.166 E1.19904
+G1 X28.67 Y224.166 E.0213
+G1 X49.636 Y203.199 E1.22917
+G1 X49.636 Y202.685 E.0213
+G1 X28.156 Y224.166 E1.25929
+G1 X27.642 Y224.166 E.0213
+G1 X49.636 Y202.171 E1.28942
+G1 X49.636 Y201.657 E.0213
+G1 X27.128 Y224.166 E1.31955
+G1 X26.614 Y224.166 E.0213
+G1 X49.636 Y201.144 E1.34968
+G1 X49.636 Y200.63 E.0213
+G1 X26.1 Y224.166 E1.3798
+G1 X25.843 Y224.166 E.01065
+G1 X25.843 Y223.909 E.01065
+G1 X49.379 Y200.373 E1.3798
+G1 X48.865 Y200.373 E.0213
+G1 X25.843 Y223.395 E1.34967
+G1 X25.843 Y222.881 E.0213
+G1 X48.351 Y200.373 E1.31955
+G1 X47.837 Y200.373 E.0213
+G1 X25.843 Y222.367 E1.28942
+G1 X25.843 Y221.853 E.0213
+G1 X47.324 Y200.373 E1.25929
+G1 X46.81 Y200.373 E.0213
+G1 X25.843 Y221.339 E1.22917
+G1 X25.843 Y220.825 E.0213
+G1 X46.296 Y200.373 E1.19904
+G1 X45.782 Y200.373 E.0213
+G1 X25.843 Y220.311 E1.16891
+G1 X25.843 Y219.798 E.0213
+G1 X45.268 Y200.373 E1.13879
+G1 X44.754 Y200.373 E.0213
+G1 X25.843 Y219.284 E1.10866
+G1 X25.843 Y218.77 E.0213
+G1 X44.24 Y200.373 E1.07853
+G1 X43.726 Y200.373 E.0213
+G1 X25.843 Y218.256 E1.0484
+G1 X25.843 Y217.742 E.0213
+G1 X43.212 Y200.373 E1.01828
+G1 X42.699 Y200.373 E.0213
+G1 X25.843 Y217.228 E.98815
+G1 X25.843 Y216.714 E.0213
+G1 X42.185 Y200.373 E.95802
+G1 X41.671 Y200.373 E.0213
+G1 X25.843 Y216.2 E.9279
+G1 X25.843 Y215.686 E.0213
+G1 X41.157 Y200.373 E.89777
+G1 X40.643 Y200.373 E.0213
+G1 X25.843 Y215.173 E.86764
+G1 X25.843 Y214.659 E.0213
+G1 X40.129 Y200.373 E.83752
+G1 X39.615 Y200.373 E.0213
+G1 X25.843 Y214.145 E.80739
+G1 X25.843 Y213.631 E.0213
+G1 X39.101 Y200.373 E.77726
+G1 X38.587 Y200.373 E.0213
+G1 X25.843 Y213.117 E.74714
+G1 X25.843 Y212.603 E.0213
+G1 X38.074 Y200.373 E.71701
+G1 X37.56 Y200.373 E.0213
+G1 X25.843 Y212.089 E.68688
+G1 X25.843 Y211.575 E.0213
+G1 X37.046 Y200.373 E.65676
+G1 X36.532 Y200.373 E.0213
+G1 X25.843 Y211.061 E.62663
+G1 X25.843 Y210.548 E.0213
+G1 X36.018 Y200.373 E.5965
+G1 X35.504 Y200.373 E.0213
+G1 X25.843 Y210.034 E.56638
+G1 X25.843 Y209.52 E.0213
+G1 X34.99 Y200.373 E.53625
+G1 X34.476 Y200.373 E.0213
+G1 X25.843 Y209.006 E.50612
+G1 X25.843 Y208.492 E.0213
+G1 X33.962 Y200.373 E.47599
+G1 X33.449 Y200.373 E.0213
+G1 X25.843 Y207.978 E.44587
+G1 X25.843 Y207.464 E.0213
+G1 X32.935 Y200.373 E.41574
+G1 X32.421 Y200.373 E.0213
+G1 X25.843 Y206.95 E.38561
+G1 X25.843 Y206.436 E.0213
+G1 X31.907 Y200.373 E.35549
+G1 X31.393 Y200.373 E.0213
+G1 X25.843 Y205.923 E.32536
+G1 X25.843 Y205.409 E.0213
+G1 X30.879 Y200.373 E.29523
+G1 X30.365 Y200.373 E.0213
+G1 X25.843 Y204.895 E.26511
+G1 X25.843 Y204.381 E.0213
+G1 X29.851 Y200.373 E.23498
+G1 X29.337 Y200.373 E.0213
+G1 X25.843 Y203.867 E.20485
+G1 X25.843 Y203.353 E.0213
+G1 X28.824 Y200.373 E.17473
+G1 X28.31 Y200.373 E.0213
+G1 X25.843 Y202.839 E.1446
+G1 X25.843 Y202.325 E.0213
+G1 X27.796 Y200.373 E.11447
+G1 X27.282 Y200.373 E.0213
+G1 X25.843 Y201.811 E.08435
+G1 X25.843 Y201.298 E.0213
+G1 X26.768 Y200.373 E.05422
+G1 X26.254 Y200.373 E.0213
+G1 X25.681 Y200.946 E.03359
 ; CHANGE_LAYER
-; Z_HEIGHT: 0.6
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 0.76
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X118.562 Y116.135 E-.32036
-G1 X119.097 Y116.135 E-.20356
-G1 X118.658 Y116.575 E-.23607
+G1 X26.254 Y200.373 E-.30789
+G1 X26.768 Y200.373 E-.19528
+G1 X26.29 Y200.851 E-.25684
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 3/128
+; layer num/total_layer_count: 3/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -1438,233 +1460,241 @@ M623
 ; update layer progress
 M73 L3
 M991 S0 P2 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z.8 I-.862 J.859 P1  F30000
-G1 X142.198 Y140.198 Z.8
-G1 Z.6
+G3 Z.88 I-.86 J.861 P1  F30000
+G1 X49.955 Y224.484 Z.88
+G1 Z.76
 G1 E.8 F1800
 ; FEATURE: Inner wall
 ; LINE_WIDTH: 0.45
-G1 F15476.087
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F11541.081
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
 G1 F12000
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.052 Y132.916 Z1 F30000
-G1 X142.034 Y116.732 Z1
-G1 Z.6
+G1 X48.798 Y217.186 Z1.16 F30000
+G1 X49.798 Y200.946 Z1.16
+G1 Z.76
+M73 P47 R8
 G1 E.8 F1800
 ; FEATURE: Internal solid infill
-; LINE_WIDTH: 0.421715
-G1 F15000
-G1 X141.438 Y116.135 E.02603
-G1 X140.902 Y116.135 E.01654
-G1 X141.865 Y117.098 E.042
-G1 X141.865 Y117.633 E.01654
-M73 P40 R11
-G1 X140.367 Y116.135 E.06539
-G1 X139.831 Y116.135 E.01654
-G1 X141.865 Y118.169 E.08877
-G1 X141.865 Y118.705 E.01654
-G1 X139.295 Y116.135 E.11216
-G1 X138.76 Y116.135 E.01654
-G1 X141.865 Y119.24 E.13554
-G1 X141.865 Y119.776 E.01654
-G1 X138.224 Y116.135 E.15893
-G1 X137.688 Y116.135 E.01654
-G1 X141.865 Y120.312 E.18231
-G1 X141.865 Y120.847 E.01654
-G1 X137.153 Y116.135 E.2057
-G1 X136.617 Y116.135 E.01654
-G1 X141.865 Y121.383 E.22908
-G1 X141.865 Y121.919 E.01654
-G1 X136.081 Y116.135 E.25246
-G1 X135.545 Y116.135 E.01654
-G1 X141.865 Y122.455 E.27585
-G1 X141.865 Y122.99 E.01654
-G1 X135.01 Y116.135 E.29923
-G1 X134.474 Y116.135 E.01654
-G1 X141.865 Y123.526 E.32262
-G1 X141.865 Y124.062 E.01654
-G1 X133.938 Y116.135 E.346
-G1 X133.403 Y116.135 E.01654
-G1 X141.865 Y124.597 E.36939
-G1 X141.865 Y125.133 E.01654
-G1 X132.867 Y116.135 E.39277
-G1 X132.331 Y116.135 E.01654
-G1 X141.865 Y125.669 E.41616
-G1 X141.865 Y126.204 E.01654
-G1 X131.796 Y116.135 E.43954
-G1 X131.26 Y116.135 E.01654
-G1 X141.865 Y126.74 E.46293
-G1 X141.865 Y127.276 E.01654
-G1 X130.724 Y116.135 E.48631
-G1 X130.188 Y116.135 E.01654
-G1 X141.865 Y127.812 E.50969
-G1 X141.865 Y128.347 E.01654
-G1 X129.653 Y116.135 E.53308
-G1 X129.117 Y116.135 E.01654
-G1 X141.865 Y128.883 E.55646
-G1 X141.865 Y129.419 E.01654
-G1 X128.581 Y116.135 E.57985
-G1 X128.046 Y116.135 E.01654
-G1 X141.865 Y129.954 E.60323
-G1 X141.865 Y130.49 E.01654
-G1 X127.51 Y116.135 E.62662
-G1 X126.974 Y116.135 E.01654
-G1 X141.865 Y131.026 E.65
-G1 X141.865 Y131.561 E.01654
-G1 X126.439 Y116.135 E.67339
-G1 X125.903 Y116.135 E.01654
-G1 X141.865 Y132.097 E.69677
-G1 X141.865 Y132.633 E.01654
-G1 X125.367 Y116.135 E.72016
-G1 X124.832 Y116.135 E.01654
-G1 X141.865 Y133.168 E.74354
-G1 X141.865 Y133.704 E.01654
-G1 X124.296 Y116.135 E.76692
-G1 X123.76 Y116.135 E.01654
-G1 X141.865 Y134.24 E.79031
-G1 X141.865 Y134.776 E.01654
-G1 X123.224 Y116.135 E.81369
-G1 X122.689 Y116.135 E.01654
-G1 X141.865 Y135.311 E.83708
-G1 X141.865 Y135.847 E.01654
-G1 X122.153 Y116.135 E.86046
-G1 X121.617 Y116.135 E.01654
-G1 X141.865 Y136.383 E.88385
-G1 X141.865 Y136.918 E.01654
-G1 X121.082 Y116.135 E.90723
-G1 X120.546 Y116.135 E.01654
-G1 X141.865 Y137.454 E.93062
-G1 X141.865 Y137.99 E.01654
-G1 X120.01 Y116.135 E.954
-G1 X119.475 Y116.135 E.01654
-G1 X141.865 Y138.525 E.97739
-G1 X141.865 Y139.061 E.01654
-G1 X118.939 Y116.135 E1.00077
-G1 X118.403 Y116.135 E.01654
-G1 X141.865 Y139.597 E1.02415
-G1 X141.865 Y139.865 E.00827
-M73 P40 R10
-G1 X141.597 Y139.865 E.00827
-G1 X118.135 Y116.403 E1.02415
-G1 X118.135 Y116.939 E.01654
-G1 X141.061 Y139.865 E1.00077
-G1 X140.525 Y139.865 E.01654
-G1 X118.135 Y117.475 E.97738
-G1 X118.135 Y118.01 E.01654
-G1 X139.99 Y139.865 E.954
-G1 X139.454 Y139.865 E.01654
-G1 X118.135 Y118.546 E.93061
-G1 X118.135 Y119.082 E.01654
-G1 X138.918 Y139.865 E.90723
-G1 X138.383 Y139.865 E.01654
-G1 X118.135 Y119.617 E.88384
-G1 X118.135 Y120.153 E.01654
-G1 X137.847 Y139.865 E.86046
-G1 X137.311 Y139.865 E.01654
-G1 X118.135 Y120.689 E.83707
-G1 X118.135 Y121.225 E.01654
-G1 X136.775 Y139.865 E.81369
-G1 X136.24 Y139.865 E.01654
-G1 X118.135 Y121.76 E.7903
-G1 X118.135 Y122.296 E.01654
-G1 X135.704 Y139.865 E.76692
-G1 X135.168 Y139.865 E.01654
-G1 X118.135 Y122.832 E.74354
-G1 X118.135 Y123.367 E.01654
-G1 X134.633 Y139.865 E.72015
-G1 X134.097 Y139.865 E.01654
-G1 X118.135 Y123.903 E.69677
-G1 X118.135 Y124.439 E.01654
-G1 X133.561 Y139.865 E.67338
-G1 X133.026 Y139.865 E.01654
-G1 X118.135 Y124.974 E.65
-G1 X118.135 Y125.51 E.01654
-G1 X132.49 Y139.865 E.62661
-G1 X131.954 Y139.865 E.01654
-G1 X118.135 Y126.046 E.60323
-G1 X118.135 Y126.581 E.01654
-G1 X131.419 Y139.865 E.57984
-G1 X130.883 Y139.865 E.01654
-G1 X118.135 Y127.117 E.55646
-G1 X118.135 Y127.653 E.01654
-G1 X130.347 Y139.865 E.53308
-G1 X129.811 Y139.865 E.01654
-G1 X118.135 Y128.189 E.50969
-G1 X118.135 Y128.724 E.01654
-G1 X129.276 Y139.865 E.48631
-G1 X128.74 Y139.865 E.01654
-G1 X118.135 Y129.26 E.46292
-G1 X118.135 Y129.796 E.01654
-G1 X128.204 Y139.865 E.43954
-G1 X127.669 Y139.865 E.01654
-G1 X118.135 Y130.331 E.41615
-G1 X118.135 Y130.867 E.01654
-G1 X127.133 Y139.865 E.39277
-G1 X126.597 Y139.865 E.01654
-G1 X118.135 Y131.403 E.36938
-G1 X118.135 Y131.938 E.01654
-G1 X126.062 Y139.865 E.346
-G1 X125.526 Y139.865 E.01654
-G1 X118.135 Y132.474 E.32261
-G1 X118.135 Y133.01 E.01654
-G1 X124.99 Y139.865 E.29923
-G1 X124.454 Y139.865 E.01654
-G1 X118.135 Y133.546 E.27585
-G1 X118.135 Y134.081 E.01654
-G1 X123.919 Y139.865 E.25246
-G1 X123.383 Y139.865 E.01654
-G1 X118.135 Y134.617 E.22908
-G1 X118.135 Y135.153 E.01654
-G1 X122.847 Y139.865 E.20569
-G1 X122.312 Y139.865 E.01654
-G1 X118.135 Y135.688 E.18231
-G1 X118.135 Y136.224 E.01654
-G1 X121.776 Y139.865 E.15892
-G1 X121.24 Y139.865 E.01654
-G1 X118.135 Y136.76 E.13554
-G1 X118.135 Y137.295 E.01654
-G1 X120.705 Y139.865 E.11215
-G1 X120.169 Y139.865 E.01654
-G1 X118.135 Y137.831 E.08877
-G1 X118.135 Y138.367 E.01654
-G1 X119.633 Y139.865 E.06538
-G1 X119.097 Y139.865 E.01654
-G1 X118.135 Y138.903 E.042
-G1 X118.135 Y139.438 E.01654
-G1 X118.731 Y140.034 E.02602
+; LINE_WIDTH: 0.423462
+G1 F12000
+G1 X49.225 Y200.373 E.03359
+G1 X48.711 Y200.373 E.0213
+G1 X49.636 Y201.298 E.05422
+G1 X49.636 Y201.812 E.0213
+G1 X48.197 Y200.373 E.08435
+G1 X47.683 Y200.373 E.0213
+G1 X49.636 Y202.325 E.11448
+G1 X49.636 Y202.839 E.0213
+G1 X47.17 Y200.373 E.1446
+G1 X46.656 Y200.373 E.0213
+G1 X49.636 Y203.353 E.17473
+G1 X49.636 Y203.867 E.0213
+G1 X46.142 Y200.373 E.20486
+G1 X45.628 Y200.373 E.0213
+G1 X49.636 Y204.381 E.23498
+G1 X49.636 Y204.895 E.0213
+G1 X45.114 Y200.373 E.26511
+G1 X44.6 Y200.373 E.0213
+G1 X49.636 Y205.409 E.29524
+G1 X49.636 Y205.923 E.0213
+G1 X44.086 Y200.373 E.32536
+G1 X43.572 Y200.373 E.0213
+G1 X49.636 Y206.437 E.35549
+G1 X49.636 Y206.95 E.0213
+G1 X43.058 Y200.373 E.38562
+G1 X42.545 Y200.373 E.0213
+G1 X49.636 Y207.464 E.41574
+G1 X49.636 Y207.978 E.0213
+G1 X42.031 Y200.373 E.44587
+G1 X41.517 Y200.373 E.0213
+G1 X49.636 Y208.492 E.476
+G1 X49.636 Y209.006 E.0213
+G1 X41.003 Y200.373 E.50612
+G1 X40.489 Y200.373 E.0213
+G1 X49.636 Y209.52 E.53625
+G1 X49.636 Y210.034 E.0213
+G1 X39.975 Y200.373 E.56638
+G1 X39.461 Y200.373 E.0213
+G1 X49.636 Y210.548 E.5965
+G1 X49.636 Y211.061 E.0213
+G1 X38.947 Y200.373 E.62663
+G1 X38.433 Y200.373 E.0213
+G1 X49.636 Y211.575 E.65676
+G1 X49.636 Y212.089 E.0213
+G1 X37.92 Y200.373 E.68688
+G1 X37.406 Y200.373 E.0213
+G1 X49.636 Y212.603 E.71701
+G1 X49.636 Y213.117 E.0213
+G1 X36.892 Y200.373 E.74714
+G1 X36.378 Y200.373 E.0213
+G1 X49.636 Y213.631 E.77727
+G1 X49.636 Y214.145 E.0213
+G1 X35.864 Y200.373 E.80739
+G1 X35.35 Y200.373 E.0213
+G1 X49.636 Y214.659 E.83752
+G1 X49.636 Y215.173 E.0213
+G1 X34.836 Y200.373 E.86765
+G1 X34.322 Y200.373 E.0213
+G1 X49.636 Y215.686 E.89777
+G1 X49.636 Y216.2 E.0213
+G1 X33.808 Y200.373 E.9279
+G1 X33.295 Y200.373 E.0213
+G1 X49.636 Y216.714 E.95803
+G1 X49.636 Y217.228 E.0213
+G1 X32.781 Y200.373 E.98815
+G1 X32.267 Y200.373 E.0213
+G1 X49.636 Y217.742 E1.01828
+G1 X49.636 Y218.256 E.0213
+G1 X31.753 Y200.373 E1.04841
+G1 X31.239 Y200.373 E.0213
+G1 X49.636 Y218.77 E1.07853
+G1 X49.636 Y219.284 E.0213
+G1 X30.725 Y200.373 E1.10866
+G1 X30.211 Y200.373 E.0213
+G1 X49.636 Y219.798 E1.13879
+G1 X49.636 Y220.311 E.0213
+G1 X29.697 Y200.373 E1.16891
+G1 X29.183 Y200.373 E.0213
+G1 X49.636 Y220.825 E1.19904
+G1 X49.636 Y221.339 E.0213
+G1 X28.67 Y200.373 E1.22917
+G1 X28.156 Y200.373 E.0213
+G1 X49.636 Y221.853 E1.25929
+G1 X49.636 Y222.367 E.0213
+G1 X27.642 Y200.373 E1.28942
+G1 X27.128 Y200.373 E.0213
+G1 X49.636 Y222.881 E1.31955
+G1 X49.636 Y223.395 E.0213
+G1 X26.614 Y200.373 E1.34968
+G1 X26.1 Y200.373 E.0213
+G1 X49.636 Y223.909 E1.3798
+G1 X49.636 Y224.166 E.01065
+G1 X49.379 Y224.166 E.01065
+G1 X25.843 Y200.63 E1.3798
+G1 X25.843 Y201.144 E.0213
+G1 X48.865 Y224.166 E1.34967
+G1 X48.351 Y224.166 E.0213
+G1 X25.843 Y201.657 E1.31955
+G1 X25.843 Y202.171 E.0213
+G1 X47.837 Y224.166 E1.28942
+G1 X47.324 Y224.166 E.0213
+G1 X25.843 Y202.685 E1.25929
+G1 X25.843 Y203.199 E.0213
+G1 X46.81 Y224.166 E1.22917
+G1 X46.296 Y224.166 E.0213
+G1 X25.843 Y203.713 E1.19904
+G1 X25.843 Y204.227 E.0213
+G1 X45.782 Y224.166 E1.16891
+G1 X45.268 Y224.166 E.0213
+G1 X25.843 Y204.741 E1.13879
+G1 X25.843 Y205.255 E.0213
+G1 X44.754 Y224.166 E1.10866
+G1 X44.24 Y224.166 E.0213
+G1 X25.843 Y205.769 E1.07853
+G1 X25.843 Y206.282 E.0213
+G1 X43.726 Y224.166 E1.0484
+G1 X43.212 Y224.166 E.0213
+G1 X25.843 Y206.796 E1.01828
+G1 X25.843 Y207.31 E.0213
+G1 X42.699 Y224.166 E.98815
+G1 X42.185 Y224.166 E.0213
+G1 X25.843 Y207.824 E.95802
+G1 X25.843 Y208.338 E.0213
+G1 X41.671 Y224.166 E.9279
+G1 X41.157 Y224.166 E.0213
+G1 X25.843 Y208.852 E.89777
+G1 X25.843 Y209.366 E.0213
+G1 X40.643 Y224.166 E.86764
+G1 X40.129 Y224.166 E.0213
+G1 X25.843 Y209.88 E.83752
+G1 X25.843 Y210.394 E.0213
+G1 X39.615 Y224.166 E.80739
+G1 X39.101 Y224.166 E.0213
+G1 X25.843 Y210.907 E.77726
+G1 X25.843 Y211.421 E.0213
+G1 X38.587 Y224.166 E.74714
+G1 X38.074 Y224.166 E.0213
+G1 X25.843 Y211.935 E.71701
+G1 X25.843 Y212.449 E.0213
+G1 X37.56 Y224.166 E.68688
+G1 X37.046 Y224.166 E.0213
+G1 X25.843 Y212.963 E.65676
+G1 X25.843 Y213.477 E.0213
+G1 X36.532 Y224.166 E.62663
+G1 X36.018 Y224.166 E.0213
+G1 X25.843 Y213.991 E.5965
+G1 X25.843 Y214.505 E.0213
+G1 X35.504 Y224.166 E.56638
+G1 X34.99 Y224.166 E.0213
+G1 X25.843 Y215.019 E.53625
+G1 X25.843 Y215.532 E.0213
+G1 X34.476 Y224.166 E.50612
+G1 X33.962 Y224.166 E.0213
+G1 X25.843 Y216.046 E.47599
+G1 X25.843 Y216.56 E.0213
+G1 X33.449 Y224.166 E.44587
+G1 X32.935 Y224.166 E.0213
+G1 X25.843 Y217.074 E.41574
+G1 X25.843 Y217.588 E.0213
+G1 X32.421 Y224.166 E.38561
+G1 X31.907 Y224.166 E.0213
+G1 X25.843 Y218.102 E.35549
+G1 X25.843 Y218.616 E.0213
+G1 X31.393 Y224.166 E.32536
+G1 X30.879 Y224.166 E.0213
+G1 X25.843 Y219.13 E.29523
+G1 X25.843 Y219.644 E.0213
+G1 X30.365 Y224.166 E.26511
+G1 X29.851 Y224.166 E.0213
+G1 X25.843 Y220.157 E.23498
+G1 X25.843 Y220.671 E.0213
+G1 X29.337 Y224.166 E.20485
+G1 X28.824 Y224.166 E.0213
+G1 X25.843 Y221.185 E.17473
+G1 X25.843 Y221.699 E.0213
+G1 X28.31 Y224.166 E.1446
+G1 X27.796 Y224.166 E.0213
+G1 X25.843 Y222.213 E.11447
+G1 X25.843 Y222.727 E.0213
+M73 P48 R8
+G1 X27.282 Y224.166 E.08435
+G1 X26.768 Y224.166 E.0213
+G1 X25.843 Y223.241 E.05422
+G1 X25.843 Y223.755 E.0213
+G1 X26.416 Y224.328 E.03359
 ; CHANGE_LAYER
-; Z_HEIGHT: 0.8
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 1.04
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X118.135 Y139.438 E-.32036
-G1 X118.135 Y138.903 E-.20356
-G1 X118.575 Y139.342 E-.23607
+G1 X25.843 Y223.755 E-.30789
+G1 X25.843 Y223.241 E-.19528
+G1 X26.321 Y223.719 E-.25684
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 4/128
+; layer num/total_layer_count: 4/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -1675,87 +1705,86 @@ M623
 ; update layer progress
 M73 L4
 M991 S0 P3 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z1 I-.044 J1.216 P1  F30000
-G1 X142.198 Y140.198 Z1
-G1 Z.8
+G3 Z1.16 I-.039 J1.216 P1  F30000
+G1 X49.955 Y224.484 Z1.16
+G1 Z1.04
 G1 E.8 F1800
 ; FEATURE: Inner wall
 ; LINE_WIDTH: 0.45
-G1 F6954
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7273
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6954
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7273
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z1.2 F30000
-G1 X139.55 Y116.15 Z1.2
-G1 Z.8
+G1 X47.714 Y217.196 Z1.44 F30000
+G1 X46.355 Y200.388 Z1.44
+G1 Z1.04
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6954
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-M73 P41 R10
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6954
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7273
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7273
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 1
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 1.32
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 5/128
+; layer num/total_layer_count: 5/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -1766,84 +1795,84 @@ M623
 ; update layer progress
 M73 L5
 M991 S0 P4 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z1.2 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z1.2
-G1 Z1
+G3 Z1.44 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z1.44
+G1 Z1.32
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z1.4 F30000
-G1 Z1
+G1 X49.621 Y220.885 Z1.72 F30000
+G1 Z1.32
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 1.2
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 1.6
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 6/128
+; layer num/total_layer_count: 6/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -1854,85 +1883,87 @@ M623
 ; update layer progress
 M73 L6
 M991 S0 P5 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z1.4 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z1.4
-G1 Z1.2
+G3 Z1.72 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z1.72
+G1 Z1.6
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+M73 P49 R8
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z1.6 F30000
-G1 X139.55 Y116.15 Z1.6
-G1 Z1.2
+G1 X47.714 Y217.196 Z2 F30000
+G1 X46.355 Y200.388 Z2
+G1 Z1.6
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+M73 P49 R7
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 1.4
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 1.88
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 7/128
+; layer num/total_layer_count: 7/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -1943,85 +1974,84 @@ M623
 ; update layer progress
 M73 L7
 M991 S0 P6 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z1.6 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z1.6
-G1 Z1.4
+G3 Z2 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z2
+G1 Z1.88
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z1.8 F30000
-G1 Z1.4
+G1 X49.621 Y220.885 Z2.28 F30000
+G1 Z1.88
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-M73 P42 R10
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 1.6
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 2.16
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 8/128
+; layer num/total_layer_count: 8/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -2032,85 +2062,86 @@ M623
 ; update layer progress
 M73 L8
 M991 S0 P7 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z1.8 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z1.8
-G1 Z1.6
+G3 Z2.28 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z2.28
+G1 Z2.16
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+M73 P50 R7
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z2 F30000
-G1 X139.55 Y116.15 Z2
-G1 Z1.6
+G1 X47.714 Y217.196 Z2.56 F30000
+G1 X46.355 Y200.388 Z2.56
+G1 Z2.16
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 1.8
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 2.44
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 9/128
+; layer num/total_layer_count: 9/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -2121,85 +2152,84 @@ M623
 ; update layer progress
 M73 L9
 M991 S0 P8 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z2 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z2
-G1 Z1.8
+G3 Z2.56 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z2.56
+G1 Z2.44
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z2.2 F30000
-G1 Z1.8
+G1 X49.621 Y220.885 Z2.84 F30000
+G1 Z2.44
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-M73 P43 R10
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 2
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 2.72
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 10/128
+; layer num/total_layer_count: 10/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -2210,85 +2240,86 @@ M623
 ; update layer progress
 M73 L10
 M991 S0 P9 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z2.2 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z2.2
-G1 Z2
+G3 Z2.84 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z2.84
+G1 Z2.72
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+M73 P51 R7
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z2.4 F30000
-G1 X139.55 Y116.15 Z2.4
-G1 Z2
+G1 X47.714 Y217.196 Z3.12 F30000
+G1 X46.355 Y200.388 Z3.12
+G1 Z2.72
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 2.2
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 3
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 11/128
+; layer num/total_layer_count: 11/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -2299,84 +2330,84 @@ M623
 ; update layer progress
 M73 L11
 M991 S0 P10 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z2.4 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z2.4
-G1 Z2.2
+G3 Z3.12 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z3.12
+G1 Z3
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z2.6 F30000
-G1 Z2.2
+G1 X49.621 Y220.885 Z3.4 F30000
+G1 Z3
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 2.4
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 3.28
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 12/128
+; layer num/total_layer_count: 12/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -2387,86 +2418,86 @@ M623
 ; update layer progress
 M73 L12
 M991 S0 P11 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z2.6 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z2.6
-M73 P44 R10
-G1 Z2.4
+G3 Z3.4 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z3.4
+G1 Z3.28
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+M73 P52 R7
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z2.8 F30000
-G1 X139.55 Y116.15 Z2.8
-G1 Z2.4
+G1 X47.714 Y217.196 Z3.68 F30000
+G1 X46.355 Y200.388 Z3.68
+G1 Z3.28
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 2.6
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 3.56
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 13/128
+; layer num/total_layer_count: 13/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -2477,84 +2508,84 @@ M623
 ; update layer progress
 M73 L13
 M991 S0 P12 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z2.8 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z2.8
-G1 Z2.6
+G3 Z3.68 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z3.68
+G1 Z3.56
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z3 F30000
-G1 Z2.6
+G1 X49.621 Y220.885 Z3.96 F30000
+G1 Z3.56
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 2.8
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 3.84
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 14/128
+; layer num/total_layer_count: 14/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -2565,86 +2596,86 @@ M623
 ; update layer progress
 M73 L14
 M991 S0 P13 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z3 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z3
-G1 Z2.8
+G3 Z3.96 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z3.96
+G1 Z3.84
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+M73 P53 R7
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z3.2 F30000
-G1 X139.55 Y116.15 Z3.2
-G1 Z2.8
+G1 X47.714 Y217.196 Z4.24 F30000
+G1 X46.355 Y200.388 Z4.24
+G1 Z3.84
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-M73 P45 R10
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 3
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 4.12
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 15/128
+; layer num/total_layer_count: 15/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -2655,84 +2686,84 @@ M623
 ; update layer progress
 M73 L15
 M991 S0 P14 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z3.2 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z3.2
-G1 Z3
+G3 Z4.24 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z4.24
+G1 Z4.12
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z3.4 F30000
-G1 Z3
+G1 X49.621 Y220.885 Z4.52 F30000
+G1 Z4.12
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 3.2
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 4.4
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 16/128
+; layer num/total_layer_count: 16/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -2743,87 +2774,86 @@ M623
 ; update layer progress
 M73 L16
 M991 S0 P15 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z3.4 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z3.4
-G1 Z3.2
+G3 Z4.52 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z4.52
+G1 Z4.4
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+M73 P54 R7
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
-M73 P45 R9
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z3.6 F30000
-G1 X139.55 Y116.15 Z3.6
-G1 Z3.2
+G1 X47.714 Y217.196 Z4.8 F30000
+G1 X46.355 Y200.388 Z4.8
+G1 Z4.4
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-M73 P46 R9
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 3.4
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 4.68
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 17/128
+; layer num/total_layer_count: 17/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -2834,84 +2864,84 @@ M623
 ; update layer progress
 M73 L17
 M991 S0 P16 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z3.6 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z3.6
-G1 Z3.4
+G3 Z4.8 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z4.8
+G1 Z4.68
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z3.8 F30000
-G1 Z3.4
+G1 X49.621 Y220.885 Z5.08 F30000
+G1 Z4.68
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 3.6
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 4.96
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 18/128
+; layer num/total_layer_count: 18/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -2922,85 +2952,86 @@ M623
 ; update layer progress
 M73 L18
 M991 S0 P17 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z3.8 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z3.8
-G1 Z3.6
+G3 Z5.08 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z5.08
+G1 Z4.96
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+M73 P55 R7
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z4 F30000
-G1 X139.55 Y116.15 Z4
-G1 Z3.6
+G1 X47.714 Y217.196 Z5.36 F30000
+G1 X46.355 Y200.388 Z5.36
+G1 Z4.96
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 3.8
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 5.24
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 19/128
+; layer num/total_layer_count: 19/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -3011,85 +3042,85 @@ M623
 ; update layer progress
 M73 L19
 M991 S0 P18 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z4 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z4
-G1 Z3.8
+G3 Z5.36 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z5.36
+G1 Z5.24
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-M73 P47 R9
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+M73 P55 R6
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z4.2 F30000
-G1 Z3.8
+G1 X49.621 Y220.885 Z5.64 F30000
+G1 Z5.24
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 4
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 5.52
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 20/128
+; layer num/total_layer_count: 20/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -3100,85 +3131,86 @@ M623
 ; update layer progress
 M73 L20
 M991 S0 P19 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z4.2 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z4.2
-G1 Z4
+G3 Z5.64 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z5.64
+G1 Z5.52
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+M73 P56 R6
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z4.4 F30000
-G1 X139.55 Y116.15 Z4.4
-G1 Z4
+G1 X47.714 Y217.196 Z5.92 F30000
+G1 X46.355 Y200.388 Z5.92
+G1 Z5.52
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 4.2
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 5.8
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 21/128
+; layer num/total_layer_count: 21/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -3189,85 +3221,84 @@ M623
 ; update layer progress
 M73 L21
 M991 S0 P20 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z4.4 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z4.4
-G1 Z4.2
+G3 Z5.92 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z5.92
+G1 Z5.8
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z4.6 F30000
-G1 Z4.2
+G1 X49.621 Y220.885 Z6.2 F30000
+G1 Z5.8
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-M73 P48 R9
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 4.4
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 6.08
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 22/128
+; layer num/total_layer_count: 22/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -3278,85 +3309,86 @@ M623
 ; update layer progress
 M73 L22
 M991 S0 P21 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z4.6 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z4.6
-G1 Z4.4
+G3 Z6.2 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z6.2
+G1 Z6.08
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+M73 P57 R6
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z4.8 F30000
-G1 X139.55 Y116.15 Z4.8
-G1 Z4.4
+G1 X47.714 Y217.196 Z6.48 F30000
+G1 X46.355 Y200.388 Z6.48
+G1 Z6.08
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 4.6
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 6.36
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 23/128
+; layer num/total_layer_count: 23/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -3367,85 +3399,84 @@ M623
 ; update layer progress
 M73 L23
 M991 S0 P22 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z4.8 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z4.8
-G1 Z4.6
+G3 Z6.48 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z6.48
+G1 Z6.36
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z5 F30000
-G1 Z4.6
+G1 X49.621 Y220.885 Z6.76 F30000
+G1 Z6.36
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-M73 P49 R9
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 4.8
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 6.64
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 24/128
+; layer num/total_layer_count: 24/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -3456,85 +3487,86 @@ M623
 ; update layer progress
 M73 L24
 M991 S0 P23 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z5 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z5
-G1 Z4.8
+G3 Z6.76 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z6.76
+G1 Z6.64
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+M73 P58 R6
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z5.2 F30000
-G1 X139.55 Y116.15 Z5.2
-G1 Z4.8
+G1 X47.714 Y217.196 Z7.04 F30000
+G1 X46.355 Y200.388 Z7.04
+G1 Z6.64
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 5
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 6.92
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 25/128
+; layer num/total_layer_count: 25/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -3545,84 +3577,84 @@ M623
 ; update layer progress
 M73 L25
 M991 S0 P24 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z5.2 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z5.2
-G1 Z5
+G3 Z7.04 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z7.04
+G1 Z6.92
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z5.4 F30000
-G1 Z5
+G1 X49.621 Y220.885 Z7.32 F30000
+G1 Z6.92
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 5.2
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 7.2
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 26/128
+; layer num/total_layer_count: 26/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -3633,86 +3665,86 @@ M623
 ; update layer progress
 M73 L26
 M991 S0 P25 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z5.4 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z5.4
-G1 Z5.2
+G3 Z7.32 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z7.32
+G1 Z7.2
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+M73 P59 R6
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-M73 P50 R9
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z5.6 F30000
-G1 X139.55 Y116.15 Z5.6
-G1 Z5.2
+G1 X47.714 Y217.196 Z7.6 F30000
+G1 X46.355 Y200.388 Z7.6
+G1 Z7.2
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 5.4
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 7.48
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 27/128
+; layer num/total_layer_count: 27/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -3723,84 +3755,84 @@ M623
 ; update layer progress
 M73 L27
 M991 S0 P26 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z5.6 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z5.6
-G1 Z5.4
+G3 Z7.6 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z7.6
+G1 Z7.48
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z5.8 F30000
-G1 Z5.4
+G1 X49.621 Y220.885 Z7.88 F30000
+G1 Z7.48
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 5.6
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 7.76
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 28/128
+; layer num/total_layer_count: 28/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -3811,86 +3843,86 @@ M623
 ; update layer progress
 M73 L28
 M991 S0 P27 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z5.8 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z5.8
-G1 Z5.6
+G3 Z7.88 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z7.88
+G1 Z7.76
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+M73 P60 R6
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z6 F30000
-G1 X139.55 Y116.15 Z6
-G1 Z5.6
+G1 X47.714 Y217.196 Z8.16 F30000
+G1 X46.355 Y200.388 Z8.16
+G1 Z7.76
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-M73 P51 R9
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 5.8
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 8.04
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 29/128
+; layer num/total_layer_count: 29/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -3901,85 +3933,84 @@ M623
 ; update layer progress
 M73 L29
 M991 S0 P28 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-M73 P51 R8
-G3 Z6 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z6
-G1 Z5.8
+G3 Z8.16 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z8.16
+G1 Z8.04
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z6.2 F30000
-G1 Z5.8
+G1 X49.621 Y220.885 Z8.44 F30000
+G1 Z8.04
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 6
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 8.32
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 30/128
+; layer num/total_layer_count: 30/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -3990,86 +4021,86 @@ M623
 ; update layer progress
 M73 L30
 M991 S0 P29 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z6.2 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z6.2
-G1 Z6
+G3 Z8.44 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z8.44
+G1 Z8.32
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+M73 P61 R6
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z6.4 F30000
-G1 X139.55 Y116.15 Z6.4
-G1 Z6
+G1 X47.714 Y217.196 Z8.72 F30000
+G1 X46.355 Y200.388 Z8.72
+G1 Z8.32
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 6.2
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 8.6
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
-M73 P52 R8
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 31/128
+; layer num/total_layer_count: 31/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -4080,84 +4111,85 @@ M623
 ; update layer progress
 M73 L31
 M991 S0 P30 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z6.4 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z6.4
-G1 Z6.2
+G3 Z8.72 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z8.72
+G1 Z8.6
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z6.6 F30000
-G1 Z6.2
+G1 X49.621 Y220.885 Z9 F30000
+G1 Z8.6
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+M73 P61 R5
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 6.4
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 8.88
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 32/128
+; layer num/total_layer_count: 32/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -4168,85 +4200,86 @@ M623
 ; update layer progress
 M73 L32
 M991 S0 P31 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z6.6 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z6.6
-G1 Z6.4
+G3 Z9 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z9
+G1 Z8.88
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+M73 P62 R5
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z6.8 F30000
-G1 X139.55 Y116.15 Z6.8
-G1 Z6.4
+G1 X47.714 Y217.196 Z9.28 F30000
+G1 X46.355 Y200.388 Z9.28
+G1 Z8.88
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 6.6
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 9.16
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 33/128
+; layer num/total_layer_count: 33/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -4257,85 +4290,84 @@ M623
 ; update layer progress
 M73 L33
 M991 S0 P32 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z6.8 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z6.8
-G1 Z6.6
+G3 Z9.28 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z9.28
+G1 Z9.16
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
-M73 P53 R8
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z7 F30000
-G1 Z6.6
+G1 X49.621 Y220.885 Z9.56 F30000
+G1 Z9.16
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 6.8
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 9.44
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 34/128
+; layer num/total_layer_count: 34/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -4346,85 +4378,86 @@ M623
 ; update layer progress
 M73 L34
 M991 S0 P33 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z7 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z7
-G1 Z6.8
+G3 Z9.56 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z9.56
+M73 P63 R5
+G1 Z9.44
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z7.2 F30000
-G1 X139.55 Y116.15 Z7.2
-G1 Z6.8
+G1 X47.714 Y217.196 Z9.84 F30000
+G1 X46.355 Y200.388 Z9.84
+G1 Z9.44
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 7
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 9.72
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 35/128
+; layer num/total_layer_count: 35/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -4435,85 +4468,84 @@ M623
 ; update layer progress
 M73 L35
 M991 S0 P34 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z7.2 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z7.2
-G1 Z7
+G3 Z9.84 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z9.84
+G1 Z9.72
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z7.4 F30000
-G1 Z7
+G1 X49.621 Y220.885 Z10.12 F30000
+G1 Z9.72
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-M73 P54 R8
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 7.2
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 10
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 36/128
+; layer num/total_layer_count: 36/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -4524,85 +4556,86 @@ M623
 ; update layer progress
 M73 L36
 M991 S0 P35 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z7.4 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z7.4
-G1 Z7.2
+G3 Z10.12 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z10.12
+M73 P64 R5
+G1 Z10
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z7.6 F30000
-G1 X139.55 Y116.15 Z7.6
-G1 Z7.2
+G1 X47.714 Y217.196 Z10.4 F30000
+G1 X46.355 Y200.388 Z10.4
+G1 Z10
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 7.4
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 10.28
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 37/128
+; layer num/total_layer_count: 37/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -4613,85 +4646,84 @@ M623
 ; update layer progress
 M73 L37
 M991 S0 P36 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z7.6 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z7.6
-G1 Z7.4
+G3 Z10.4 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z10.4
+G1 Z10.28
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z7.8 F30000
-G1 Z7.4
+G1 X49.621 Y220.885 Z10.68 F30000
+G1 Z10.28
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 7.6
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 10.56
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
-M73 P55 R8
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 38/128
+; layer num/total_layer_count: 38/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -4702,85 +4734,86 @@ M623
 ; update layer progress
 M73 L38
 M991 S0 P37 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z7.8 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z7.8
-G1 Z7.6
+G3 Z10.68 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z10.68
+M73 P65 R5
+G1 Z10.56
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z8 F30000
-G1 X139.55 Y116.15 Z8
-G1 Z7.6
+G1 X47.714 Y217.196 Z10.96 F30000
+G1 X46.355 Y200.388 Z10.96
+G1 Z10.56
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 7.8
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 10.84
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 39/128
+; layer num/total_layer_count: 39/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -4791,84 +4824,84 @@ M623
 ; update layer progress
 M73 L39
 M991 S0 P38 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z8 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z8
-G1 Z7.8
+G3 Z10.96 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z10.96
+G1 Z10.84
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z8.2 F30000
-G1 Z7.8
+G1 X49.621 Y220.885 Z11.24 F30000
+G1 Z10.84
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 8
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 11.12
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 40/128
+; layer num/total_layer_count: 40/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -4879,86 +4912,86 @@ M623
 ; update layer progress
 M73 L40
 M991 S0 P39 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z8.2 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z8.2
-G1 Z8
+G3 Z11.24 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z11.24
+M73 P66 R5
+G1 Z11.12
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-M73 P56 R8
-G1 X140.265 Y132.909 Z8.4 F30000
-G1 X139.55 Y116.15 Z8.4
-G1 Z8
+G1 X47.714 Y217.196 Z11.52 F30000
+G1 X46.355 Y200.388 Z11.52
+G1 Z11.12
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 8.2
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 11.4
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 41/128
+; layer num/total_layer_count: 41/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -4969,85 +5002,84 @@ M623
 ; update layer progress
 M73 L41
 M991 S0 P40 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z8.4 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z8.4
-G1 Z8.2
+G3 Z11.52 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z11.52
+G1 Z11.4
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z8.6 F30000
-G1 Z8.2
+G1 X49.621 Y220.885 Z11.8 F30000
+G1 Z11.4
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-M73 P56 R7
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 8.4
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 11.68
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 42/128
+; layer num/total_layer_count: 42/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -5058,86 +5090,86 @@ M623
 ; update layer progress
 M73 L42
 M991 S0 P41 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z8.6 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z8.6
-G1 Z8.4
+G3 Z11.8 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z11.8
+M73 P67 R5
+G1 Z11.68
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z8.8 F30000
-G1 X139.55 Y116.15 Z8.8
-G1 Z8.4
+G1 X47.714 Y217.196 Z12.08 F30000
+G1 X46.355 Y200.388 Z12.08
+G1 Z11.68
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-M73 P57 R7
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 8.6
-; LAYER_HEIGHT: 0.200001
+; Z_HEIGHT: 11.96
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 43/128
+; layer num/total_layer_count: 43/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -5148,84 +5180,84 @@ M623
 ; update layer progress
 M73 L43
 M991 S0 P42 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z8.8 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z8.8
-G1 Z8.6
+G3 Z12.08 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z12.08
+G1 Z11.96
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z9 F30000
-G1 Z8.6
+G1 X49.621 Y220.885 Z12.36 F30000
+G1 Z11.96
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 8.8
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 12.24
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 44/128
+; layer num/total_layer_count: 44/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -5236,85 +5268,87 @@ M623
 ; update layer progress
 M73 L44
 M991 S0 P43 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z9 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z9
-G1 Z8.8
+G3 Z12.36 I-1.214 J.088 P1  F30000
+M73 P68 R5
+G1 X49.955 Y224.484 Z12.36
+G1 Z12.24
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z9.2 F30000
-G1 X139.55 Y116.15 Z9.2
-G1 Z8.8
+G1 X47.714 Y217.196 Z12.64 F30000
+G1 X46.355 Y200.388 Z12.64
+G1 Z12.24
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+M73 P68 R4
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 9
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 12.52
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 45/128
+; layer num/total_layer_count: 45/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -5325,85 +5359,84 @@ M623
 ; update layer progress
 M73 L45
 M991 S0 P44 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-M73 P58 R7
-G3 Z9.2 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z9.2
-G1 Z9
+G3 Z12.64 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z12.64
+G1 Z12.52
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z9.4 F30000
-G1 Z9
+G1 X49.621 Y220.885 Z12.92 F30000
+G1 Z12.52
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 9.2
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 12.8
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 46/128
+; layer num/total_layer_count: 46/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -5414,85 +5447,86 @@ M623
 ; update layer progress
 M73 L46
 M991 S0 P45 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z9.4 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z9.4
-G1 Z9.2
+G3 Z12.92 I-1.214 J.088 P1  F30000
+M73 P69 R4
+G1 X49.955 Y224.484 Z12.92
+G1 Z12.8
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z9.6 F30000
-G1 X139.55 Y116.15 Z9.6
-G1 Z9.2
+G1 X47.714 Y217.196 Z13.2 F30000
+G1 X46.355 Y200.388 Z13.2
+G1 Z12.8
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 9.4
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 13.08
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 47/128
+; layer num/total_layer_count: 47/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -5503,85 +5537,84 @@ M623
 ; update layer progress
 M73 L47
 M991 S0 P46 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z9.6 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z9.6
-G1 Z9.4
+G3 Z13.2 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z13.2
+G1 Z13.08
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z9.8 F30000
-G1 Z9.4
+G1 X49.621 Y220.885 Z13.48 F30000
+G1 Z13.08
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-M73 P59 R7
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 9.6
-; LAYER_HEIGHT: 0.200001
+; Z_HEIGHT: 13.36
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 48/128
+; layer num/total_layer_count: 48/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -5592,85 +5625,86 @@ M623
 ; update layer progress
 M73 L48
 M991 S0 P47 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z9.8 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z9.8
-G1 Z9.6
+G3 Z13.48 I-1.214 J.088 P1  F30000
+M73 P70 R4
+G1 X49.955 Y224.484 Z13.48
+G1 Z13.36
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z10 F30000
-G1 X139.55 Y116.15 Z10
-G1 Z9.6
+G1 X47.714 Y217.196 Z13.76 F30000
+G1 X46.355 Y200.388 Z13.76
+G1 Z13.36
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 9.8
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 13.64
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 49/128
+; layer num/total_layer_count: 49/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -5681,85 +5715,84 @@ M623
 ; update layer progress
 M73 L49
 M991 S0 P48 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z10 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z10
-G1 Z9.8
+G3 Z13.76 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z13.76
+G1 Z13.64
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z10.2 F30000
-G1 Z9.8
+G1 X49.621 Y220.885 Z14.04 F30000
+G1 Z13.64
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-M73 P60 R7
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 10
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 13.92
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 50/128
+; layer num/total_layer_count: 50/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -5770,85 +5803,86 @@ M623
 ; update layer progress
 M73 L50
 M991 S0 P49 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z10.2 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z10.2
-G1 Z10
+G3 Z14.04 I-1.214 J.088 P1  F30000
+M73 P71 R4
+G1 X49.955 Y224.484 Z14.04
+G1 Z13.92
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z10.4 F30000
-G1 X139.55 Y116.15 Z10.4
-G1 Z10
+G1 X47.714 Y217.196 Z14.32 F30000
+G1 X46.355 Y200.388 Z14.32
+G1 Z13.92
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 10.2
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 14.2
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 51/128
+; layer num/total_layer_count: 51/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -5859,84 +5893,84 @@ M623
 ; update layer progress
 M73 L51
 M991 S0 P50 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z10.4 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z10.4
-G1 Z10.2
+G3 Z14.32 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z14.32
+G1 Z14.2
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z10.6 F30000
-G1 Z10.2
+G1 X49.621 Y220.885 Z14.6 F30000
+G1 Z14.2
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 10.4
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 14.48
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 52/128
+; layer num/total_layer_count: 52/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -5947,86 +5981,86 @@ M623
 ; update layer progress
 M73 L52
 M991 S0 P51 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z10.6 I-1.216 J.039 P1  F30000
-M73 P61 R7
-G1 X142.198 Y140.198 Z10.6
-G1 Z10.4
+G3 Z14.6 I-1.214 J.088 P1  F30000
+M73 P72 R4
+G1 X49.955 Y224.484 Z14.6
+G1 Z14.48
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z10.8 F30000
-G1 X139.55 Y116.15 Z10.8
-G1 Z10.4
+G1 X47.714 Y217.196 Z14.88 F30000
+G1 X46.355 Y200.388 Z14.88
+G1 Z14.48
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 10.6
-; LAYER_HEIGHT: 0.200001
+; Z_HEIGHT: 14.76
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 53/128
+; layer num/total_layer_count: 53/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -6037,84 +6071,84 @@ M623
 ; update layer progress
 M73 L53
 M991 S0 P52 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z10.8 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z10.8
-G1 Z10.6
+G3 Z14.88 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z14.88
+G1 Z14.76
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z11 F30000
-G1 Z10.6
+G1 X49.621 Y220.885 Z15.16 F30000
+G1 Z14.76
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 10.8
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 15.04
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 54/128
+; layer num/total_layer_count: 54/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -6125,87 +6159,86 @@ M623
 ; update layer progress
 M73 L54
 M991 S0 P53 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z11 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z11
-G1 Z10.8
+G3 Z15.16 I-1.214 J.088 P1  F30000
+M73 P73 R4
+G1 X49.955 Y224.484 Z15.16
+G1 Z15.04
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z11.2 F30000
-G1 X139.55 Y116.15 Z11.2
-G1 Z10.8
+G1 X47.714 Y217.196 Z15.44 F30000
+G1 X46.355 Y200.388 Z15.44
+G1 Z15.04
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-M73 P62 R7
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-M73 P62 R6
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 11
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 15.32
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 55/128
+; layer num/total_layer_count: 55/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -6216,84 +6249,84 @@ M623
 ; update layer progress
 M73 L55
 M991 S0 P54 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z11.2 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z11.2
-G1 Z11
+G3 Z15.44 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z15.44
+G1 Z15.32
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z11.4 F30000
-G1 Z11
+G1 X49.621 Y220.885 Z15.72 F30000
+G1 Z15.32
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 11.2
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 15.6
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 56/128
+; layer num/total_layer_count: 56/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -6304,86 +6337,86 @@ M623
 ; update layer progress
 M73 L56
 M991 S0 P55 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z11.4 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z11.4
-G1 Z11.2
+M73 P74 R4
+G3 Z15.72 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z15.72
+G1 Z15.6
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z11.6 F30000
-G1 X139.55 Y116.15 Z11.6
-G1 Z11.2
+G1 X47.714 Y217.196 Z16 F30000
+G1 X46.355 Y200.388 Z16
+G1 Z15.6
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-M73 P63 R6
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 11.4
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 15.88
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 57/128
+; layer num/total_layer_count: 57/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -6394,84 +6427,85 @@ M623
 ; update layer progress
 M73 L57
 M991 S0 P56 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z11.6 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z11.6
-G1 Z11.4
+G3 Z16 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z16
+G1 Z15.88
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+M73 P74 R3
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z11.8 F30000
-G1 Z11.4
+G1 X49.621 Y220.885 Z16.28 F30000
+G1 Z15.88
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 11.6
-; LAYER_HEIGHT: 0.200001
+; Z_HEIGHT: 16.16
+; LAYER_HEIGHT: 0.28
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 58/128
+; layer num/total_layer_count: 58/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -6482,85 +6516,86 @@ M623
 ; update layer progress
 M73 L58
 M991 S0 P57 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z11.8 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z11.8
-G1 Z11.6
+M73 P75 R3
+G3 Z16.28 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z16.28
+G1 Z16.16
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z12 F30000
-G1 X139.55 Y116.15 Z12
-G1 Z11.6
+G1 X47.714 Y217.196 Z16.56 F30000
+G1 X46.355 Y200.388 Z16.56
+G1 Z16.16
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 11.8
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 16.44
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 59/128
+; layer num/total_layer_count: 59/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -6571,85 +6606,84 @@ M623
 ; update layer progress
 M73 L59
 M991 S0 P58 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z12 I-.947 J.764 P1  F30000
-M73 P64 R6
-G1 X142.198 Y140.198 Z12
-G1 Z11.8
+G3 Z16.56 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z16.56
+G1 Z16.44
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z12.2 F30000
-G1 Z11.8
+G1 X49.621 Y220.885 Z16.84 F30000
+G1 Z16.44
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 12
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 16.72
+; LAYER_HEIGHT: 0.279999
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 60/128
+; layer num/total_layer_count: 60/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -6660,85 +6694,86 @@ M623
 ; update layer progress
 M73 L60
 M991 S0 P59 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z12.2 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z12.2
-G1 Z12
+M73 P76 R3
+G3 Z16.84 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z16.84
+G1 Z16.72
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z12.4 F30000
-G1 X139.55 Y116.15 Z12.4
-G1 Z12
+G1 X47.714 Y217.196 Z17.12 F30000
+G1 X46.355 Y200.388 Z17.12
+G1 Z16.72
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 12.2
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 17
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 61/128
+; layer num/total_layer_count: 61/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -6749,85 +6784,84 @@ M623
 ; update layer progress
 M73 L61
 M991 S0 P60 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z12.4 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z12.4
-G1 Z12.2
+G3 Z17.12 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z17.12
+G1 Z17
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z12.6 F30000
-G1 Z12.2
+G1 X49.621 Y220.885 Z17.4 F30000
+G1 Z17
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-M73 P65 R6
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 12.4
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 17.28
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 62/128
+; layer num/total_layer_count: 62/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -6838,85 +6872,86 @@ M623
 ; update layer progress
 M73 L62
 M991 S0 P61 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z12.6 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z12.6
-G1 Z12.4
+M73 P77 R3
+G3 Z17.4 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z17.4
+G1 Z17.28
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z12.8 F30000
-G1 X139.55 Y116.15 Z12.8
-G1 Z12.4
+G1 X47.714 Y217.196 Z17.68 F30000
+G1 X46.355 Y200.388 Z17.68
+G1 Z17.28
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 12.6
-; LAYER_HEIGHT: 0.200001
+; Z_HEIGHT: 17.56
+; LAYER_HEIGHT: 0.279999
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 63/128
+; layer num/total_layer_count: 63/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -6927,85 +6962,84 @@ M623
 ; update layer progress
 M73 L63
 M991 S0 P62 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z12.8 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z12.8
-G1 Z12.6
+G3 Z17.68 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z17.68
+G1 Z17.56
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z13 F30000
-G1 Z12.6
+G1 X49.621 Y220.885 Z17.96 F30000
+G1 Z17.56
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-M73 P66 R6
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 12.8
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 17.84
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 64/128
+; layer num/total_layer_count: 64/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -7016,85 +7050,86 @@ M623
 ; update layer progress
 M73 L64
 M991 S0 P63 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z13 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z13
-G1 Z12.8
+M73 P78 R3
+G3 Z17.96 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z17.96
+G1 Z17.84
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z13.2 F30000
-G1 X139.55 Y116.15 Z13.2
-G1 Z12.8
+G1 X47.714 Y217.196 Z18.24 F30000
+G1 X46.355 Y200.388 Z18.24
+G1 Z17.84
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 13
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 18.12
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 65/128
+; layer num/total_layer_count: 65/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -7105,84 +7140,84 @@ M623
 ; update layer progress
 M73 L65
 M991 S0 P64 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z13.2 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z13.2
-G1 Z13
+G3 Z18.24 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z18.24
+G1 Z18.12
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z13.4 F30000
-G1 Z13
+G1 X49.621 Y220.885 Z18.52 F30000
+G1 Z18.12
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 13.2
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 18.4
+; LAYER_HEIGHT: 0.279999
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 66/128
+; layer num/total_layer_count: 66/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -7193,86 +7228,86 @@ M623
 ; update layer progress
 M73 L66
 M991 S0 P65 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z13.4 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z13.4
-M73 P67 R6
-G1 Z13.2
+M73 P79 R3
+G3 Z18.52 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z18.52
+G1 Z18.4
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z13.6 F30000
-G1 X139.55 Y116.15 Z13.6
-G1 Z13.2
+G1 X47.714 Y217.196 Z18.8 F30000
+G1 X46.355 Y200.388 Z18.8
+G1 Z18.4
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 13.4
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 18.68
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 67/128
+; layer num/total_layer_count: 67/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -7283,85 +7318,85 @@ M623
 ; update layer progress
 M73 L67
 M991 S0 P66 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z13.6 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z13.6
-G1 Z13.4
+G3 Z18.8 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z18.8
+G1 Z18.68
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-M73 P67 R5
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z13.8 F30000
-G1 Z13.4
+G1 X49.621 Y220.885 Z19.08 F30000
+G1 Z18.68
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 13.6
-; LAYER_HEIGHT: 0.200001
+; Z_HEIGHT: 18.96
+; LAYER_HEIGHT: 0.279999
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
+M73 P80 R3
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 68/128
+; layer num/total_layer_count: 68/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -7372,86 +7407,85 @@ M623
 ; update layer progress
 M73 L68
 M991 S0 P67 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z13.8 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z13.8
-G1 Z13.6
+G3 Z19.08 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z19.08
+G1 Z18.96
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z14 F30000
-G1 X139.55 Y116.15 Z14
-G1 Z13.6
+G1 X47.714 Y217.196 Z19.36 F30000
+G1 X46.355 Y200.388 Z19.36
+G1 Z18.96
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-M73 P68 R5
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 13.8
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 19.24
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 69/128
+; layer num/total_layer_count: 69/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -7462,84 +7496,86 @@ M623
 ; update layer progress
 M73 L69
 M991 S0 P68 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z14 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z14
-G1 Z13.8
+G3 Z19.36 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z19.36
+G1 Z19.24
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z14.2 F30000
-G1 Z13.8
+G1 X49.621 Y220.885 Z19.64 F30000
+G1 Z19.24
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+M73 P80 R2
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 14
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 19.52
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
+M73 P81 R2
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 70/128
+; layer num/total_layer_count: 70/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -7550,86 +7586,85 @@ M623
 ; update layer progress
 M73 L70
 M991 S0 P69 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z14.2 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z14.2
-G1 Z14
+G3 Z19.64 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z19.64
+G1 Z19.52
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z14.4 F30000
-G1 X139.55 Y116.15 Z14.4
-G1 Z14
+G1 X47.714 Y217.196 Z19.92 F30000
+G1 X46.355 Y200.388 Z19.92
+G1 Z19.52
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-M73 P69 R5
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 14.2
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 19.8
+; LAYER_HEIGHT: 0.279999
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 71/128
+; layer num/total_layer_count: 71/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -7640,84 +7675,85 @@ M623
 ; update layer progress
 M73 L71
 M991 S0 P70 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z14.4 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z14.4
-G1 Z14.2
+G3 Z19.92 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z19.92
+G1 Z19.8
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z14.6 F30000
-G1 Z14.2
+G1 X49.621 Y220.885 Z20.2 F30000
+G1 Z19.8
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 14.4
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 20.08
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
+M73 P82 R2
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 72/128
+; layer num/total_layer_count: 72/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -7728,85 +7764,85 @@ M623
 ; update layer progress
 M73 L72
 M991 S0 P71 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z14.6 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z14.6
-G1 Z14.4
+G3 Z20.2 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z20.2
+G1 Z20.08
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z14.8 F30000
-G1 X139.55 Y116.15 Z14.8
-G1 Z14.4
+G1 X47.714 Y217.196 Z20.48 F30000
+G1 X46.355 Y200.388 Z20.48
+G1 Z20.08
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 14.6
-; LAYER_HEIGHT: 0.200001
+; Z_HEIGHT: 20.36
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 73/128
+; layer num/total_layer_count: 73/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -7817,85 +7853,85 @@ M623
 ; update layer progress
 M73 L73
 M991 S0 P72 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z14.8 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z14.8
-G1 Z14.6
+G3 Z20.48 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z20.48
+G1 Z20.36
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-M73 P70 R5
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z15 F30000
-G1 Z14.6
+G1 X49.621 Y220.885 Z20.76 F30000
+G1 Z20.36
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 14.8
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 20.64
+; LAYER_HEIGHT: 0.279999
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
+M73 P83 R2
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 74/128
+; layer num/total_layer_count: 74/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -7906,85 +7942,85 @@ M623
 ; update layer progress
 M73 L74
 M991 S0 P73 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z15 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z15
-G1 Z14.8
+G3 Z20.76 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z20.76
+G1 Z20.64
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z15.2 F30000
-G1 X139.55 Y116.15 Z15.2
-G1 Z14.8
+G1 X47.714 Y217.196 Z21.04 F30000
+G1 X46.355 Y200.388 Z21.04
+G1 Z20.64
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 15
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 20.92
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 75/128
+; layer num/total_layer_count: 75/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -7995,85 +8031,85 @@ M623
 ; update layer progress
 M73 L75
 M991 S0 P74 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z15.2 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z15.2
-G1 Z15
+G3 Z21.04 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z21.04
+G1 Z20.92
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z15.4 F30000
-G1 Z15
+G1 X49.621 Y220.885 Z21.32 F30000
+G1 Z20.92
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-M73 P71 R5
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 15.2
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 21.2
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
+M73 P84 R2
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 76/128
+; layer num/total_layer_count: 76/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -8084,85 +8120,85 @@ M623
 ; update layer progress
 M73 L76
 M991 S0 P75 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z15.4 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z15.4
-G1 Z15.2
+G3 Z21.32 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z21.32
+G1 Z21.2
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z15.6 F30000
-G1 X139.55 Y116.15 Z15.6
-G1 Z15.2
+G1 X47.714 Y217.196 Z21.6 F30000
+G1 X46.355 Y200.388 Z21.6
+G1 Z21.2
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 15.4
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 21.48
+; LAYER_HEIGHT: 0.279999
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 77/128
+; layer num/total_layer_count: 77/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -8173,85 +8209,85 @@ M623
 ; update layer progress
 M73 L77
 M991 S0 P76 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z15.6 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z15.6
-G1 Z15.4
+G3 Z21.6 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z21.6
+G1 Z21.48
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z15.8 F30000
-G1 Z15.4
+G1 X49.621 Y220.885 Z21.88 F30000
+G1 Z21.48
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-M73 P72 R5
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 15.6
-; LAYER_HEIGHT: 0.200001
+; Z_HEIGHT: 21.76
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+M73 P85 R2
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 78/128
+; layer num/total_layer_count: 78/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -8262,85 +8298,85 @@ M623
 ; update layer progress
 M73 L78
 M991 S0 P77 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z15.8 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z15.8
-G1 Z15.6
+G3 Z21.88 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z21.88
+G1 Z21.76
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z16 F30000
-G1 X139.55 Y116.15 Z16
-G1 Z15.6
+G1 X47.714 Y217.196 Z22.16 F30000
+G1 X46.355 Y200.388 Z22.16
+G1 Z21.76
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 15.8
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 22.04
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 79/128
+; layer num/total_layer_count: 79/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -8351,84 +8387,85 @@ M623
 ; update layer progress
 M73 L79
 M991 S0 P78 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z16 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z16
-G1 Z15.8
+G3 Z22.16 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z22.16
+G1 Z22.04
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z16.2 F30000
-G1 Z15.8
+G1 X49.621 Y220.885 Z22.44 F30000
+G1 Z22.04
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 16
-; LAYER_HEIGHT: 0.2
+; Z_HEIGHT: 22.32
+; LAYER_HEIGHT: 0.279999
 ; WIPE_START
+M73 P86 R2
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 80/128
+; layer num/total_layer_count: 80/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -8439,87 +8476,85 @@ M623
 ; update layer progress
 M73 L80
 M991 S0 P79 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-M73 P72 R4
-G3 Z16.2 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z16.2
-G1 Z16
+G3 Z22.44 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z22.44
+G1 Z22.32
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-M73 P73 R4
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z16.4 F30000
-G1 X139.55 Y116.15 Z16.4
-G1 Z16
+G1 X47.714 Y217.196 Z22.72 F30000
+G1 X46.355 Y200.388 Z22.72
+G1 Z22.32
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 16.2
-; LAYER_HEIGHT: 0.200001
+; Z_HEIGHT: 22.6
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 81/128
+; layer num/total_layer_count: 81/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -8530,84 +8565,85 @@ M623
 ; update layer progress
 M73 L81
 M991 S0 P80 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z16.4 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z16.4
-G1 Z16.2
+G3 Z22.72 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z22.72
+G1 Z22.6
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z16.6 F30000
-G1 Z16.2
+G1 X49.621 Y220.885 Z23 F30000
+G1 Z22.6
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 16.4
-; LAYER_HEIGHT: 0.199999
+; Z_HEIGHT: 22.88
+; LAYER_HEIGHT: 0.279999
 ; WIPE_START
+M73 P87 R2
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 82/128
+; layer num/total_layer_count: 82/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -8618,86 +8654,86 @@ M623
 ; update layer progress
 M73 L82
 M991 S0 P81 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z16.6 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z16.6
-G1 Z16.4
+G3 Z23 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z23
+G1 Z22.88
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z16.8 F30000
-G1 X139.55 Y116.15 Z16.8
-G1 Z16.4
+G1 X47.714 Y217.196 Z23.28 F30000
+G1 X46.355 Y200.388 Z23.28
+G1 Z22.88
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-M73 P74 R4
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+M73 P87 R1
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 16.6
-; LAYER_HEIGHT: 0.200001
+; Z_HEIGHT: 23.16
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 83/128
+; layer num/total_layer_count: 83/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -8708,84 +8744,85 @@ M623
 ; update layer progress
 M73 L83
 M991 S0 P82 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z16.8 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z16.8
-G1 Z16.6
+G3 Z23.28 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z23.28
+G1 Z23.16
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z17 F30000
-G1 Z16.6
+G1 X49.621 Y220.885 Z23.56 F30000
+G1 Z23.16
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 16.8
-; LAYER_HEIGHT: 0.199999
+; Z_HEIGHT: 23.44
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
+M73 P88 R1
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 84/128
+; layer num/total_layer_count: 84/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -8796,86 +8833,85 @@ M623
 ; update layer progress
 M73 L84
 M991 S0 P83 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z17 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z17
-G1 Z16.8
+G3 Z23.56 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z23.56
+G1 Z23.44
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z17.2 F30000
-G1 X139.55 Y116.15 Z17.2
-G1 Z16.8
+G1 X47.714 Y217.196 Z23.84 F30000
+G1 X46.355 Y200.388 Z23.84
+G1 Z23.44
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 17
-; LAYER_HEIGHT: 0.200001
+; Z_HEIGHT: 23.72
+; LAYER_HEIGHT: 0.279999
 ; WIPE_START
-M73 P75 R4
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 85/128
+; layer num/total_layer_count: 85/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -8886,84 +8922,85 @@ M623
 ; update layer progress
 M73 L85
 M991 S0 P84 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z17.2 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z17.2
-G1 Z17
+G3 Z23.84 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z23.84
+G1 Z23.72
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7114
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7114
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z17.4 F30000
-G1 Z17
+G1 X49.621 Y220.885 Z24.12 F30000
+G1 Z23.72
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F7114
+G1 X49.621 Y222.444 E.06938
+G1 X47.915 Y224.151 E.10733
+G1 X49.621 Y224.151 E.07589
+G1 X25.858 Y200.388 E1.49485
+G1 X27.564 Y200.388 E.07589
+G1 X25.858 Y202.094 E.10733
+G1 X25.858 Y203.654 E.06938
+G1 X43.828 Y224.151 F30000
+G1 F7114
+G1 X42.269 Y224.151 E.06938
+G1 X25.858 Y207.74 E1.03234
+G1 X25.858 Y209.446 E.07589
+G1 X34.917 Y200.388 E.56983
+G1 X33.21 Y200.388 E.07589
+G1 X49.621 Y216.798 E1.03234
+G1 X49.621 Y215.092 E.07589
+G1 X40.563 Y224.151 E.56983
+G1 X34.917 Y224.151 E.25115
+G1 X25.858 Y215.092 E.56983
+G1 X25.858 Y216.798 E.07589
+G1 X42.269 Y200.388 E1.03234
+G1 X40.563 Y200.388 E.07589
+G1 X49.621 Y209.446 E.56983
+G1 X49.621 Y207.74 E.07589
+G1 X33.21 Y224.151 E1.03234
+G1 X27.564 Y224.151 E.25115
+G1 X25.858 Y222.444 E.10733
+G1 X25.858 Y224.151 E.07589
+G1 X49.621 Y200.388 E1.49485
+G1 X49.621 Y202.094 E.07589
+G1 X47.915 Y200.388 E.10733
+G1 X46.355 Y200.388 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 17.2
-; LAYER_HEIGHT: 0.200001
+; Z_HEIGHT: 24
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
+M73 P89 R1
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X47.915 Y200.388 E-.59267
+G1 X48.226 Y200.699 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 86/128
+; layer num/total_layer_count: 86/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -8974,85 +9011,85 @@ M623
 ; update layer progress
 M73 L86
 M991 S0 P85 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z17.4 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z17.4
-G1 Z17.2
+G3 Z24.12 I-1.214 J.088 P1  F30000
+G1 X49.955 Y224.484 Z24.12
+G1 Z24
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F7274
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F7274
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z17.6 F30000
-G1 X139.55 Y116.15 Z17.6
-G1 Z17.2
+G1 X47.714 Y217.196 Z24.4 F30000
+G1 X46.355 Y200.388 Z24.4
+G1 Z24
 G1 E.8 F1800
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F7274
+G1 X47.915 Y200.388 E.06938
+G1 X49.621 Y202.094 E.10733
+G1 X49.621 Y200.388 E.07589
+G1 X25.858 Y224.151 E1.49485
+G1 X25.858 Y222.444 E.07589
+G1 X27.564 Y224.151 E.10733
+G1 X33.21 Y224.151 E.25115
+G1 X49.621 Y207.74 E1.03234
+G1 X49.621 Y209.446 E.07589
+G1 X40.563 Y200.388 E.56983
+G1 X42.269 Y200.388 E.07589
+G1 X25.858 Y216.798 E1.03234
+G1 X25.858 Y215.092 E.07589
+G1 X34.917 Y224.151 E.56983
+G1 X40.563 Y224.151 E.25115
+G1 X49.621 Y215.092 E.56983
+G1 X49.621 Y216.798 E.07589
+G1 X33.21 Y200.388 E1.03234
+G1 X34.917 Y200.388 E.07589
+G1 X25.858 Y209.446 E.56983
+G1 X25.858 Y207.74 E.07589
+G1 X42.269 Y224.151 E1.03234
+G1 X43.828 Y224.151 E.06938
+G1 X25.858 Y203.654 F30000
+G1 F7274
+G1 X25.858 Y202.094 E.06938
+G1 X27.564 Y200.388 E.10733
+G1 X25.858 Y200.388 E.07589
+G1 X49.621 Y224.151 E1.49485
+G1 X47.915 Y224.151 E.07589
+G1 X49.621 Y222.444 E.10733
+G1 X49.621 Y220.885 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 17.4
-; LAYER_HEIGHT: 0.199999
+; Z_HEIGHT: 24.28
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.621 Y222.444 E-.59267
+G1 X49.31 Y222.756 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 87/128
+; layer num/total_layer_count: 87/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -9063,85 +9100,84 @@ M623
 ; update layer progress
 M73 L87
 M991 S0 P86 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z17.6 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z17.6
-G1 Z17.4
+G3 Z24.4 I-1.14 J.426 P1  F30000
+G1 X49.955 Y224.484 Z24.4
+G1 Z24.28
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F8195
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F8195
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-M73 P76 R4
-G1 E-.04 F1800
-G1 X141.85 Y137.55 Z17.8 F30000
-G1 Z17.4
-G1 E.8 F1800
+G1 X49.621 Y224.151 F30000
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F8195
+G1 X25.858 Y224.151 E1.05702
+G1 X25.858 Y200.388 E1.05702
+G1 X49.621 Y200.388 E1.05702
+G1 X49.621 Y224.091 E1.05435
+G1 X49.231 Y221.275 F30000
+G1 F8195
+G1 X49.231 Y222.834 E.06938
+G1 X48.305 Y223.761 E.05827
+G1 X49.231 Y223.761 E.0412
+G1 X26.248 Y200.778 E1.44579
+G1 X27.174 Y200.778 E.0412
+G1 X26.248 Y201.704 E.05827
+G1 X26.248 Y203.264 E.06938
+G1 X43.439 Y223.761 F30000
+G1 F8195
+G1 X41.879 Y223.761 E.06938
+G1 X26.248 Y208.13 E.98329
+G1 X26.248 Y209.056 E.0412
+G1 X34.527 Y200.778 E.52078
+G1 X33.6 Y200.778 E.0412
+G1 X49.231 Y216.408 E.98329
+G1 X49.231 Y215.482 E.0412
+G1 X40.953 Y223.761 E.52078
+G1 X34.527 Y223.761 E.28584
+G1 X26.248 Y215.482 E.52078
+G1 X26.248 Y216.408 E.0412
+G1 X41.879 Y200.778 E.98329
+G1 X40.953 Y200.778 E.0412
+G1 X49.231 Y209.056 E.52078
+G1 X49.231 Y208.13 E.0412
+G1 X33.6 Y223.761 E.98329
+G1 X27.174 Y223.761 E.28584
+G1 X26.248 Y222.834 E.05827
+G1 X26.248 Y223.761 E.0412
+G1 X49.231 Y200.778 E1.44579
+G1 X49.231 Y201.704 E.0412
+G1 X48.305 Y200.778 E.05827
+M73 P90 R1
+G1 X46.745 Y200.778 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 17.6
-; LAYER_HEIGHT: 0.200001
+; Z_HEIGHT: 24.56
+; LAYER_HEIGHT: 0.279999
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X48.305 Y200.778 E-.59267
+G1 X48.616 Y201.089 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 88/128
+; layer num/total_layer_count: 88/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -9152,85 +9188,83 @@ M623
 ; update layer progress
 M73 L88
 M991 S0 P87 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z17.8 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z17.8
-G1 Z17.6
+G3 Z24.68 I-1.215 J.07 P1  F30000
+G1 X49.955 Y224.484 Z24.68
+G1 Z24.56
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F8377
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F8377
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X140.265 Y132.909 Z18 F30000
-G1 X139.55 Y116.15 Z18
-G1 Z17.6
-G1 E.8 F1800
+G1 X49.621 Y224.151 F30000
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+G1 F8377
+G1 X25.858 Y224.151 E1.05702
+G1 X25.858 Y200.388 E1.05702
+G1 X49.621 Y200.388 E1.05702
+G1 X49.621 Y224.091 E1.05435
+G1 X46.745 Y200.778 F30000
+G1 F8377
+G1 X48.305 Y200.778 E.06938
+G1 X49.231 Y201.704 E.05827
+G1 X49.231 Y200.778 E.0412
+G1 X26.248 Y223.761 E1.44579
+G1 X26.248 Y222.834 E.0412
+G1 X27.174 Y223.761 E.05827
+G1 X33.6 Y223.761 E.28584
+G1 X49.231 Y208.13 E.98329
+G1 X49.231 Y209.056 E.0412
+G1 X40.953 Y200.778 E.52078
+G1 X41.879 Y200.778 E.0412
+G1 X26.248 Y216.408 E.98329
+G1 X26.248 Y215.482 E.0412
+G1 X34.527 Y223.761 E.52078
+G1 X40.953 Y223.761 E.28584
+G1 X49.231 Y215.482 E.52078
+G1 X49.231 Y216.408 E.0412
+G1 X33.6 Y200.778 E.98329
+G1 X34.527 Y200.778 E.0412
+G1 X26.248 Y209.056 E.52078
+G1 X26.248 Y208.13 E.0412
+G1 X41.879 Y223.761 E.98329
+G1 X43.439 Y223.761 E.06938
+G1 X26.248 Y203.264 F30000
+G1 F8377
+G1 X26.248 Y201.704 E.06938
+G1 X27.174 Y200.778 E.05827
+G1 X26.248 Y200.778 E.0412
+G1 X49.231 Y223.761 E1.44579
+G1 X48.305 Y223.761 E.0412
+G1 X49.231 Y222.834 E.05827
+G1 X49.231 Y221.275 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 17.8
-; LAYER_HEIGHT: 0.199999
+; Z_HEIGHT: 24.84
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X49.231 Y222.834 E-.59267
+G1 X48.92 Y223.146 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 89/128
+; layer num/total_layer_count: 89/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -9241,85 +9275,84 @@ M623
 ; update layer progress
 M73 L89
 M991 S0 P88 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z18 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z18
-G1 Z17.8
+G3 Z24.96 I-.963 J.744 P1  F30000
+G1 X49.955 Y224.484 Z24.96
+G1 Z24.84
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F8194
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F8194
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X141.85 Y137.55 Z18.2 F30000
-G1 Z17.8
-G1 E.8 F1800
+G1 X49.621 Y224.151 F30000
 ; FEATURE: Sparse infill
 ; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-M73 P77 R4
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+G1 F8194
+G1 X25.858 Y224.151 E1.05702
+G1 X25.858 Y200.388 E1.05702
+G1 X49.621 Y200.388 E1.05702
+G1 X49.621 Y224.091 E1.05435
+G1 X49.231 Y221.275 F30000
+G1 F8194
+G1 X49.231 Y222.834 E.06938
+G1 X48.305 Y223.761 E.05827
+G1 X49.231 Y223.761 E.0412
+G1 X26.248 Y200.778 E1.44579
+G1 X27.174 Y200.778 E.0412
+G1 X26.248 Y201.704 E.05827
+G1 X26.248 Y203.264 E.06938
+G1 X43.439 Y223.761 F30000
+G1 F8194
+G1 X41.879 Y223.761 E.06938
+G1 X26.248 Y208.13 E.98329
+G1 X26.248 Y209.056 E.0412
+G1 X34.527 Y200.778 E.52078
+G1 X33.6 Y200.778 E.0412
+G1 X49.231 Y216.408 E.98329
+G1 X49.231 Y215.482 E.0412
+G1 X40.953 Y223.761 E.52078
+G1 X34.527 Y223.761 E.28584
+G1 X26.248 Y215.482 E.52078
+G1 X26.248 Y216.408 E.0412
+G1 X41.879 Y200.778 E.98329
+G1 X40.953 Y200.778 E.0412
+G1 X49.231 Y209.056 E.52078
+G1 X49.231 Y208.13 E.0412
+G1 X33.6 Y223.761 E.98329
+G1 X27.174 Y223.761 E.28584
+G1 X26.248 Y222.834 E.05827
+G1 X26.248 Y223.761 E.0412
+G1 X49.231 Y200.778 E1.44579
+G1 X49.231 Y201.704 E.0412
+G1 X48.305 Y200.778 E.05827
+M73 P91 R1
+G1 X46.745 Y200.778 E.06938
 ; CHANGE_LAYER
-; Z_HEIGHT: 18
-; LAYER_HEIGHT: 0.200001
+; Z_HEIGHT: 25.12
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X48.305 Y200.778 E-.59267
+G1 X48.616 Y201.089 E-.16733
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 90/128
+; layer num/total_layer_count: 90/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -9330,85 +9363,159 @@ M623
 ; update layer progress
 M73 L90
 M991 S0 P89 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z18.2 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z18.2
-G1 Z18
+G3 Z25.24 I-1.215 J.07 P1  F30000
+G1 X49.955 Y224.484 Z25.24
+G1 Z25.12
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+G1 F11541.081
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F12000
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X140.265 Y132.909 Z18.4 F30000
-G1 X139.55 Y116.15 Z18.4
-G1 Z18
+G1 X48.787 Y217.185 Z25.52 F30000
+G1 X49.794 Y200.421 Z25.52
+G1 Z25.12
 G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
+; FEATURE: Bridge
+; LINE_WIDTH: 0.405712
+; LAYER_HEIGHT: 0.4
+G1 F3000
+G1 X25.888 Y200.421 E1.25915
+G1 X25.888 Y200.876 E.024
+G1 X49.591 Y200.876 E1.24849
+G1 X49.591 Y201.332 E.024
+G1 X25.888 Y201.332 E1.24849
+G1 X25.888 Y201.788 E.024
+G1 X49.591 Y201.788 E1.24849
+G1 X49.591 Y202.244 E.024
+G1 X25.888 Y202.244 E1.24849
+G1 X25.888 Y202.699 E.024
+G1 X49.591 Y202.699 E1.24849
+G1 X49.591 Y203.155 E.024
+G1 X25.888 Y203.155 E1.24849
+G1 X25.888 Y203.611 E.024
+G1 X49.591 Y203.611 E1.24849
+G1 X49.591 Y204.066 E.024
+G1 X25.888 Y204.066 E1.24849
+G1 X25.888 Y204.522 E.024
+G1 X49.591 Y204.522 E1.24849
+G1 X49.591 Y204.978 E.024
+G1 X25.888 Y204.978 E1.24849
+G1 X25.888 Y205.434 E.024
+G1 X49.591 Y205.434 E1.24849
+G1 X49.591 Y205.889 E.024
+G1 X25.888 Y205.889 E1.24849
+G1 X25.888 Y206.345 E.024
+G1 X49.591 Y206.345 E1.24849
+G1 X49.591 Y206.801 E.024
+G1 X25.888 Y206.801 E1.24849
+G1 X25.888 Y207.256 E.024
+G1 X49.591 Y207.256 E1.24849
+G1 X49.591 Y207.712 E.024
+G1 X25.888 Y207.712 E1.24849
+G1 X25.888 Y208.168 E.024
+G1 X49.591 Y208.168 E1.24849
+G1 X49.591 Y208.624 E.024
+G1 X25.888 Y208.624 E1.24849
+G1 X25.888 Y209.079 E.024
+G1 X49.591 Y209.079 E1.24849
+G1 X49.591 Y209.535 E.024
+G1 X25.888 Y209.535 E1.24849
+G1 X25.888 Y209.991 E.024
+G1 X49.591 Y209.991 E1.24849
+G1 X49.591 Y210.446 E.024
+G1 X25.888 Y210.446 E1.24849
+G1 X25.888 Y210.902 E.024
+G1 X49.591 Y210.902 E1.24849
+G1 X49.591 Y211.358 E.024
+G1 X25.888 Y211.358 E1.24849
+G1 X25.888 Y211.814 E.024
+G1 X49.591 Y211.814 E1.24849
+G1 X49.591 Y212.269 E.024
+G1 X25.888 Y212.269 E1.24849
+G1 X25.888 Y212.725 E.024
+G1 X49.591 Y212.725 E1.24849
+G1 X49.591 Y213.181 E.024
+G1 X25.888 Y213.181 E1.24849
+G1 X25.888 Y213.636 E.024
+G1 X49.591 Y213.636 E1.24849
+G1 X49.591 Y214.092 E.024
+G1 X25.888 Y214.092 E1.24849
+G1 X25.888 Y214.548 E.024
+G1 X49.591 Y214.548 E1.24849
+G1 X49.591 Y215.003 E.024
+G1 X25.888 Y215.003 E1.24849
+G1 X25.888 Y215.459 E.024
+G1 X49.591 Y215.459 E1.24849
+G1 X49.591 Y215.915 E.024
+G1 X25.888 Y215.915 E1.24849
+G1 X25.888 Y216.371 E.024
+G1 X49.591 Y216.371 E1.24849
+G1 X49.591 Y216.826 E.024
+G1 X25.888 Y216.826 E1.24849
+G1 X25.888 Y217.282 E.024
+G1 X49.591 Y217.282 E1.24849
+G1 X49.591 Y217.738 E.024
+G1 X25.888 Y217.738 E1.24849
+G1 X25.888 Y218.193 E.024
+G1 X49.591 Y218.193 E1.24849
+G1 X49.591 Y218.649 E.024
+G1 X25.888 Y218.649 E1.24849
+G1 X25.888 Y219.105 E.024
+G1 X49.591 Y219.105 E1.24849
+G1 X49.591 Y219.561 E.024
+G1 X25.888 Y219.561 E1.24849
+G1 X25.888 Y220.016 E.024
+G1 X49.591 Y220.016 E1.24849
+G1 X49.591 Y220.472 E.024
+G1 X25.888 Y220.472 E1.24849
+G1 X25.888 Y220.928 E.024
+M73 P92 R1
+G1 X49.591 Y220.928 E1.24849
+G1 X49.591 Y221.383 E.024
+G1 X25.888 Y221.383 E1.24849
+G1 X25.888 Y221.839 E.024
+G1 X49.591 Y221.839 E1.24849
+G1 X49.591 Y222.295 E.024
+G1 X25.888 Y222.295 E1.24849
+G1 X25.888 Y222.751 E.024
+G1 X49.591 Y222.751 E1.24849
+G1 X49.591 Y223.206 E.024
+G1 X25.888 Y223.206 E1.24849
+G1 X25.888 Y223.662 E.024
+G1 X49.591 Y223.662 E1.24849
+G1 X49.591 Y224.118 E.024
+G1 X25.686 Y224.118 E1.25915
 ; CHANGE_LAYER
-; Z_HEIGHT: 18.2
-; LAYER_HEIGHT: 0.200001
+; Z_HEIGHT: 25.4
+; LAYER_HEIGHT: 0.279999
 ; WIPE_START
 G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
+G1 X27.686 Y224.118 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 91/128
+; layer num/total_layer_count: 91/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -9419,85 +9526,243 @@ M623
 ; update layer progress
 M73 L91
 M991 S0 P90 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z18.4 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z18.4
-G1 Z18.2
+G3 Z25.52 I-.02 J1.217 P1  F30000
+G1 X49.955 Y224.484 Z25.52
+G1 Z25.4
 G1 E.8 F1800
 ; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
+; LINE_WIDTH: 0.45
+G1 F11541.081
+G1 X25.525 Y224.484 E1.0867
+G1 X25.525 Y200.054 E1.0867
+G1 X49.955 Y200.054 E1.0867
+G1 X49.955 Y224.424 E1.08403
+G1 X50.33 Y224.859 F30000
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 F12000
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
 ; WIPE_START
 G1 F24000
-G1 X140.59 Y140.535 E-.76
+G1 X48.33 Y224.804 E-.76
 ; WIPE_END
 G1 E-.04 F1800
-G1 X141.85 Y137.55 Z18.6 F30000
-G1 Z18.2
+G1 X48.798 Y217.186 Z25.8 F30000
+G1 X49.798 Y200.946 Z25.8
+G1 Z25.4
 G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
+; FEATURE: Internal solid infill
+; LINE_WIDTH: 0.423462
+G1 F12000
+G1 X49.225 Y200.373 E.03359
+G1 X48.711 Y200.373 E.0213
+G1 X49.636 Y201.298 E.05422
+G1 X49.636 Y201.812 E.0213
+G1 X48.197 Y200.373 E.08435
+G1 X47.683 Y200.373 E.0213
+G1 X49.636 Y202.325 E.11448
+G1 X49.636 Y202.839 E.0213
+M73 P93 R1
+G1 X47.17 Y200.373 E.1446
+G1 X46.656 Y200.373 E.0213
+G1 X49.636 Y203.353 E.17473
+G1 X49.636 Y203.867 E.0213
+G1 X46.142 Y200.373 E.20486
+G1 X45.628 Y200.373 E.0213
+G1 X49.636 Y204.381 E.23498
+G1 X49.636 Y204.895 E.0213
+G1 X45.114 Y200.373 E.26511
+G1 X44.6 Y200.373 E.0213
+G1 X49.636 Y205.409 E.29524
+G1 X49.636 Y205.923 E.0213
+G1 X44.086 Y200.373 E.32536
+G1 X43.572 Y200.373 E.0213
+G1 X49.636 Y206.437 E.35549
+G1 X49.636 Y206.95 E.0213
+G1 X43.058 Y200.373 E.38562
+G1 X42.545 Y200.373 E.0213
+G1 X49.636 Y207.464 E.41574
+G1 X49.636 Y207.978 E.0213
+G1 X42.031 Y200.373 E.44587
+G1 X41.517 Y200.373 E.0213
+G1 X49.636 Y208.492 E.476
+G1 X49.636 Y209.006 E.0213
+G1 X41.003 Y200.373 E.50612
+G1 X40.489 Y200.373 E.0213
+M73 P93 R0
+G1 X49.636 Y209.52 E.53625
+G1 X49.636 Y210.034 E.0213
+G1 X39.975 Y200.373 E.56638
+G1 X39.461 Y200.373 E.0213
+G1 X49.636 Y210.548 E.5965
+G1 X49.636 Y211.061 E.0213
+G1 X38.947 Y200.373 E.62663
+G1 X38.433 Y200.373 E.0213
+G1 X49.636 Y211.575 E.65676
+G1 X49.636 Y212.089 E.0213
+G1 X37.92 Y200.373 E.68688
+G1 X37.406 Y200.373 E.0213
+M73 P94 R0
+G1 X49.636 Y212.603 E.71701
+G1 X49.636 Y213.117 E.0213
+G1 X36.892 Y200.373 E.74714
+G1 X36.378 Y200.373 E.0213
+G1 X49.636 Y213.631 E.77727
+G1 X49.636 Y214.145 E.0213
+G1 X35.864 Y200.373 E.80739
+G1 X35.35 Y200.373 E.0213
+G1 X49.636 Y214.659 E.83752
+G1 X49.636 Y215.173 E.0213
+G1 X34.836 Y200.373 E.86765
+G1 X34.322 Y200.373 E.0213
+G1 X49.636 Y215.686 E.89777
+G1 X49.636 Y216.2 E.0213
+G1 X33.808 Y200.373 E.9279
+G1 X33.295 Y200.373 E.0213
+G1 X49.636 Y216.714 E.95803
+G1 X49.636 Y217.228 E.0213
+G1 X32.781 Y200.373 E.98815
+G1 X32.267 Y200.373 E.0213
+G1 X49.636 Y217.742 E1.01828
+G1 X49.636 Y218.256 E.0213
+G1 X31.753 Y200.373 E1.04841
+G1 X31.239 Y200.373 E.0213
+G1 X49.636 Y218.77 E1.07853
+G1 X49.636 Y219.284 E.0213
+G1 X30.725 Y200.373 E1.10866
+G1 X30.211 Y200.373 E.0213
+G1 X49.636 Y219.798 E1.13879
+G1 X49.636 Y220.311 E.0213
+G1 X29.697 Y200.373 E1.16891
+G1 X29.183 Y200.373 E.0213
+G1 X49.636 Y220.825 E1.19904
+G1 X49.636 Y221.339 E.0213
+G1 X28.67 Y200.373 E1.22917
+G1 X28.156 Y200.373 E.0213
+G1 X49.636 Y221.853 E1.25929
+G1 X49.636 Y222.367 E.0213
+G1 X27.642 Y200.373 E1.28942
+G1 X27.128 Y200.373 E.0213
+G1 X49.636 Y222.881 E1.31955
+G1 X49.636 Y223.395 E.0213
+G1 X26.614 Y200.373 E1.34968
+G1 X26.1 Y200.373 E.0213
+G1 X49.636 Y223.909 E1.3798
+G1 X49.636 Y224.166 E.01065
+G1 X49.379 Y224.166 E.01065
+G1 X25.843 Y200.63 E1.3798
+G1 X25.843 Y201.144 E.0213
+M73 P95 R0
+G1 X48.865 Y224.166 E1.34967
+G1 X48.351 Y224.166 E.0213
+G1 X25.843 Y201.657 E1.31955
+G1 X25.843 Y202.171 E.0213
+G1 X47.837 Y224.166 E1.28942
+G1 X47.324 Y224.166 E.0213
+G1 X25.843 Y202.685 E1.25929
+G1 X25.843 Y203.199 E.0213
+G1 X46.81 Y224.166 E1.22917
+G1 X46.296 Y224.166 E.0213
+G1 X25.843 Y203.713 E1.19904
+G1 X25.843 Y204.227 E.0213
+G1 X45.782 Y224.166 E1.16891
+G1 X45.268 Y224.166 E.0213
+G1 X25.843 Y204.741 E1.13879
+G1 X25.843 Y205.255 E.0213
+G1 X44.754 Y224.166 E1.10866
+G1 X44.24 Y224.166 E.0213
+G1 X25.843 Y205.769 E1.07853
+G1 X25.843 Y206.282 E.0213
+G1 X43.726 Y224.166 E1.0484
+G1 X43.212 Y224.166 E.0213
+G1 X25.843 Y206.796 E1.01828
+G1 X25.843 Y207.31 E.0213
+G1 X42.699 Y224.166 E.98815
+G1 X42.185 Y224.166 E.0213
+G1 X25.843 Y207.824 E.95802
+G1 X25.843 Y208.338 E.0213
+G1 X41.671 Y224.166 E.9279
+G1 X41.157 Y224.166 E.0213
+G1 X25.843 Y208.852 E.89777
+G1 X25.843 Y209.366 E.0213
+G1 X40.643 Y224.166 E.86764
+G1 X40.129 Y224.166 E.0213
+G1 X25.843 Y209.88 E.83752
+G1 X25.843 Y210.394 E.0213
+G1 X39.615 Y224.166 E.80739
+G1 X39.101 Y224.166 E.0213
+G1 X25.843 Y210.907 E.77726
+G1 X25.843 Y211.421 E.0213
+G1 X38.587 Y224.166 E.74714
+G1 X38.074 Y224.166 E.0213
+G1 X25.843 Y211.935 E.71701
+G1 X25.843 Y212.449 E.0213
+G1 X37.56 Y224.166 E.68688
+G1 X37.046 Y224.166 E.0213
+G1 X25.843 Y212.963 E.65676
+G1 X25.843 Y213.477 E.0213
+G1 X36.532 Y224.166 E.62663
+G1 X36.018 Y224.166 E.0213
+G1 X25.843 Y213.991 E.5965
+G1 X25.843 Y214.505 E.0213
+G1 X35.504 Y224.166 E.56638
+G1 X34.99 Y224.166 E.0213
+G1 X25.843 Y215.019 E.53625
+G1 X25.843 Y215.532 E.0213
+G1 X34.476 Y224.166 E.50612
+G1 X33.962 Y224.166 E.0213
+G1 X25.843 Y216.046 E.47599
+G1 X25.843 Y216.56 E.0213
+G1 X33.449 Y224.166 E.44587
+G1 X32.935 Y224.166 E.0213
+G1 X25.843 Y217.074 E.41574
+G1 X25.843 Y217.588 E.0213
+G1 X32.421 Y224.166 E.38561
+G1 X31.907 Y224.166 E.0213
+G1 X25.843 Y218.102 E.35549
+G1 X25.843 Y218.616 E.0213
+G1 X31.393 Y224.166 E.32536
+G1 X30.879 Y224.166 E.0213
+G1 X25.843 Y219.13 E.29523
+G1 X25.843 Y219.644 E.0213
+G1 X30.365 Y224.166 E.26511
+G1 X29.851 Y224.166 E.0213
+G1 X25.843 Y220.157 E.23498
+G1 X25.843 Y220.671 E.0213
+G1 X29.337 Y224.166 E.20485
+G1 X28.824 Y224.166 E.0213
+G1 X25.843 Y221.185 E.17473
+G1 X25.843 Y221.699 E.0213
+G1 X28.31 Y224.166 E.1446
+G1 X27.796 Y224.166 E.0213
+G1 X25.843 Y222.213 E.11447
+G1 X25.843 Y222.727 E.0213
+G1 X27.282 Y224.166 E.08435
+G1 X26.768 Y224.166 E.0213
+G1 X25.843 Y223.241 E.05422
+G1 X25.843 Y223.755 E.0213
+G1 X26.416 Y224.328 E.03359
 ; CHANGE_LAYER
-; Z_HEIGHT: 18.4
-; LAYER_HEIGHT: 0.199999
+; Z_HEIGHT: 25.68
+; LAYER_HEIGHT: 0.280001
 ; WIPE_START
 G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
+G1 X25.843 Y223.755 E-.30789
+G1 X25.843 Y223.241 E-.19528
+G1 X26.321 Y223.719 E-.25684
 ; WIPE_END
-M73 P78 R4
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
-; layer num/total_layer_count: 92/128
+; layer num/total_layer_count: 92/92
 M622.1 S1 ; for prev firware, default turned on
 M1002 judge_flag timelapse_record_flag
 M622 J1
@@ -9508,3627 +9773,215 @@ M623
 ; update layer progress
 M73 L92
 M991 S0 P91 ;notify layer change
-; start printing object, unique label id: 58
+; start printing object, unique label id: 1379
 M624 AQAAAAAAAAA=
 G17
-G3 Z18.6 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z18.6
-G1 Z18.4
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X140.265 Y132.909 Z18.8 F30000
-G1 X139.55 Y116.15 Z18.8
-G1 Z18.4
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-M73 P78 R3
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 18.6
-; LAYER_HEIGHT: 0.200001
-; WIPE_START
-G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 93/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L93
-M991 S0 P92 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z18.8 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z18.8
-G1 Z18.6
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X141.85 Y137.55 Z19 F30000
-G1 Z18.6
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 18.8
-; LAYER_HEIGHT: 0.199999
-; WIPE_START
-G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 94/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L94
-M991 S0 P93 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z19 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z19
-G1 Z18.8
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-M73 P79 R3
-G1 X140.265 Y132.909 Z19.2 F30000
-G1 X139.55 Y116.15 Z19.2
-G1 Z18.8
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 19
-; LAYER_HEIGHT: 0.200001
-; WIPE_START
-G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 95/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L95
-M991 S0 P94 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z19.2 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z19.2
-G1 Z19
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X141.85 Y137.55 Z19.4 F30000
-G1 Z19
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 19.2
-; LAYER_HEIGHT: 0.200001
-; WIPE_START
-G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 96/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L96
-M991 S0 P95 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z19.4 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z19.4
-G1 Z19.2
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X140.265 Y132.909 Z19.6 F30000
-G1 X139.55 Y116.15 Z19.6
-G1 Z19.2
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-M73 P80 R3
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 19.4
-; LAYER_HEIGHT: 0.199999
-; WIPE_START
-G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 97/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L97
-M991 S0 P96 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z19.6 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z19.6
-G1 Z19.4
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X141.85 Y137.55 Z19.8 F30000
-G1 Z19.4
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 19.6
-; LAYER_HEIGHT: 0.200001
-; WIPE_START
-G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 98/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L98
-M991 S0 P97 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z19.8 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z19.8
-G1 Z19.6
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X140.265 Y132.909 Z20 F30000
-G1 X139.55 Y116.15 Z20
-G1 Z19.6
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 19.8
-; LAYER_HEIGHT: 0.199999
-; WIPE_START
-G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 99/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L99
-M991 S0 P98 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-M73 P81 R3
-G3 Z20 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z20
-G1 Z19.8
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X141.85 Y137.55 Z20.2 F30000
-G1 Z19.8
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 20
-; LAYER_HEIGHT: 0.200001
-; WIPE_START
-G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 100/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L100
-M991 S0 P99 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z20.2 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z20.2
-G1 Z20
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X140.265 Y132.909 Z20.4 F30000
-G1 X139.55 Y116.15 Z20.4
-G1 Z20
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 20.2
-; LAYER_HEIGHT: 0.200001
-; WIPE_START
-G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 101/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L101
-M991 S0 P100 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z20.4 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z20.4
-G1 Z20.2
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X141.85 Y137.55 Z20.6 F30000
-G1 Z20.2
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-M73 P82 R3
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 20.4
-; LAYER_HEIGHT: 0.199999
-; WIPE_START
-G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 102/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L102
-M991 S0 P101 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z20.6 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z20.6
-G1 Z20.4
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X140.265 Y132.909 Z20.8 F30000
-G1 X139.55 Y116.15 Z20.8
-G1 Z20.4
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 20.6
-; LAYER_HEIGHT: 0.200001
-; WIPE_START
-G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 103/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L103
-M991 S0 P102 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z20.8 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z20.8
-G1 Z20.6
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X141.85 Y137.55 Z21 F30000
-G1 Z20.6
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-M73 P83 R3
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 20.8
-; LAYER_HEIGHT: 0.199999
-; WIPE_START
-G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 104/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L104
-M991 S0 P103 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z21 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z21
-G1 Z20.8
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X140.265 Y132.909 Z21.2 F30000
-G1 X139.55 Y116.15 Z21.2
-G1 Z20.8
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 21
-; LAYER_HEIGHT: 0.200001
-; WIPE_START
-G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 105/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L105
-M991 S0 P104 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z21.2 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z21.2
-G1 Z21
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X141.85 Y137.55 Z21.4 F30000
-G1 Z21
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-M73 P83 R2
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 21.2
-; LAYER_HEIGHT: 0.200001
-; WIPE_START
-G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 106/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L106
-M991 S0 P105 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z21.4 I-1.216 J.039 P1  F30000
-M73 P84 R2
-G1 X142.198 Y140.198 Z21.4
-G1 Z21.2
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X140.265 Y132.909 Z21.6 F30000
-G1 X139.55 Y116.15 Z21.6
-G1 Z21.2
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 21.4
-; LAYER_HEIGHT: 0.199999
-; WIPE_START
-G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 107/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L107
-M991 S0 P106 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z21.6 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z21.6
-G1 Z21.4
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X141.85 Y137.55 Z21.8 F30000
-G1 Z21.4
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 21.6
-; LAYER_HEIGHT: 0.200001
-; WIPE_START
-G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 108/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L108
-M991 S0 P107 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z21.8 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z21.8
-G1 Z21.6
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X140.265 Y132.909 Z22 F30000
-G1 X139.55 Y116.15 Z22
-G1 Z21.6
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-M73 P85 R2
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 21.8
-; LAYER_HEIGHT: 0.199999
-; WIPE_START
-G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 109/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L109
-M991 S0 P108 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z22 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z22
-G1 Z21.8
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X141.85 Y137.55 Z22.2 F30000
-G1 Z21.8
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 22
-; LAYER_HEIGHT: 0.200001
-; WIPE_START
-G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 110/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L110
-M991 S0 P109 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z22.2 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z22.2
-G1 Z22
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X140.265 Y132.909 Z22.4 F30000
-G1 X139.55 Y116.15 Z22.4
-G1 Z22
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-M73 P86 R2
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 22.2
-; LAYER_HEIGHT: 0.200001
-; WIPE_START
-G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 111/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L111
-M991 S0 P110 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z22.4 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z22.4
-G1 Z22.2
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X141.85 Y137.55 Z22.6 F30000
-G1 Z22.2
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 22.4
-; LAYER_HEIGHT: 0.199999
-; WIPE_START
-G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 112/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L112
-M991 S0 P111 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z22.6 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z22.6
-G1 Z22.4
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X140.265 Y132.909 Z22.8 F30000
-G1 X139.55 Y116.15 Z22.8
-G1 Z22.4
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 22.6
-; LAYER_HEIGHT: 0.200001
-; WIPE_START
-G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 113/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L113
-M991 S0 P112 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z22.8 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z22.8
-M73 P87 R2
-G1 Z22.6
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X141.85 Y137.55 Z23 F30000
-G1 Z22.6
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 22.8
-; LAYER_HEIGHT: 0.199999
-; WIPE_START
-G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 114/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L114
-M991 S0 P113 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z23 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z23
-G1 Z22.8
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X140.265 Y132.909 Z23.2 F30000
-G1 X139.55 Y116.15 Z23.2
-G1 Z22.8
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 23
-; LAYER_HEIGHT: 0.200001
-; WIPE_START
-G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 115/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L115
-M991 S0 P114 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z23.2 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z23.2
-G1 Z23
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X141.85 Y137.55 Z23.4 F30000
-G1 Z23
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-M73 P88 R2
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 23.2
-; LAYER_HEIGHT: 0.200001
-; WIPE_START
-G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 116/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L116
-M991 S0 P115 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z23.4 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z23.4
-G1 Z23.2
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X140.265 Y132.909 Z23.6 F30000
-G1 X139.55 Y116.15 Z23.6
-G1 Z23.2
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 23.4
-; LAYER_HEIGHT: 0.199999
-; WIPE_START
-G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 117/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L117
-M991 S0 P116 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z23.6 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z23.6
-G1 Z23.4
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X141.85 Y137.55 Z23.8 F30000
-G1 Z23.4
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-M73 P89 R2
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 23.6
-; LAYER_HEIGHT: 0.200001
-; WIPE_START
-G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 118/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L118
-M991 S0 P117 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z23.8 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z23.8
-G1 Z23.6
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-M73 P89 R1
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X140.265 Y132.909 Z24 F30000
-G1 X139.55 Y116.15 Z24
-G1 Z23.6
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 23.8
-; LAYER_HEIGHT: 0.199999
-; WIPE_START
-G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 119/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L119
-M991 S0 P118 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z24 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z24
-G1 Z23.8
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X141.85 Y137.55 Z24.2 F30000
-G1 Z23.8
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 24
-; LAYER_HEIGHT: 0.200001
-; WIPE_START
-G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 120/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L120
-M991 S0 P119 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z24.2 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z24.2
-G1 Z24
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6955
-G1 X117.802 Y140.198 E.80925
-M73 P90 R1
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6955
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X140.265 Y132.909 Z24.4 F30000
-G1 X139.55 Y116.15 Z24.4
-G1 Z24
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6955
-G1 X141.178 Y116.15 E.05401
-G1 X141.85 Y116.822 E.0315
-G1 X141.85 Y116.15 E.02227
-G1 X118.15 Y139.85 E1.11178
-G1 X118.15 Y139.178 E.02227
-G1 X118.822 Y139.85 E.0315
-G1 X125.826 Y139.85 E.23235
-G1 X141.85 Y123.826 E.75169
-G1 X141.85 Y124.498 E.02227
-G1 X133.502 Y116.15 E.39159
-G1 X134.174 Y116.15 E.02227
-G1 X118.15 Y132.174 E.75169
-G1 X118.15 Y131.502 E.02227
-G1 X126.498 Y139.85 E.39159
-G1 X133.502 Y139.85 E.23235
-G1 X141.85 Y131.502 E.39159
-G1 X141.85 Y132.174 E.02227
-G1 X125.826 Y116.15 E.75169
-G1 X126.498 Y116.15 E.02227
-G1 X118.15 Y124.498 E.39159
-G1 X118.15 Y123.826 E.02227
-G1 X134.174 Y139.85 E.75169
-G1 X135.802 Y139.85 E.05401
-G1 X118.15 Y118.45 F30000
-G1 F6955
-G1 X118.15 Y116.822 E.05401
-G1 X118.822 Y116.15 E.0315
-G1 X118.15 Y116.15 E.02227
-G1 X141.85 Y139.85 E1.11178
-G1 X141.178 Y139.85 E.02227
-G1 X141.85 Y139.178 E.0315
-G1 X141.85 Y137.55 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 24.2
-; LAYER_HEIGHT: 0.200001
-; WIPE_START
-G1 F24000
-G1 X141.85 Y139.178 E-.61876
-G1 X141.587 Y139.441 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 121/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L121
-M991 S0 P120 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z24.4 I-.947 J.764 P1  F30000
-G1 X142.198 Y140.198 Z24.4
-G1 Z24.2
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F6796
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F6796
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X141.85 Y137.55 Z24.6 F30000
-G1 Z24.2
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F6796
-G1 X141.85 Y139.178 E.05401
-G1 X141.178 Y139.85 E.0315
-G1 X141.85 Y139.85 E.02227
-G1 X118.15 Y116.15 E1.11178
-G1 X118.822 Y116.15 E.02227
-G1 X118.15 Y116.822 E.0315
-G1 X118.15 Y118.45 E.05401
-G1 X135.802 Y139.85 F30000
-G1 F6796
-G1 X134.174 Y139.85 E.05401
-G1 X118.15 Y123.826 E.75169
-G1 X118.15 Y124.498 E.02227
-G1 X126.498 Y116.15 E.39159
-G1 X125.826 Y116.15 E.02227
-G1 X141.85 Y132.174 E.75169
-G1 X141.85 Y131.502 E.02227
-G1 X133.502 Y139.85 E.39159
-G1 X126.498 Y139.85 E.23235
-G1 X118.15 Y131.502 E.39159
-G1 X118.15 Y132.174 E.02227
-G1 X134.174 Y116.15 E.75169
-G1 X133.502 Y116.15 E.02227
-G1 X141.85 Y124.498 E.39159
-G1 X141.85 Y123.826 E.02227
-G1 X125.826 Y139.85 E.75169
-G1 X118.822 Y139.85 E.23235
-G1 X118.15 Y139.178 E.0315
-G1 X118.15 Y139.85 E.02227
-G1 X141.85 Y116.15 E1.11178
-G1 X141.85 Y116.822 E.02227
-G1 X141.178 Y116.15 E.0315
-G1 X139.55 Y116.15 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 24.4
-; LAYER_HEIGHT: 0.199999
-; WIPE_START
-G1 F24000
-G1 X141.178 Y116.15 E-.61876
-G1 X141.441 Y116.413 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 122/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L122
-M991 S0 P121 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z24.6 I-1.216 J.039 P1  F30000
-G1 X142.198 Y140.198 Z24.6
-G1 Z24.4
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F8017
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F8017
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X141.85 Y139.85 Z24.8 F30000
-G1 Z24.4
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F8017
-G1 X118.15 Y139.85 E.78615
-G1 X118.15 Y116.15 E.78615
-G1 X141.85 Y116.15 E.78615
-G1 X141.85 Y139.79 E.78416
-G1 X139.814 Y139.443 F30000
-G1 F8017
-M73 P91 R1
-G1 X141.443 Y139.443 E.05401
-G1 X118.557 Y116.557 E1.07359
-G1 X118.557 Y124.091 E.24989
-G1 X126.091 Y116.557 E.3534
-G1 X126.233 Y116.557 E.00474
-G1 X141.443 Y131.767 E.71349
-G1 X141.443 Y131.909 E.00474
-G1 X133.909 Y139.443 E.3534
-G1 X133.767 Y139.443 E.00474
-G1 X118.557 Y124.233 E.71349
-G1 X118.557 Y131.767 E.24989
-G1 X133.767 Y116.557 E.71349
-G1 X133.909 Y116.557 E.00474
-G1 X141.443 Y124.091 E.3534
-G1 X141.443 Y124.233 E.00474
-G1 X126.233 Y139.443 E.71349
-G1 X126.091 Y139.443 E.00474
-G1 X118.557 Y131.909 E.3534
-G1 X118.557 Y139.443 E.24989
-G1 X141.443 Y116.557 E1.07359
-G1 X139.814 Y116.557 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 24.6
-; LAYER_HEIGHT: 0.200001
-; WIPE_START
-G1 F24000
-G1 X141.443 Y116.557 E-.61876
-G1 X141.18 Y116.82 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 123/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L123
-M991 S0 P122 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z24.8 I-1.216 J.053 P1  F30000
-G1 X142.198 Y140.198 Z24.8
-G1 Z24.6
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F8104
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F8104
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X141.85 Y139.85 Z25 F30000
-G1 Z24.6
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F8104
-G1 X118.15 Y139.85 E.78615
-G1 X118.15 Y116.15 E.78615
-G1 X141.85 Y116.15 E.78615
-G1 X141.85 Y139.79 E.78416
-G1 X139.814 Y116.557 F30000
-G1 F8104
-G1 X141.443 Y116.557 E.05401
-G1 X118.557 Y139.443 E1.07359
-G1 X118.557 Y131.909 E.24989
-G1 X126.091 Y139.443 E.3534
-G1 X126.233 Y139.443 E.00474
-G1 X141.443 Y124.233 E.71349
-G1 X141.443 Y124.091 E.00474
-G1 X133.909 Y116.557 E.3534
-G1 X133.767 Y116.557 E.00474
-G1 X118.557 Y131.767 E.71349
-G1 X118.557 Y124.233 E.24989
-G1 X133.767 Y139.443 E.71349
-G1 X133.909 Y139.443 E.00474
-G1 X141.443 Y131.909 E.3534
-G1 X141.443 Y131.767 E.00474
-G1 X126.233 Y116.557 E.71349
-G1 X126.091 Y116.557 E.00474
-G1 X118.557 Y124.091 E.3534
-G1 X118.557 Y116.557 E.24989
-G1 X141.443 Y139.443 E1.07359
-G1 X139.814 Y139.443 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 24.8
-; LAYER_HEIGHT: 0.199999
-; WIPE_START
-G1 F24000
-G1 X141.443 Y139.443 E-.61876
-G1 X141.18 Y139.18 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 124/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L124
-M991 S0 P123 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z25 I-.861 J.861 P1  F30000
-G1 X142.198 Y140.198 Z25
-G1 Z24.8
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F7925
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F7925
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X141.85 Y139.85 Z25.2 F30000
-G1 Z24.8
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F7925
-G1 X118.15 Y139.85 E.78615
-G1 X118.15 Y116.15 E.78615
-G1 X141.85 Y116.15 E.78615
-G1 X141.85 Y139.79 E.78416
-G1 X139.814 Y139.443 F30000
-G1 F7925
-G1 X141.443 Y139.443 E.05401
-G1 X118.557 Y116.557 E1.07359
-G1 X118.557 Y124.091 E.24989
-G1 X126.091 Y116.557 E.3534
-G1 X126.233 Y116.557 E.00474
-G1 X141.443 Y131.767 E.71349
-G1 X141.443 Y131.909 E.00474
-G1 X133.909 Y139.443 E.3534
-G1 X133.767 Y139.443 E.00474
-G1 X118.557 Y124.233 E.71349
-G1 X118.557 Y131.767 E.24989
-G1 X133.767 Y116.557 E.71349
-G1 X133.909 Y116.557 E.00474
-G1 X141.443 Y124.091 E.3534
-G1 X141.443 Y124.233 E.00474
-G1 X126.233 Y139.443 E.71349
-G1 X126.091 Y139.443 E.00474
-G1 X118.557 Y131.909 E.3534
-G1 X118.557 Y139.443 E.24989
-G1 X141.443 Y116.557 E1.07359
-G1 X139.814 Y116.557 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 25
-; LAYER_HEIGHT: 0.200001
-; WIPE_START
-G1 F24000
-G1 X141.443 Y116.557 E-.61876
-G1 X141.18 Y116.82 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 125/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L125
-M991 S0 P124 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z25.2 I-1.216 J.053 P1  F30000
-G1 X142.198 Y140.198 Z25.2
-G1 Z25
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F8104
-G1 X117.802 Y140.198 E.80925
-M73 P92 R1
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F8104
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X141.85 Y139.85 Z25.4 F30000
-G1 Z25
-G1 E.8 F1800
-; FEATURE: Sparse infill
-; LINE_WIDTH: 0.45
-G1 F8104
-G1 X118.15 Y139.85 E.78615
-G1 X118.15 Y116.15 E.78615
-G1 X141.85 Y116.15 E.78615
-G1 X141.85 Y139.79 E.78416
-G1 X139.814 Y116.557 F30000
-G1 F8104
-G1 X141.443 Y116.557 E.05401
-G1 X118.557 Y139.443 E1.07359
-G1 X118.557 Y131.909 E.24989
-G1 X126.091 Y139.443 E.3534
-G1 X126.233 Y139.443 E.00474
-G1 X141.443 Y124.233 E.71349
-G1 X141.443 Y124.091 E.00474
-G1 X133.909 Y116.557 E.3534
-G1 X133.767 Y116.557 E.00474
-G1 X118.557 Y131.767 E.71349
-G1 X118.557 Y124.233 E.24989
-G1 X133.767 Y139.443 E.71349
-G1 X133.909 Y139.443 E.00474
-G1 X141.443 Y131.909 E.3534
-G1 X141.443 Y131.767 E.00474
-G1 X126.233 Y116.557 E.71349
-G1 X126.091 Y116.557 E.00474
-G1 X118.557 Y124.091 E.3534
-G1 X118.557 Y116.557 E.24989
-G1 X141.443 Y139.443 E1.07359
-G1 X139.814 Y139.443 E.05401
-; CHANGE_LAYER
-; Z_HEIGHT: 25.2
-; LAYER_HEIGHT: 0.200001
-; WIPE_START
-G1 F24000
-G1 X141.443 Y139.443 E-.61876
-G1 X141.18 Y139.18 E-.14124
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 126/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L126
-M991 S0 P125 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z25.4 I-.861 J.861 P1  F30000
-G1 X142.198 Y140.198 Z25.4
-G1 Z25.2
-G1 E.8 F1800
-; FEATURE: Inner wall
-G1 F15476.087
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F12000
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X141.041 Y132.916 Z25.6 F30000
-G1 X142.031 Y116.174 Z25.6
-G1 Z25.2
-G1 E.8 F1800
-; FEATURE: Bridge
-; LINE_WIDTH: 0.404837
-; LAYER_HEIGHT: 0.4
-G1 F3000
-G1 X118.172 Y116.174 E1.2513
-G1 X118.172 Y116.629 E.02385
-G1 X141.828 Y116.629 E1.24068
-G1 X141.828 Y117.084 E.02385
-G1 X118.172 Y117.084 E1.24068
-G1 X118.172 Y117.539 E.02385
-G1 X141.828 Y117.539 E1.24068
-G1 X141.828 Y117.994 E.02385
-G1 X118.172 Y117.994 E1.24068
-G1 X118.172 Y118.448 E.02385
-G1 X141.828 Y118.448 E1.24068
-G1 X141.828 Y118.903 E.02385
-G1 X118.172 Y118.903 E1.24068
-G1 X118.172 Y119.358 E.02385
-G1 X141.828 Y119.358 E1.24068
-G1 X141.828 Y119.813 E.02385
-G1 X118.172 Y119.813 E1.24068
-G1 X118.172 Y120.268 E.02385
-G1 X141.828 Y120.268 E1.24068
-G1 X141.828 Y120.723 E.02385
-G1 X118.172 Y120.723 E1.24068
-G1 X118.172 Y121.177 E.02385
-G1 X141.828 Y121.177 E1.24068
-G1 X141.828 Y121.632 E.02385
-G1 X118.172 Y121.632 E1.24068
-G1 X118.172 Y122.087 E.02385
-G1 X141.828 Y122.087 E1.24068
-G1 X141.828 Y122.542 E.02385
-G1 X118.172 Y122.542 E1.24068
-G1 X118.172 Y122.997 E.02385
-G1 X141.828 Y122.997 E1.24068
-G1 X141.828 Y123.452 E.02385
-G1 X118.172 Y123.452 E1.24068
-G1 X118.172 Y123.906 E.02385
-G1 X141.828 Y123.907 E1.24068
-G1 X141.828 Y124.361 E.02385
-G1 X118.172 Y124.361 E1.24068
-G1 X118.172 Y124.816 E.02385
-G1 X141.828 Y124.816 E1.24068
-G1 X141.828 Y125.271 E.02385
-G1 X118.172 Y125.271 E1.24068
-G1 X118.172 Y125.726 E.02385
-G1 X141.828 Y125.726 E1.24068
-G1 X141.828 Y126.181 E.02385
-G1 X118.172 Y126.181 E1.24068
-G1 X118.172 Y126.636 E.02385
-G1 X141.828 Y126.636 E1.24068
-G1 X141.828 Y127.09 E.02385
-G1 X118.172 Y127.09 E1.24068
-G1 X118.172 Y127.545 E.02385
-G1 X141.828 Y127.545 E1.24068
-G1 X141.828 Y128 E.02385
-G1 X118.172 Y128 E1.24068
-M73 P93 R1
-G1 X118.172 Y128.455 E.02385
-G1 X141.828 Y128.455 E1.24068
-G1 X141.828 Y128.91 E.02385
-G1 X118.172 Y128.91 E1.24068
-G1 X118.172 Y129.365 E.02385
-G1 X141.828 Y129.365 E1.24068
-G1 X141.828 Y129.819 E.02385
-G1 X118.172 Y129.819 E1.24068
-G1 X118.172 Y130.274 E.02385
-G1 X141.828 Y130.274 E1.24068
-G1 X141.828 Y130.729 E.02385
-G1 X118.172 Y130.729 E1.24068
-G1 X118.172 Y131.184 E.02385
-G1 X141.828 Y131.184 E1.24068
-G1 X141.828 Y131.639 E.02385
-G1 X118.172 Y131.639 E1.24068
-G1 X118.172 Y132.094 E.02385
-G1 X141.828 Y132.094 E1.24068
-G1 X141.828 Y132.548 E.02385
-G1 X118.172 Y132.548 E1.24068
-G1 X118.172 Y133.003 E.02385
-G1 X141.828 Y133.003 E1.24068
-G1 X141.828 Y133.458 E.02385
-G1 X118.172 Y133.458 E1.24068
-G1 X118.172 Y133.913 E.02385
-G1 X141.828 Y133.913 E1.24068
-G1 X141.828 Y134.368 E.02385
-G1 X118.172 Y134.368 E1.24068
-G1 X118.172 Y134.823 E.02385
-G1 X141.828 Y134.823 E1.24068
-G1 X141.828 Y135.277 E.02385
-G1 X118.172 Y135.277 E1.24068
-G1 X118.172 Y135.732 E.02385
-G1 X141.828 Y135.732 E1.24068
-G1 X141.828 Y136.187 E.02385
-G1 X118.172 Y136.187 E1.24068
-G1 X118.172 Y136.642 E.02385
-G1 X141.828 Y136.642 E1.24068
-G1 X141.828 Y137.097 E.02385
-G1 X118.172 Y137.097 E1.24068
-G1 X118.172 Y137.552 E.02385
-G1 X141.828 Y137.552 E1.24068
-G1 X141.828 Y138.006 E.02385
-G1 X118.172 Y138.006 E1.24068
-G1 X118.172 Y138.461 E.02385
-G1 X141.828 Y138.461 E1.24068
-G1 X141.828 Y138.916 E.02385
-G1 X118.172 Y138.916 E1.24068
-G1 X118.172 Y139.371 E.02385
-G1 X141.828 Y139.371 E1.24068
-G1 X141.828 Y139.826 E.02385
-G1 X117.969 Y139.826 E1.2513
-; CHANGE_LAYER
-; Z_HEIGHT: 25.4
-; LAYER_HEIGHT: 0.199999
-; WIPE_START
-G1 F24000
-G1 X119.969 Y139.826 E-.76
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 127/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L127
-M991 S0 P126 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z25.6 I-.02 J1.217 P1  F30000
-G1 X142.198 Y140.198 Z25.6
-G1 Z25.4
-G1 E.8 F1800
-; FEATURE: Inner wall
-; LINE_WIDTH: 0.45
-G1 F15476.087
-G1 X117.802 Y140.198 E.80925
-G1 X117.802 Y115.802 E.80925
-G1 X142.198 Y115.802 E.80925
-G1 X142.198 Y140.138 E.80726
-G1 X142.59 Y140.59 F30000
-M204 S5000
-; FEATURE: Outer wall
-; LINE_WIDTH: 0.42
-G1 F12000
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
-M204 S10000
-; WIPE_START
-G1 F24000
-G1 X140.59 Y140.535 E-.76
-; WIPE_END
-G1 E-.04 F1800
-G1 X141.052 Y132.916 Z25.8 F30000
-G1 X142.034 Y116.732 Z25.8
-G1 Z25.4
-G1 E.8 F1800
-; FEATURE: Internal solid infill
-; LINE_WIDTH: 0.421715
-G1 F15000
-G1 X141.438 Y116.135 E.02603
-G1 X140.902 Y116.135 E.01654
-M73 P94 R1
-G1 X141.865 Y117.098 E.042
-G1 X141.865 Y117.633 E.01654
-G1 X140.367 Y116.135 E.06539
-G1 X139.831 Y116.135 E.01654
-G1 X141.865 Y118.169 E.08877
-G1 X141.865 Y118.705 E.01654
-G1 X139.295 Y116.135 E.11216
-G1 X138.76 Y116.135 E.01654
-G1 X141.865 Y119.24 E.13554
-G1 X141.865 Y119.776 E.01654
-G1 X138.224 Y116.135 E.15893
-G1 X137.688 Y116.135 E.01654
-G1 X141.865 Y120.312 E.18231
-G1 X141.865 Y120.847 E.01654
-G1 X137.153 Y116.135 E.2057
-G1 X136.617 Y116.135 E.01654
-G1 X141.865 Y121.383 E.22908
-G1 X141.865 Y121.919 E.01654
-G1 X136.081 Y116.135 E.25246
-G1 X135.545 Y116.135 E.01654
-G1 X141.865 Y122.455 E.27585
-G1 X141.865 Y122.99 E.01654
-G1 X135.01 Y116.135 E.29923
-G1 X134.474 Y116.135 E.01654
-G1 X141.865 Y123.526 E.32262
-G1 X141.865 Y124.062 E.01654
-G1 X133.938 Y116.135 E.346
-G1 X133.403 Y116.135 E.01654
-M73 P94 R0
-G1 X141.865 Y124.597 E.36939
-G1 X141.865 Y125.133 E.01654
-G1 X132.867 Y116.135 E.39277
-G1 X132.331 Y116.135 E.01654
-G1 X141.865 Y125.669 E.41616
-G1 X141.865 Y126.204 E.01654
-G1 X131.796 Y116.135 E.43954
-G1 X131.26 Y116.135 E.01654
-G1 X141.865 Y126.74 E.46293
-G1 X141.865 Y127.276 E.01654
-G1 X130.724 Y116.135 E.48631
-G1 X130.188 Y116.135 E.01654
-G1 X141.865 Y127.812 E.50969
-G1 X141.865 Y128.347 E.01654
-G1 X129.653 Y116.135 E.53308
-G1 X129.117 Y116.135 E.01654
-G1 X141.865 Y128.883 E.55646
-G1 X141.865 Y129.419 E.01654
-M73 P95 R0
-G1 X128.581 Y116.135 E.57985
-G1 X128.046 Y116.135 E.01654
-G1 X141.865 Y129.954 E.60323
-G1 X141.865 Y130.49 E.01654
-G1 X127.51 Y116.135 E.62662
-G1 X126.974 Y116.135 E.01654
-G1 X141.865 Y131.026 E.65
-G1 X141.865 Y131.561 E.01654
-G1 X126.439 Y116.135 E.67339
-G1 X125.903 Y116.135 E.01654
-G1 X141.865 Y132.097 E.69677
-G1 X141.865 Y132.633 E.01654
-G1 X125.367 Y116.135 E.72016
-G1 X124.832 Y116.135 E.01654
-G1 X141.865 Y133.168 E.74354
-G1 X141.865 Y133.704 E.01654
-G1 X124.296 Y116.135 E.76692
-G1 X123.76 Y116.135 E.01654
-G1 X141.865 Y134.24 E.79031
-G1 X141.865 Y134.776 E.01654
-G1 X123.224 Y116.135 E.81369
-G1 X122.689 Y116.135 E.01654
-G1 X141.865 Y135.311 E.83708
-G1 X141.865 Y135.847 E.01654
-G1 X122.153 Y116.135 E.86046
-G1 X121.617 Y116.135 E.01654
-G1 X141.865 Y136.383 E.88385
-G1 X141.865 Y136.918 E.01654
-G1 X121.082 Y116.135 E.90723
-G1 X120.546 Y116.135 E.01654
-G1 X141.865 Y137.454 E.93062
-G1 X141.865 Y137.99 E.01654
-G1 X120.01 Y116.135 E.954
-G1 X119.475 Y116.135 E.01654
-G1 X141.865 Y138.525 E.97739
-G1 X141.865 Y139.061 E.01654
-G1 X118.939 Y116.135 E1.00077
-G1 X118.403 Y116.135 E.01654
-G1 X141.865 Y139.597 E1.02415
-G1 X141.865 Y139.865 E.00827
-G1 X141.597 Y139.865 E.00827
-G1 X118.135 Y116.403 E1.02415
-G1 X118.135 Y116.939 E.01654
-G1 X141.061 Y139.865 E1.00077
-G1 X140.525 Y139.865 E.01654
-G1 X118.135 Y117.475 E.97738
-G1 X118.135 Y118.01 E.01654
-G1 X139.99 Y139.865 E.954
-G1 X139.454 Y139.865 E.01654
-G1 X118.135 Y118.546 E.93061
-G1 X118.135 Y119.082 E.01654
-G1 X138.918 Y139.865 E.90723
-G1 X138.383 Y139.865 E.01654
-G1 X118.135 Y119.617 E.88384
-G1 X118.135 Y120.153 E.01654
-G1 X137.847 Y139.865 E.86046
-G1 X137.311 Y139.865 E.01654
-G1 X118.135 Y120.689 E.83707
-G1 X118.135 Y121.225 E.01654
-G1 X136.775 Y139.865 E.81369
-G1 X136.24 Y139.865 E.01654
-G1 X118.135 Y121.76 E.7903
-G1 X118.135 Y122.296 E.01654
-G1 X135.704 Y139.865 E.76692
-G1 X135.168 Y139.865 E.01654
-G1 X118.135 Y122.832 E.74354
-G1 X118.135 Y123.367 E.01654
-G1 X134.633 Y139.865 E.72015
-G1 X134.097 Y139.865 E.01654
-G1 X118.135 Y123.903 E.69677
-G1 X118.135 Y124.439 E.01654
-G1 X133.561 Y139.865 E.67338
-G1 X133.026 Y139.865 E.01654
-G1 X118.135 Y124.974 E.65
-G1 X118.135 Y125.51 E.01654
-G1 X132.49 Y139.865 E.62661
-G1 X131.954 Y139.865 E.01654
-G1 X118.135 Y126.046 E.60323
-G1 X118.135 Y126.581 E.01654
-G1 X131.419 Y139.865 E.57984
-G1 X130.883 Y139.865 E.01654
-G1 X118.135 Y127.117 E.55646
-G1 X118.135 Y127.653 E.01654
-G1 X130.347 Y139.865 E.53308
-G1 X129.811 Y139.865 E.01654
-G1 X118.135 Y128.189 E.50969
-G1 X118.135 Y128.724 E.01654
-G1 X129.276 Y139.865 E.48631
-G1 X128.74 Y139.865 E.01654
-G1 X118.135 Y129.26 E.46292
-G1 X118.135 Y129.796 E.01654
-G1 X128.204 Y139.865 E.43954
-G1 X127.669 Y139.865 E.01654
-G1 X118.135 Y130.331 E.41615
-G1 X118.135 Y130.867 E.01654
-G1 X127.133 Y139.865 E.39277
-G1 X126.597 Y139.865 E.01654
-G1 X118.135 Y131.403 E.36938
-G1 X118.135 Y131.938 E.01654
-G1 X126.062 Y139.865 E.346
-G1 X125.526 Y139.865 E.01654
-G1 X118.135 Y132.474 E.32261
-G1 X118.135 Y133.01 E.01654
-G1 X124.99 Y139.865 E.29923
-G1 X124.454 Y139.865 E.01654
-G1 X118.135 Y133.546 E.27585
-G1 X118.135 Y134.081 E.01654
-M73 P96 R0
-G1 X123.919 Y139.865 E.25246
-G1 X123.383 Y139.865 E.01654
-G1 X118.135 Y134.617 E.22908
-G1 X118.135 Y135.153 E.01654
-G1 X122.847 Y139.865 E.20569
-G1 X122.312 Y139.865 E.01654
-G1 X118.135 Y135.688 E.18231
-G1 X118.135 Y136.224 E.01654
-G1 X121.776 Y139.865 E.15892
-G1 X121.24 Y139.865 E.01654
-G1 X118.135 Y136.76 E.13554
-G1 X118.135 Y137.295 E.01654
-G1 X120.705 Y139.865 E.11215
-G1 X120.169 Y139.865 E.01654
-G1 X118.135 Y137.831 E.08877
-G1 X118.135 Y138.367 E.01654
-G1 X119.633 Y139.865 E.06538
-G1 X119.097 Y139.865 E.01654
-G1 X118.135 Y138.903 E.042
-G1 X118.135 Y139.438 E.01654
-G1 X118.731 Y140.034 E.02602
-; CHANGE_LAYER
-; Z_HEIGHT: 25.6
-; LAYER_HEIGHT: 0.200001
-; WIPE_START
-G1 F24000
-G1 X118.135 Y139.438 E-.32036
-G1 X118.135 Y138.903 E-.20356
-G1 X118.575 Y139.342 E-.23607
-; WIPE_END
-G1 E-.04 F1800
-; stop printing object, unique label id: 58
-M625
-; layer num/total_layer_count: 128/128
-M622.1 S1 ; for prev firware, default turned on
-M1002 judge_flag timelapse_record_flag
-M622 J1
- ; timelapse without wipe tower
-M971 S11 C10 O0
-
-M623
-; update layer progress
-M73 L128
-M991 S0 P127 ;notify layer change
-; start printing object, unique label id: 58
-M624 AQAAAAAAAAA=
-G17
-G3 Z25.8 I-.063 J1.215 P1  F30000
-G1 X142.59 Y140.59 Z25.8
-G1 Z25.6
+G3 Z25.8 I-.058 J1.216 P1  F30000
+G1 X50.33 Y224.859 Z25.8
+G1 Z25.68
 G1 E.8 F1800
 M204 S5000
 ; FEATURE: Outer wall
 ; LINE_WIDTH: 0.42
 G1 F12000
-G1 X117.41 Y140.59 E.77371
-G1 X117.41 Y115.41 E.77371
-G1 X142.59 Y115.41 E.77371
-G1 X142.59 Y140.53 E.77187
+G1 X25.15 Y224.859 E1.03388
+G1 X25.15 Y199.679 E1.03388
+G1 X50.33 Y199.679 E1.03388
+G1 X50.33 Y224.799 E1.03142
 M204 S10000
-G1 X142.383 Y139.881 F30000
+G1 X50.13 Y223.865 F30000
 M204 S2000
 ; FEATURE: Top surface
-G1 F12000
-G1 X141.881 Y140.383 E.02179
-G1 X141.348 Y140.383
-G1 X142.383 Y139.348 E.04497
-G1 X142.383 Y138.815
-G1 X140.815 Y140.383 E.06814
-G1 X140.281 Y140.383
-G1 X142.383 Y138.281 E.09131
-G1 X142.383 Y137.748
-G1 X139.748 Y140.383 E.11448
-G1 X139.215 Y140.383
-G1 X142.383 Y137.215 E.13766
-G1 X142.383 Y136.681
-G1 X138.681 Y140.383 E.16083
-G1 X138.148 Y140.383
-G1 X142.383 Y136.148 E.184
-G1 X142.383 Y135.615
-G1 X137.615 Y140.383 E.20718
-G1 X137.082 Y140.383
-G1 X142.383 Y135.082 E.23035
-G1 X142.383 Y134.548
-G1 X136.548 Y140.383 E.25352
-G1 X136.015 Y140.383
-G1 X142.383 Y134.015 E.2767
-G1 X142.383 Y133.482
-G1 X135.482 Y140.383 E.29987
-G1 X134.949 Y140.383
-G1 X142.383 Y132.949 E.32304
-G1 X142.383 Y132.415
-G1 X134.415 Y140.383 E.34622
-G1 X133.882 Y140.383
-G1 X142.383 Y131.882 E.36939
-G1 X142.383 Y131.349
-G1 X133.349 Y140.383 E.39256
-G1 X132.816 Y140.383
-G1 X142.383 Y130.816 E.41574
-G1 X142.383 Y130.282
-G1 X132.282 Y140.383 E.43891
-G1 X131.749 Y140.383
-G1 X142.383 Y129.749 E.46208
-G1 X142.383 Y129.216
-G1 X131.216 Y140.383 E.48526
-G1 X130.682 Y140.383
-G1 X142.383 Y128.682 E.50843
-G1 X142.383 Y128.149
-G1 X130.149 Y140.383 E.5316
-G1 X129.616 Y140.383
-G1 X142.383 Y127.616 E.55478
-G1 X142.383 Y127.083
-G1 X129.083 Y140.383 E.57795
-G1 X128.549 Y140.383
-G1 X142.383 Y126.549 E.60112
-G1 X142.383 Y126.016
-G1 X128.016 Y140.383 E.62429
-G1 X127.483 Y140.383
-G1 X142.383 Y125.483 E.64747
-G1 X142.383 Y124.95
-G1 X126.95 Y140.383 E.67064
-G1 X126.416 Y140.383
-G1 X142.383 Y124.416 E.69381
-G1 X142.383 Y123.883
-G1 X125.883 Y140.383 E.71699
-G1 X125.35 Y140.383
-G1 X142.383 Y123.35 E.74016
-G1 X142.383 Y122.816
-G1 X124.816 Y140.383 E.76333
-G1 X124.283 Y140.383
-G1 X142.383 Y122.283 E.78651
-G1 X142.383 Y121.75
-G1 X123.75 Y140.383 E.80968
-G1 X123.217 Y140.383
-G1 X142.383 Y121.217 E.83285
-G1 X142.383 Y120.683
-G1 X122.683 Y140.383 E.85603
-G1 X122.15 Y140.383
-G1 X142.383 Y120.15 E.8792
-G1 X142.383 Y119.617
-G1 X121.617 Y140.383 E.90237
-G1 X121.084 Y140.383
-G1 X142.383 Y119.084 E.92555
-G1 X142.383 Y118.55
-G1 X120.55 Y140.383 E.94872
-G1 X120.017 Y140.383
-G1 X142.383 Y118.017 E.97189
-G1 X142.383 Y117.484
-G1 X119.484 Y140.383 E.99507
-G1 X118.95 Y140.383
-G1 X142.383 Y116.951 E1.01824
-G1 X142.383 Y116.417
-G1 X118.417 Y140.383 E1.04141
-G1 X117.884 Y140.383
-G1 X142.383 Y115.884 E1.06459
-G1 X142.116 Y115.617
-G1 X117.617 Y140.116 E1.06458
-G1 X117.617 Y139.583
-G1 X141.583 Y115.617 E1.04141
-G1 X141.049 Y115.617
-G1 X117.617 Y139.049 E1.01823
-G1 X117.617 Y138.516
-G1 X140.516 Y115.617 E.99506
-G1 X139.983 Y115.617
-G1 X117.617 Y137.983 E.97189
-G1 X117.617 Y137.45
-G1 X139.45 Y115.617 E.94871
-G1 X138.916 Y115.617
-G1 X117.617 Y136.916 E.92554
-G1 X117.617 Y136.383
-G1 X138.383 Y115.617 E.90237
-G1 X137.85 Y115.617
-G1 X117.617 Y135.85 E.87919
-G1 X117.617 Y135.316
-G1 X137.316 Y115.617 E.85602
-G1 X136.783 Y115.617
-G1 X117.617 Y134.783 E.83285
-G1 X117.617 Y134.25
-G1 X136.25 Y115.617 E.80967
-G1 X135.717 Y115.617
-G1 X117.617 Y133.717 E.7865
-G1 X117.617 Y133.183
-G1 X135.183 Y115.617 E.76333
-G1 X134.65 Y115.617
-G1 X117.617 Y132.65 E.74015
-G1 X117.617 Y132.117
-G1 X134.117 Y115.617 E.71698
-G1 X133.584 Y115.617
-G1 X117.617 Y131.584 E.69381
-G1 X117.617 Y131.05
-G1 X133.05 Y115.617 E.67064
-G1 X132.517 Y115.617
-G1 X117.617 Y130.517 E.64746
-G1 X117.617 Y129.984
+; LINE_WIDTH: 0.45
+G1 F11541.081
+G1 X49.336 Y224.66 E.04998
+G1 X48.784 Y224.66
+G1 X50.13 Y223.314 E.08467
+G1 X50.13 Y222.762
+G1 X48.233 Y224.66 E.11936
+G1 X47.681 Y224.66
+G1 X50.13 Y222.211 E.15404
+G1 X50.13 Y221.66
+G1 X47.13 Y224.66 E.18873
+G1 X46.579 Y224.66
+G1 X50.13 Y221.108 E.22342
+G1 X50.13 Y220.557
+G1 X46.027 Y224.66 E.25811
+G1 X45.476 Y224.66
+G1 X50.13 Y220.005 E.2928
+G1 X50.13 Y219.454
+G1 X44.924 Y224.66 E.32748
+G1 X44.373 Y224.66
+G1 X50.13 Y218.902 E.36217
+G1 X50.13 Y218.351
+G1 X43.821 Y224.66 E.39686
+G1 X43.27 Y224.66
+G1 X50.13 Y217.8 E.43155
+G1 X50.13 Y217.248
+G1 X42.719 Y224.66 E.46624
+G1 X42.167 Y224.66
+G1 X50.13 Y216.697 E.50092
+G1 X50.13 Y216.145
+G1 X41.616 Y224.66 E.53561
+G1 X41.064 Y224.66
+G1 X50.13 Y215.594 E.5703
+G1 X50.13 Y215.043
+G1 X40.513 Y224.66 E.60499
+G1 X39.962 Y224.66
+G1 X50.13 Y214.491 E.63968
+G1 X50.13 Y213.94
+G1 X39.41 Y224.66 E.67437
+G1 X38.859 Y224.66
+G1 X50.13 Y213.388 E.70905
+M73 P96 R0
+G1 X50.13 Y212.837
+G1 X38.307 Y224.66 E.74374
+G1 X37.756 Y224.66
+G1 X50.13 Y212.285 E.77843
+G1 X50.13 Y211.734
+G1 X37.204 Y224.66 E.81312
+G1 X36.653 Y224.66
+G1 X50.13 Y211.183 E.84781
+G1 X50.13 Y210.631
+G1 X36.102 Y224.66 E.88249
+G1 X35.55 Y224.66
+G1 X50.13 Y210.08 E.91718
+G1 X50.13 Y209.528
+G1 X34.999 Y224.66 E.95187
+G1 X34.447 Y224.66
+G1 X50.13 Y208.977 E.98656
+G1 X50.13 Y208.426
+G1 X33.896 Y224.66 E1.02125
+G1 X33.345 Y224.66
+G1 X50.13 Y207.874 E1.05593
+G1 X50.13 Y207.323
+G1 X32.793 Y224.66 E1.09062
+G1 X32.242 Y224.66
+G1 X50.13 Y206.771 E1.12531
+G1 X50.13 Y206.22
+G1 X31.69 Y224.66 E1.16
+G1 X31.139 Y224.66
+G1 X50.13 Y205.668 E1.19469
+G1 X50.13 Y205.117
+G1 X30.587 Y224.66 E1.22937
+G1 X30.036 Y224.66
+G1 X50.13 Y204.566 E1.26406
+G1 X50.13 Y204.014
+G1 X29.485 Y224.66 E1.29875
+G1 X28.933 Y224.66
+G1 X50.13 Y203.463 E1.33344
+G1 X50.13 Y202.911
+G1 X28.382 Y224.66 E1.36813
+G1 X27.83 Y224.66
+G1 X50.13 Y202.36 E1.40281
+G1 X50.13 Y201.809
+G1 X27.279 Y224.66 E1.4375
+G1 X26.728 Y224.66
+G1 X50.13 Y201.257 E1.47219
+G1 X50.13 Y200.706
+G1 X26.176 Y224.66 E1.50688
+G1 X25.625 Y224.66
+G1 X50.13 Y200.154 E1.54157
+G1 X49.854 Y199.879
+G1 X25.349 Y224.384 E1.54156
+G1 X25.349 Y223.833
+G1 X49.303 Y199.879 E1.50687
+G1 X48.752 Y199.879
+G1 X25.349 Y223.281 E1.47218
+G1 X25.349 Y222.73
+G1 X48.2 Y199.879 E1.43749
+G1 X47.649 Y199.879
+G1 X25.349 Y222.178 E1.4028
+G1 X25.349 Y221.627
+G1 X47.097 Y199.879 E1.36812
+G1 X46.546 Y199.879
+G1 X25.349 Y221.075 E1.33343
+G1 X25.349 Y220.524
+G1 X45.994 Y199.879 E1.29874
+G1 X45.443 Y199.879
+G1 X25.349 Y219.973 E1.26405
+G1 X25.349 Y219.421
+G1 X44.892 Y199.879 E1.22936
+G1 X44.34 Y199.879
+G1 X25.349 Y218.87 E1.19468
+G1 X25.349 Y218.318
+G1 X43.789 Y199.879 E1.15999
+G1 X43.237 Y199.879
+G1 X25.349 Y217.767 E1.1253
+G1 X25.349 Y217.216
+G1 X42.686 Y199.879 E1.09061
+G1 X42.135 Y199.879
+G1 X25.349 Y216.664 E1.05592
+G1 X25.349 Y216.113
+G1 X41.583 Y199.879 E1.02124
+G1 X41.032 Y199.879
+G1 X25.349 Y215.561 E.98655
+G1 X25.349 Y215.01
+G1 X40.48 Y199.879 E.95186
+G1 X39.929 Y199.879
+G1 X25.349 Y214.458 E.91717
+G1 X25.349 Y213.907
+G1 X39.377 Y199.879 E.88248
+G1 X38.826 Y199.879
+G1 X25.349 Y213.356 E.8478
+G1 X25.349 Y212.804
+G1 X38.275 Y199.879 E.81311
+G1 X37.723 Y199.879
+G1 X25.349 Y212.253 E.77842
+G1 X25.349 Y211.701
+G1 X37.172 Y199.879 E.74373
+G1 X36.62 Y199.879
+G1 X25.349 Y211.15 E.70904
+G1 X25.349 Y210.599
+G1 X36.069 Y199.879 E.67436
+G1 X35.518 Y199.879
+G1 X25.349 Y210.047 E.63967
+G1 X25.349 Y209.496
+G1 X34.966 Y199.879 E.60498
+G1 X34.415 Y199.879
+G1 X25.349 Y208.944 E.57029
+G1 X25.349 Y208.393
+G1 X33.863 Y199.879 E.5356
+G1 X33.312 Y199.879
+G1 X25.349 Y207.841 E.50092
+G1 X25.349 Y207.29
+G1 X32.76 Y199.879 E.46623
+G1 X32.209 Y199.879
+G1 X25.349 Y206.739 E.43154
+G1 X25.349 Y206.187
+G1 X31.658 Y199.879 E.39685
 M73 P97 R0
-G1 X131.984 Y115.617 E.62429
-G1 X131.451 Y115.617
-G1 X117.617 Y129.45 E.60112
-G1 X117.617 Y128.917
-G1 X130.917 Y115.617 E.57794
-G1 X130.384 Y115.617
-G1 X117.617 Y128.384 E.55477
-G1 X117.617 Y127.851
-G1 X129.851 Y115.617 E.5316
-G1 X129.317 Y115.617
-G1 X117.617 Y127.317 E.50842
-G1 X117.617 Y126.784
-G1 X128.784 Y115.617 E.48525
-G1 X128.251 Y115.617
-G1 X117.617 Y126.251 E.46208
-G1 X117.617 Y125.718
-G1 X127.718 Y115.617 E.4389
-G1 X127.184 Y115.617
-G1 X117.617 Y125.184 E.41573
-G1 X117.617 Y124.651
-G1 X126.651 Y115.617 E.39256
-G1 X126.118 Y115.617
-G1 X117.617 Y124.118 E.36938
-G1 X117.617 Y123.585
-G1 X125.585 Y115.617 E.34621
-G1 X125.051 Y115.617
-G1 X117.617 Y123.051 E.32304
-G1 X117.617 Y122.518
-G1 X124.518 Y115.617 E.29986
-G1 X123.985 Y115.617
-G1 X117.617 Y121.985 E.27669
-G1 X117.617 Y121.451
-G1 X123.451 Y115.617 E.25352
-G1 X122.918 Y115.617
-G1 X117.617 Y120.918 E.23034
-G1 X117.617 Y120.385
-G1 X122.385 Y115.617 E.20717
-G1 X121.852 Y115.617
-G1 X117.617 Y119.852 E.184
-G1 X117.617 Y119.318
-G1 X121.318 Y115.617 E.16083
-G1 X120.785 Y115.617
-G1 X117.617 Y118.785 E.13765
-G1 X117.617 Y118.252
-G1 X120.252 Y115.617 E.11448
-G1 X119.719 Y115.617
-G1 X117.617 Y117.719 E.09131
-G1 X117.617 Y117.185
-G1 X119.185 Y115.617 E.06813
-G1 X118.652 Y115.617
-G1 X117.617 Y116.652 E.04496
-G1 X117.617 Y116.119
-G1 X118.119 Y115.617 E.02179
+G1 X31.106 Y199.879
+G1 X25.349 Y205.636 E.36216
+G1 X25.349 Y205.084
+G1 X30.555 Y199.879 E.32748
+G1 X30.003 Y199.879
+G1 X25.349 Y204.533 E.29279
+G1 X25.349 Y203.981
+G1 X29.452 Y199.879 E.2581
+G1 X28.901 Y199.879
+G1 X25.349 Y203.43 E.22341
+G1 X25.349 Y202.879
+G1 X28.349 Y199.879 E.18872
+G1 X27.798 Y199.879
+G1 X25.349 Y202.327 E.15404
+G1 X25.349 Y201.776
+G1 X27.246 Y199.879 E.11935
+G1 X26.695 Y199.879
+G1 X25.349 Y201.224 E.08466
+G1 X25.349 Y200.673
+G1 X26.143 Y199.879 E.04997
 M204 S10000
 ; close powerlost recovery
 M1003 S0
 ; WIPE_START
 G1 F24000
-G1 X117.617 Y116.119 E-.26943
-G1 X117.617 Y116.652 E-.20264
-G1 X118.153 Y116.116 E-.28793
+G1 X25.349 Y200.673 E-.4269
+G1 X25.349 Y201.224 E-.20954
+G1 X25.579 Y200.994 E-.12356
 ; WIPE_END
 G1 E-.04 F1800
-; stop printing object, unique label id: 58
+; stop printing object, unique label id: 1379
 M625
 M106 S0
 M106 P2 S0
@@ -13140,7 +9993,7 @@ M106 P3 S0
 M400 ; wait for buffer to clear
 G92 E0 ; zero the extruder
 G1 E-0.8 F1800 ; retract
-G1 Z26.1 F900 ; lower z a little
+G1 Z26.18 F900 ; lower z a little
 G1 X65 Y245 F12000 ; move to safe pos 
 G1 Y265 F3000
 
@@ -13175,8 +10028,8 @@ M400 ; wait all motion done
 M17 S
 M17 Z0.4 ; lower z motor current to reduce impact if there is something in the bottom
 
-    G1 Z125.6 F600
-    G1 Z123.6
+    G1 Z125.68 F600
+    G1 Z123.68
 
 M400 P100
 M17 R ; restore z current
@@ -13190,6 +10043,7 @@ M73.2   R1.0 ;Reset left time magnitude
 M1002 set_gcode_claim_speed_level : 0
 
 M17 X0.8 Y0.8 Z0.5 ; lower motor current to 45% power
+M141 S0;set chamber_temperature
 M73 P100 R0
 ; EXECUTABLE_BLOCK_END
 

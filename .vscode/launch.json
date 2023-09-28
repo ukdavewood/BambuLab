@@ -13,7 +13,8 @@
             "console": "integratedTerminal",
             "justMyCode": true,
             "args": [
-                "~/Documents/GitHub/BambuLab/Gcode/Cube1 28.gcode"
+                "/Users/davidwood/Documents/GitHub/BambuLab/Gcode/Xmas Pud.gcode",
+                "/Users/davidwood/Documents/GitHub/BambuLab/Gcode/"
             ]
         }
     ]
