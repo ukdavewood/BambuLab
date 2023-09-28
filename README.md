@@ -2,7 +2,7 @@
 
 Inspired by this video from the 3d printing professor a few months ago, https://youtu.be/AsokgzDYBBY?si=zLJKxqVY-BaAQAoV 4 I am embarking on a Proof of concept to see if I can completely eliminate wasted purge from my multi colour prints.
 
-Possibly built on top of potential purge length reductions such as these, Printables 1
+Possibly built on top of potential purge length reductions such as these, [Printables 1](https://www.printables.com/model/582382-bambulab-profile-for-up-to-60-purge-reduction/comments)
 
 The problems with ‘purge-to’ objects that I think need addressing are:
 
@@ -28,3 +28,4 @@ The biggest issue I have found is in with problem 4 - as I have not yet identifi
 Will report progress in this thread if anyone is interested or has any suggestions to help.
 
 My ultimate short term target is to be able to create a plate of these models that is completely waste purge free - with all of the colour swap purging going into random multi coloured tree decoration globes and dummy xmas present boxes.
+![alt text](/Images/XmasPud.PNG)
