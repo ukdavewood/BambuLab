@@ -29,3 +29,14 @@ Will report progress in this thread if anyone is interested or has any suggestio
 
 My ultimate short term target is to be able to create a plate of these models that is completely waste purge free - with all of the colour swap purging going into random multi coloured tree decoration globes and dummy xmas present boxes.
 ![colourful xmas pud model](./images/XmasPud.PNG)
+
+Am also tracking progress here   https://forum.bambulab.com/t/making-better-use-of-purge-to-object-in-bambu-slicer/29422
+
+How to work out which shapes to use.
+Go through every priority 1 print in turn that fits within remaining space on bed working out highest purge usage
+Take highest one,   Then retry every next one and find next best
+Keep going until finished or cut off benefit level reached
+
+Then if purge still present move to next priority
+
+NB/ It may be possible to hold all objects of the same priority within multiple plates within the same 3mf file
