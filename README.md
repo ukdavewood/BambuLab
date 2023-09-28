@@ -28,4 +28,4 @@ The biggest issue I have found is in with problem 4 - as I have not yet identifi
 Will report progress in this thread if anyone is interested or has any suggestions to help.
 
 My ultimate short term target is to be able to create a plate of these models that is completely waste purge free - with all of the colour swap purging going into random multi coloured tree decoration globes and dummy xmas present boxes.
-![alt text](/Images/XmasPud.PNG)
+![alt text](https://github.com/ukdavewood/BambuLab/blob/Images/XmasPud.PNG)
