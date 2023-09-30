@@ -8,6 +8,12 @@ import sys
 import re
 import os
 
+import io
+import xmltodict
+import pprint
+import json
+
+
 
 if len(sys.argv) == 3:
     sourceFile=sys.argv[1]
@@ -176,13 +182,131 @@ from zipfile import ZipFile
 
 for filename in os.listdir(flushFiles):
 
-    if "FlushTo" in filename and ".gcode.3mf" in filename:
+    if "FlushTo" in filename and ".gcode.3mf" in filename and "copy" in filename and not filename.startswith("NEW"):
         with ZipFile(flushFiles+"/"+filename, "r") as f3mf:
-            print("Flush File:",filename)
-            f3mf.printdir()
+            with ZipFile(flushFiles+"/NEW"+filename, "w") as f3mf_o:
+                print("Flush File gcode.3mf:",filename)
+                for name in f3mf.namelist():
+                    buffer = f3mf.read(name)
+
+    # Little of use in the gcode.3mf version of this file
+                    if name == 'Metadata/model_settings.config':
+
+                        config = xmltodict.parse(f3mf.read(name))
+                        print("model settings config",len(config))
+
+    #  Actual generated GCODE - there is also an md5 file that goes with this
+                    if name.endswith(".gcode"):     
+                        print(name)
+                        with io.TextIOWrapper(f3mf.open(name), encoding="utf-8") as f:
+                            lines = f.readlines()
+                            print(len(lines))
+                            i=0
+                            c=0
+                            while (i< len(lines)):
+
+                                if lines[i] == "T1\n":
+                                    lines[i] = "T4\n"
+                                    c += 1 
+                                i += 1
+
+                            buffer = "".join(lines)
+                            print(c,"lines changed")
+
+    #  has one entry per object with coordinates that could potentionally be matched up to GCODE, id does not match GCode though
+                    if name.startswith("Metadata/plate") and name.endswith("json"):  
+                        with io.TextIOWrapper(f3mf.open(name), encoding="utf-8") as f:
+                            j = f.read()
+                            plate = json.loads(j)
+                            print("plate json:",len(plate))  
+
+                    if name == 'Metadata/project_settings.config':
+                        with io.TextIOWrapper(f3mf.open(name), encoding="utf-8") as f:
+                            j = f.read()
+                            project = json.loads(j)
+                            print("project gcode 3mf json:",len(project))
+
+                    f3mf_o.writestr(name,buffer)                  
+
+    elif "FlushTo" in filename and filename.endswith("copy.3mf") and "copy" in filename and not filename.startswith("NEW"):
+        with ZipFile(flushFiles+"/"+filename, "r") as f3mf:
+            with ZipFile(flushFiles+"/NEW"+filename, "w") as f3mf_o:
+                print("Flush File 3mf:",filename)
+                for name in f3mf.namelist():
+                    buffer = f3mf.read(name)
+
+    #  contains per object flush settings in the 3mf version of this file
+    #  Ids don't seem to match - but I think coordinates might be able to be derived to identify objects in gcode.
+                    if name == 'Metadata/model_settings.config':
+
+                        config = xmltodict.parse(f3mf.read(name))
+                        print("model settings config",len(config))
+
+                        if "uncoloured" in filename:
+                            print("uncoloured found")
+                            lines = buffer.decode("utf-8").split("\n")                            
+                            i = 0
+
+                            extruder = ""
+
+                            while i<len(lines):
+                                if '<metadata key="name" value=' in lines [i]:
+                                    if "[E" in lines[i] and "]" in lines[i]:
+                                        extruder = lines[i].split("[E")[1].split("]")[0]                                  
+                                        print("extruder",extruder)
+                                if '<metadata key="extruder" value="' in lines[i]:
+                                    if extruder != "":
+                                        ext1 = lines[i].split('value="')
+                                        ext2 = ext1[1].split('"')
+                                        if ext2[0] != extruder:
+                                            ext2[0] = extruder
+                                            print(lines[i])
+                                            lines[i] = ext1[0] + 'value="' + '"'.join(ext2)
+                                            print(lines[i])
+
+                                    extruder = ""
+                                    
+                                
+                                i+=1
+
+                            buffer = "\n".join(lines)
+
+                    if name == '3D/3dmodel.model':
+
+                        lines = buffer.decode("utf-8").split("\n")
+                        print("3dmodel.model lines:",len(lines))
+                        i =  0
+
+            
+                        while i<len(lines):
+                            if '<item objectid="10"' in lines[i]:
+                                lines[i] = lines[i].replace('printable="1"','printable="0"')
+                                transform = lines[i].split("transform=")[1].split("printable")[0]
+                                print("Cleared, transform",transform)
+                                tfm = transform.split(" ")
+                                tfm[9] = "300"
+                                lines[i] = lines[i].replace(transform," ".join(tfm))
+                                print(lines[i])
+                                
+                            
+                            i+=1
+
+                        buffer = "\n".join(lines)
 
 
+                    if name == 'Metadata/project_settings.config':
+                        with io.TextIOWrapper(f3mf.open(name), encoding="utf-8") as f:
+                            j = f.read()
+                            project = json.loads(j)
+                            print("project  3mf json:",len(project))       
 
+                    f3mf_o.writestr(name,buffer)    
+
+
+# Transform - Metadata/model.settings
+# 200%    <assemble_item object_id="2" instance_id="0" transform="2 0 0 0 2 0 0 0 2 0 0 17.748008728027344" offset="0 0 0" />
+# 150%    <assemble_item object_id="2" instance_id="0" transform="1.5 0 0 0 1.5 0 0 0 1.5 0 0 17.748008728027344" offset="0 0 0" />
+# 100%    <assemble_item object_id="2" instance_id="0" transform="1 0 0 0 1 0 0 0 1 0 0 17.748008728027344" offset="0 0 0" />
 
 
 
