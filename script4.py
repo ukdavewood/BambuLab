@@ -50,7 +50,8 @@ def UpdateDimensions(x0,y0,flush):
             Object_Dim[3] = y1
 
 
-
+layers = {}
+            
 if len(sys.argv) == 3:
     sourceFile=sys.argv[1]
     flushFiles=sys.argv[2]
@@ -94,7 +95,7 @@ with ZipFile(sourceFile, "r") as f3mf:
 
                 Tool = ""
 
-                layers = {}
+ 
                 #  { "1":  { "E" : 11.1, "F": 9.5}, }
 
 
@@ -181,11 +182,11 @@ with ZipFile(sourceFile, "r") as f3mf:
                 print("Total extrude:",round(total_extrude,2))
                 print("extrude minus:",round(extrude_minus,2))
 
-                print("Adjusted total Extrude M = ", round((total_extrude-29)/1000,2))   
-                print("Total Flush Extrude M = ",round(total_flush_extrude/1000,2))
+                print("Adjusted total Extrude = ", round((total_extrude-29)/1000,2),"M")   
+                print("Total Flush Extrude = ",round(total_flush_extrude/1000,2),"M")
 
                 print("Object_Dim:",Object_Dim)
-                print("Layers",layers)
+                # print("Layers",layers)
 
 
 #  create table of files, plates, objects sizes and layears
@@ -198,6 +199,8 @@ OBJECTEND = "; stop printing object, unique label id:"
 
 
 #  Itteration 1 - get files, plates, objects
+
+files = {}
 
 for filename in os.listdir(flushFiles):
 
@@ -290,8 +293,11 @@ for filename in os.listdir(flushFiles):
                                 objects[id]["extent"] = extent
                                 objects[id]["layers"][layerNum] = {"E": round(object_extrude,2)}
 
-       print("objects:",objects)
-        
+    #    print("objects:",objects)
+
+
+
+       files[filename] = objects
 
     elif filename.endswith(".3mf"):
         with ZipFile(flushFiles+"/"+filename, "r") as f3mf:
@@ -335,7 +341,71 @@ for filename in os.listdir(flushFiles):
                                     transform2 = item.attrib['transform']
                                     print("transform2:",transform2)
 
+selected_objects = []
+remaining_flush = total_flush_extrude
+objects_left = True
+count = 0
 
+while remaining_flush > 10 and objects_left and count < 10:
+    print("**Itteration",count)
+    count += 1
+    highest_flush = 0
+    highest_file = ""
+    highest_object = ""
+    for file_key,objects in files.items():
+        print("files:",file_key)
+        for object_id,object in objects.items():
+            if "Selected" not in object:
+
+                flush_total = 0.0
+                print("object:",object_id)
+                for key,layer in layers.items():
+                    # print ("Layer:",key)
+                    if "F" in layer:
+                        # print("Check for F",layer["F"],key)
+                        if key in object["layers"]:
+                            # print("Object layer found:",object["layers"][key])
+                            if object["layers"][key]["E"] > layer["F"]:
+                                flush_total += layer["F"]
+                            else:
+                                flush_total += object["layers"][key]["E"]
+                print("Flush total:",round(flush_total/1000,2),"M")
+                if flush_total > highest_flush:
+                    highest_flush = flush_total
+                    highest_file = file_key
+                    highest_object = object_id
+
+    print("selected object:",highest_file,highest_object,round(highest_flush/1000,2),"M")
+    if highest_flush > 100:
+        #print("Files:",files)
+        files[highest_file][highest_object]["Selected"] = highest_flush
+        #  now reduce the availble flush from this object
+        remaining_flush = 0
+        flush_total = 0
+        for key,layer in layers.items():
+            # print ("Layer:",key)
+
+            if "F" in layer and layer["F"] > 0:
+                # print("Check for F",layer["F"],key)
+                if key in files[highest_file][highest_object]["layers"]:
+                    # print("Object layer found:",object["layers"][key])
+                    if files[highest_file][highest_object]["layers"][key]["E"] > layer["F"]:
+                        flush_total += layer["F"]
+                        layer["F"] = 0.0
+                    else:
+                        flush_total += files[highest_file][highest_object]["layers"][key]["E"]
+                        layer["F"] -= files[highest_file][highest_object]["layers"][key]["E"]
+                        remaining_flush += layer["F"]
+                else:
+                    remaining_flush += layer["F"]
+        print("Flush total:",round(flush_total/1000,2),"M")
+        print(" Remaining Flush:", round(remaining_flush/1000,2),"M")
+
+    else:
+        print("Flush too small - exiting")
+        objects_left= False
+
+# print("Files:",files)
 
 # Transform - Metadata/model.settings
 # 200%    <assemble_item object_id="2" instance_id="0" transform="2 0 0 0 2 0 0 0 2 0 0 17.748008728027344" offset="0 0 0" />
