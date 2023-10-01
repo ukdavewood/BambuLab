@@ -3,6 +3,16 @@
 # V1 - layer size stats - for single colour purge target models
 
 
+# Todo
+#  1. Check if selected objects fit on plate
+#  2. take into account extra size when selecting objects - i.e. Get objects of smaller size if nearly as much purge benefit
+#  3. Market taken objects too - once successful print confirmed.
+#  4. Cache Gcode processing for large files
+
+
+
+
+
 
 import sys
 import re
