@@ -13,8 +13,8 @@
             "console": "integratedTerminal",
             "justMyCode": true,
             "args": [
-                "/Users/davidwood/Documents/GitHub/BambuLab/Gcode/Xmas Pud.gcode.3mf",
-                "/Users/davidwood/Documents/GitHub/BambuLab/Gcode/flush/"
+                "/Users/davidwood/Documents/GitHub/BambuPurge/BambuLab/Gcode/Xmas Pud.gcode.3mf",
+                "/Users/davidwood/Documents/GitHub/BambuPurge/BambuLab/Gcode/flush/"
             ]
         }
     ]
