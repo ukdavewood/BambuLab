@@ -328,7 +328,7 @@ for filename in os.listdir(flushFiles):
 
                         #print(buffer)
                         xml = buffer.decode("utf-8")
-                        print(xml);
+                        #print(xml);
                         root = ET.fromstring(xml)
                         # print("root.tag",root.tag)
                         # for child in root:
@@ -340,7 +340,7 @@ for filename in os.listdir(flushFiles):
 
                         #print(buffer)
                         xml = buffer.decode("utf-8")
-                        print(xml)
+                        #print(xml)
                         root = ET.fromstring(xml)
                         #print("root.attrib",root.attrib)
                         ns = re.match(r'{.*}', root.tag).group(0)
