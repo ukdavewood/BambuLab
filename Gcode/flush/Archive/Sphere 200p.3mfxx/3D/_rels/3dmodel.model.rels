@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+ <Relationship Target="/3D/Objects/Brown [E1].stl_1.model" Id="rel-1" Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel"/>
+ <Relationship Target="/3D/Objects/Brown [E1].stl_2.model" Id="rel-2" Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel"/>
+ <Relationship Target="/3D/Objects/Brown [E1].stl_3.model" Id="rel-3" Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel"/>
+ <Relationship Target="/3D/Objects/Brown [E1].stl_4.model" Id="rel-4" Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel"/>
+ <Relationship Target="/3D/Objects/Brown [E1].stl_5.model" Id="rel-5" Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel"/>
+ <Relationship Target="/3D/Objects/Brown [E1].stl_6.model" Id="rel-6" Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel"/>
+ <Relationship Target="/3D/Objects/Brown [E1].stl_7.model" Id="rel-7" Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel"/>
+ <Relationship Target="/3D/Objects/Brown [E1].stl_8.model" Id="rel-8" Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel"/>
+ <Relationship Target="/3D/Objects/Brown [E1].stl_9.model" Id="rel-9" Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel"/>
+</Relationships>

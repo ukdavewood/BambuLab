@@ -109,7 +109,7 @@ with ZipFile(sourceFile, "r") as f3mf:
                         print(object_m.attrib)
                     path = object_m.find(f"{ns}components/{ns}component").attrib[f"{p}path"]
                     if path[1:] in merge3d_duplist:
-                        object_m.find(f"{ns}components/{ns}component").set(f"{p}path",path.replace(".model","_m.model"))
+                        object_m.find(f"{ns}components/{ns}component").set(f"{p}path",path.replace("Objects/","Objects/m_"))
                     resources.append(object_m)
 
                 build = root.find(f'{ns}build')
@@ -124,6 +124,28 @@ with ZipFile(sourceFile, "r") as f3mf:
 
 
                 buffer =  ET.tostring(root, encoding='UTF-8', xml_declaration = True)
+
+            if name == 'Metadata/cut_information.xml':
+
+                print (name)
+
+                xml = buffer.decode("utf-8")
+
+                root = ET.fromstring(xml)
+
+                object = root.find("object")
+                root.append(object)
+                id = 1
+                for object in root.findall('object'):
+                    print(object.attrib)
+                    print("info id:",id)
+                    if object.attrib["id"] != str(id):
+                        object.set("id",str(id))
+                    id += 1
+
+                buffer =  ET.tostring(root, encoding='UTF-8', xml_declaration = True) 
+
+
 
 
 
@@ -147,7 +169,15 @@ with ZipFile(sourceFile, "r") as f3mf:
                     id = object_m.attrib["id"]
                     if id in object_renum:
                         object_m.set('id',object_renum[id])
-                    root.append(object_m)
+                    for metadata in object_m.findall("metadata[@key='name']"):
+                        print(metadata.attrib)
+                        #metadata.set("value","m_"+metadata.attrib["value"])
+                    for part in object_m.findall("part"):
+                        for metadata in part.findall("metadata[@key='name']"):
+                            print(metadata.attrib)
+                            #metadata.set("value","m_"+metadata.attrib["value"])
+
+                    root.insert(1,object_m)
 
                 plate = root.find("plate")
 
@@ -181,8 +211,9 @@ with ZipFile(sourceFile, "r") as f3mf:
         with ZipFile(mergeFile, "r") as f3mf_m:
             for name2 in f3mf_m.namelist():
                 if name2.startswith("3D/Objects/"):
+                    buffer = f3mf_m.read(name2)
                     if name2 in merge3d_duplist:
-                        name3 = name2.replace(".model","_m.model")
+                        name3 = name2.replace("Objects/","Objects/m_")
                         print("duplicate merged element renamed to:",name3)
                         f3mf_o.writestr(name3,buffer)
                     else:
