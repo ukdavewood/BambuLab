@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02" xmlns:p="http://schemas.microsoft.com/3dmanufacturing/production/2015/06" unit="millimeter" xml:lang="en-US" requiredextensions="p">
+ <metadata name="Application">BambuStudio-01.07.06.92</metadata>
+ <metadata name="BambuStudio:3mfVersion">1</metadata>
+ <metadata name="Copyright" />
+ <metadata name="CreationDate">2023-09-30</metadata>
+ <metadata name="Description" />
+ <metadata name="Designer" />
+ <metadata name="DesignerCover" />
+ <metadata name="DesignerUserId">2338253900</metadata>
+ <metadata name="License" />
+ <metadata name="ModificationDate">2023-09-30</metadata>
+ <metadata name="Origin" />
+ <metadata name="Title" />
+ <resources>
+  <object id="2" p:UUID="00000001-61cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Brown [E1].stl_1.model" objectid="1" p:UUID="00000001-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 -1.90734863e-06 -1.90734863e-06 0" />
+   </components>
+  </object>
+ <object id="3" p:UUID="00000001-61cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Brown [E1].stl_1_m.model" objectid="1" p:UUID="00000001-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 2.81250006e-15 2.81250006e-15 0" />
+   </components>
+  </object>
+ </resources>
+ <build p:UUID="2c7c17d8-22b5-4d84-8835-1976022ea369">
+  <item objectid="2" p:UUID="00000002-b1ec-4553-aec9-835e5b724bb4" transform="1 0 0 0 1 0 0 0 1 128 128 17.7480087" printable="1" />
+ <item objectid="3" p:UUID="00000002-b1ec-4553-aec9-835e5b724bb4" transform="1.5 0 0 0 1.5 0 0 0 1.5 128 128 26.6220131" printable="1" />
+ </build>
+</model>
