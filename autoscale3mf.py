@@ -125,7 +125,7 @@ with ZipFile(sourceFile, "r") as f3mf:
                             prev_zs = float(tfm[8])
                             tfm[8] = str(round(new_z,2))
                             old_zp = float(tfm[11])
-                            new_zp = old_zp/prev_zs * new_z
+                            new_zp = old_zp/prev_zs * round(new_z,2)
                             tfm[11] = str(round(new_zp,2))
 
                             print(i,"newtfm",tfm)

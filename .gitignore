@@ -1,3 +1,4 @@
 .DS_Store
-*gcode*
+*.gcode.3mf
+*.rescale.3mf
 NEW*
