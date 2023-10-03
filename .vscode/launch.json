@@ -13,8 +13,7 @@
             "console": "integratedTerminal",
             "justMyCode": true,
             "args": [
-                "/Users/davidwood/Documents/GitHub/BambuPurge/BambuLab/Gcode/flush/archive/Sphere 100p.3mf",
-                "/Users/davidwood/Documents/GitHub/BambuPurge/BambuLab/Gcode/flush/archive/Cube.3mf"
+                "/Users/davidwood/Documents/GitHub/BambuPurge/BambuLab/Gcode/flush/NEWCubes 100 to 200.3mf.rescale.3mf"
             ]
         }
     ]

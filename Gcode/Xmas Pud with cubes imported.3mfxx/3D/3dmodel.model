@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model unit="millimeter" xml:lang="en-US" xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02" xmlns:slic3rpe="http://schemas.slic3r.org/3mf/2017/06" xmlns:p="http://schemas.microsoft.com/3dmanufacturing/production/2015/06" requiredextensions="p">
+ <metadata name="Application">BambuStudio-01.07.06.92</metadata>
+ <metadata name="BambuStudio:3mfVersion">1</metadata>
+ <metadata name="CopyRight"></metadata>
+ <metadata name="Copyright"></metadata>
+ <metadata name="CreationDate">2023-10-03</metadata>
+ <metadata name="Description"></metadata>
+ <metadata name="Designer"></metadata>
+ <metadata name="DesignerCover"></metadata>
+ <metadata name="DesignerUserId">2338253900</metadata>
+ <metadata name="License"></metadata>
+ <metadata name="ModificationDate">2023-10-03</metadata>
+ <metadata name="Origin"></metadata>
+ <metadata name="Thumbnail_Middle">/Metadata/plate_1.png</metadata>
+ <metadata name="Thumbnail_Small">/Metadata/plate_1_small.png</metadata>
+ <metadata name="Title"></metadata>
+ <resources>
+  <object id="5" p:UUID="00000041-61cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Brown [E1]_65.model" objectid="1" p:UUID="00000041-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0.104171276 0 -6.43400216"/>
+    <component p:path="/3D/Objects/Brown [E1]_65.model" objectid="2" p:UUID="00000041-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0.451348424 -7.53245878 6.65358996"/>
+    <component p:path="/3D/Objects/Brown [E1]_65.model" objectid="3" p:UUID="00000041-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0.507691383 -1.7004962 2.01820827"/>
+    <component p:path="/3D/Objects/Brown [E1]_65.model" objectid="4" p:UUID="00000041-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 -1.38759065 12.5495746"/>
+   </components>
+  </object>
+  <object id="7" p:UUID="00000042-61cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_66.model" objectid="6" p:UUID="00000042-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="9" p:UUID="00000046-61cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_70.model" objectid="8" p:UUID="00000046-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="11" p:UUID="00000049-61cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_73.model" objectid="10" p:UUID="00000049-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="12" p:UUID="00000043-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_66.model" objectid="6" p:UUID="00000043-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="13" p:UUID="00000044-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_66.model" objectid="6" p:UUID="00000044-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="14" p:UUID="00000047-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_70.model" objectid="8" p:UUID="00000047-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="15" p:UUID="00000045-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_66.model" objectid="6" p:UUID="00000045-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="16" p:UUID="00000048-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_70.model" objectid="8" p:UUID="00000048-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+ </resources>
+ <build p:UUID="2c7c17d8-22b5-4d84-8835-1976022ea369">
+  <item objectid="5" p:UUID="00000005-b1ec-4553-aec9-835e5b724bb4" transform="1 0 0 0 1 0 0 0 1 76.2048202 216.902691 19.4340022" printable="1"/>
+  <item objectid="7" p:UUID="00000007-b1ec-4553-aec9-835e5b724bb4" transform="1.43 0 0 0 1.43 0 0 0 1.43 130.734179 139.425909 18.3040003" printable="1"/>
+  <item objectid="9" p:UUID="00000009-b1ec-4553-aec9-835e5b724bb4" transform="1.43 0 0 0 1.43 0 0 0 1.43 92.126179 138.424662 18.3040003" printable="1"/>
+  <item objectid="11" p:UUID="0000000b-b1ec-4553-aec9-835e5b724bb4" transform="1.43 0 0 0 1.43 0 0 0 1.43 130.734179 100.817909 18.3040003" printable="1"/>
+  <item objectid="12" p:UUID="0000000c-b1ec-4553-aec9-835e5b724bb4" transform="1.17 0 0 0 1.17 0 0 0 1.17 95.454178 103.144662 14.9760002" printable="1"/>
+  <item objectid="13" p:UUID="0000000d-b1ec-4553-aec9-835e5b724bb4" transform="1.07 0 0 0 1.07 0 0 0 1.07 164.734179 132.145727 13.6960002" printable="1"/>
+  <item objectid="14" p:UUID="0000000e-b1ec-4553-aec9-835e5b724bb4" transform="1.07 0 0 0 1.07 0 0 0 1.07 164.734179 161.537727 13.6960002" printable="1"/>
+  <item objectid="15" p:UUID="0000000f-b1ec-4553-aec9-835e5b724bb4" transform="1.02 0 0 0 1.02 0 0 0 1.02 164.094179 103.393726 13.0560002" printable="1"/>
+  <item objectid="16" p:UUID="00000010-b1ec-4553-aec9-835e5b724bb4" transform="1.02 0 0 0 1.02 0 0 0 1.02 130.191679 67.457909 13.0560002" printable="1"/>
+ </build>
+</model>

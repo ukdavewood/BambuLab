@@ -69,6 +69,10 @@ with ZipFile(mergeFile, "r") as f3mf:
         if name == "Metadata/model_settings.config":
             merge_model_settings_buffer = f3mf.read(name)
 
+        if name == "Metadata/cut_information.xml":
+            merge_cut = f3mf.read(name)
+
+
 print("duplicates:", merge3d_duplist)
 
 with ZipFile(sourceFile, "r") as f3mf:
@@ -133,15 +137,17 @@ with ZipFile(sourceFile, "r") as f3mf:
 
                 root = ET.fromstring(xml)
 
+                xml_m = merge_cut.decode("utf-8")
+                
+                root_m = ET.fromstring(xml_m)
+
                 object = root.find("object")
-                root.append(object)
-                id = 1
-                for object in root.findall('object'):
-                    print(object.attrib)
-                    print("info id:",id)
-                    if object.attrib["id"] != str(id):
-                        object.set("id",str(id))
-                    id += 1
+
+                object_m = root_m.find("object")
+                object_m.set("id","2")
+
+                root.append(object_m)
+
 
                 buffer =  ET.tostring(root, encoding='UTF-8', xml_declaration = True) 
 
