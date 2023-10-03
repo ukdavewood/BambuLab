@@ -30,6 +30,8 @@ else:
 
 
 with ZipFile(sourceFile, "r") as f3mf:
+   for name in f3mf.namelist():
+       print(name)
 
    f3mf.extractall(path=sourceFile+"xx")
    print("Files extracted")

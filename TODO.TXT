@@ -1,0 +1,5 @@
+1. Merge 3mf
+2. STL import into 3mf 
+3. STL Merge
+4. Delete objects out of 3mfs
+
