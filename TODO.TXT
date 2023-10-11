@@ -3,3 +3,47 @@
 3. STL Merge
 4. Delete objects out of 3mfs
 
+Update3mf
+[E1,FF,W2,T2,T3,I15,PGrid]
+FF = Flush to Object and Infill
+W = Wall loops
+I = Sparce Infill Density
+E = Extruder
+P = Sparce Infill Pattern
+T = Top Shell Layer
+B = Botton Shell Layers
+
+insert = { }
+
+<metadata key="bottom_shell_layers" value="5"/>
+<metadata key="extruder" value="1"/>
+<metadata key="sparse_infill_density" value="25%"/>
+<metadata key="sparse_infill_pattern" value="gyroid"/>
+<metadata key="top_shell_layers" value="4"/>
+<metadata key="wall_loops" value="3"/>
+<metadata key="flush_into_infill" value="1"/>
+<metadata key="flush_into_objects" value="1"/>
+
+
+<config>
+  <object id="2">
+    <metadata key="name" value="Sphere"/>
+    <metadata key="extruder" value="1"/>
+    <part id="1" subtype="normal_part">
+      <metadata key="name" value="Sphere"/>
+      <metadata key="matrix" value="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1"/>
+      <mesh_stat edges_fixed="0" degenerate_facets="0" facets_removed="0" facets_reversed="0" backwards_edges="0"/>
+    </part>
+  </object>
+  <object id="4">
+    <metadata key="name" value="Cube"/>
+    <metadata key="bottom_shell_layers" value="5"/>
+    <metadata key="extruder" value="1"/>
+    <metadata key="sparse_infill_density" value="25%"/>
+    <metadata key="sparse_infill_pattern" value="gyroid"/>
+    <metadata key="top_shell_layers" value="4"/>
+    <metadata key="wall_loops" value="3"/>
+    <part id="3" subtype="normal_part">
+      <metadata key="name" value="Cube"/>
+      <metadata key="matrix" value="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1"/>
+      <metadata key="source_file" value="Cube.3mf"/>
