@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model unit="millimeter" xml:lang="en-US" xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02" xmlns:slic3rpe="http://schemas.slic3r.org/3mf/2017/06" xmlns:p="http://schemas.microsoft.com/3dmanufacturing/production/2015/06" requiredextensions="p">
+ <metadata name="Application">BambuStudio-01.07.06.92</metadata>
+ <metadata name="BambuStudio:3mfVersion">1</metadata>
+ <metadata name="CopyRight"></metadata>
+ <metadata name="Copyright"></metadata>
+ <metadata name="CreationDate">2023-10-03</metadata>
+ <metadata name="Description"></metadata>
+ <metadata name="Designer"></metadata>
+ <metadata name="DesignerCover"></metadata>
+ <metadata name="DesignerUserId">2338253900</metadata>
+ <metadata name="License"></metadata>
+ <metadata name="ModificationDate">2023-10-03</metadata>
+ <metadata name="Origin"></metadata>
+ <metadata name="Thumbnail_Middle">/Metadata/plate_1.png</metadata>
+ <metadata name="Thumbnail_Small">/Metadata/plate_1_small.png</metadata>
+ <metadata name="Title"></metadata>
+ <resources>
+  <object id="5" p:UUID="00000041-61cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Brown [E1]_65.model" objectid="1" p:UUID="00000041-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0.104171276 0 -6.43400216"/>
+    <component p:path="/3D/Objects/Brown [E1]_65.model" objectid="2" p:UUID="00000041-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0.451348424 -7.53245878 6.65358996"/>
+    <component p:path="/3D/Objects/Brown [E1]_65.model" objectid="3" p:UUID="00000041-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0.507691383 -1.7004962 2.01820827"/>
+    <component p:path="/3D/Objects/Brown [E1]_65.model" objectid="4" p:UUID="00000041-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 -1.38759065 12.5495746"/>
+   </components>
+  </object>
+  <object id="7" p:UUID="00000056-61cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Brown [E1].stl_86.model" objectid="6" p:UUID="00000056-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 2.81250006e-15 2.81250006e-15 0"/>
+   </components>
+  </object>
+  <object id="8" p:UUID="00000069-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Brown [E1].stl_86.model" objectid="6" p:UUID="00000069-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 2.81250006e-15 2.81250006e-15 0"/>
+   </components>
+  </object>
+  <object id="9" p:UUID="0000006a-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Brown [E1].stl_86.model" objectid="6" p:UUID="0000006a-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 2.81250006e-15 2.81250006e-15 0"/>
+   </components>
+  </object>
+  <object id="11" p:UUID="00000042-61cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_66.model" objectid="10" p:UUID="00000042-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="12" p:UUID="0000006b-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Brown [E1].stl_86.model" objectid="6" p:UUID="0000006b-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 2.81250006e-15 2.81250006e-15 0"/>
+   </components>
+  </object>
+  <object id="14" p:UUID="00000068-61cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Brown [E1].stl_104.model" objectid="13" p:UUID="00000068-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 2.81250006e-15 2.81250006e-15 0"/>
+   </components>
+  </object>
+  <object id="15" p:UUID="0000006c-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Brown [E1].stl_86.model" objectid="6" p:UUID="0000006c-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 2.81250006e-15 2.81250006e-15 0"/>
+   </components>
+  </object>
+  <object id="16" p:UUID="0000006d-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Brown [E1].stl_86.model" objectid="6" p:UUID="0000006d-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 2.81250006e-15 2.81250006e-15 0"/>
+   </components>
+  </object>
+  <object id="17" p:UUID="0000006e-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_66.model" objectid="10" p:UUID="0000006e-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="18" p:UUID="0000006f-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Brown [E1].stl_86.model" objectid="6" p:UUID="0000006f-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 2.81250006e-15 2.81250006e-15 0"/>
+   </components>
+  </object>
+  <object id="19" p:UUID="00000070-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_66.model" objectid="10" p:UUID="00000070-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="20" p:UUID="00000071-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_66.model" objectid="10" p:UUID="00000071-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="21" p:UUID="00000072-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Brown [E1].stl_86.model" objectid="6" p:UUID="00000072-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 2.81250006e-15 2.81250006e-15 0"/>
+   </components>
+  </object>
+  <object id="22" p:UUID="00000073-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Brown [E1].stl_86.model" objectid="6" p:UUID="00000073-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 2.81250006e-15 2.81250006e-15 0"/>
+   </components>
+  </object>
+  <object id="23" p:UUID="00000074-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_66.model" objectid="10" p:UUID="00000074-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="24" p:UUID="00000075-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Brown [E1].stl_86.model" objectid="6" p:UUID="00000075-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 2.81250006e-15 2.81250006e-15 0"/>
+   </components>
+  </object>
+  <object id="25" p:UUID="00000076-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Brown [E1].stl_86.model" objectid="6" p:UUID="00000076-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 2.81250006e-15 2.81250006e-15 0"/>
+   </components>
+  </object>
+  <object id="26" p:UUID="00000077-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_66.model" objectid="10" p:UUID="00000077-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="27" p:UUID="00000078-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_66.model" objectid="10" p:UUID="00000078-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="28" p:UUID="00000079-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Brown [E1].stl_86.model" objectid="6" p:UUID="00000079-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 2.81250006e-15 2.81250006e-15 0"/>
+   </components>
+  </object>
+  <object id="29" p:UUID="0000007a-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_66.model" objectid="10" p:UUID="0000007a-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="30" p:UUID="0000007b-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Brown [E1].stl_86.model" objectid="6" p:UUID="0000007b-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 2.81250006e-15 2.81250006e-15 0"/>
+   </components>
+  </object>
+  <object id="31" p:UUID="0000007c-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_66.model" objectid="10" p:UUID="0000007c-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="32" p:UUID="0000007d-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_66.model" objectid="10" p:UUID="0000007d-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="33" p:UUID="0000007e-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_66.model" objectid="10" p:UUID="0000007e-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="34" p:UUID="0000007f-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_66.model" objectid="10" p:UUID="0000007f-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="35" p:UUID="00000080-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Brown [E1].stl_86.model" objectid="6" p:UUID="00000080-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 2.81250006e-15 2.81250006e-15 0"/>
+   </components>
+  </object>
+  <object id="36" p:UUID="00000081-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_66.model" objectid="10" p:UUID="00000081-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="37" p:UUID="00000082-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_66.model" objectid="10" p:UUID="00000082-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="38" p:UUID="00000083-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_66.model" objectid="10" p:UUID="00000083-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="39" p:UUID="00000084-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_66.model" objectid="10" p:UUID="00000084-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="40" p:UUID="00000085-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_66.model" objectid="10" p:UUID="00000085-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="41" p:UUID="00000086-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Brown [E1].stl_86.model" objectid="6" p:UUID="00000086-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 2.81250006e-15 2.81250006e-15 0"/>
+   </components>
+  </object>
+  <object id="42" p:UUID="00000087-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_66.model" objectid="10" p:UUID="00000087-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="43" p:UUID="00000088-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_66.model" objectid="10" p:UUID="00000088-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+  <object id="44" p:UUID="00000089-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Brown [E1].stl_86.model" objectid="6" p:UUID="00000089-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 2.81250006e-15 2.81250006e-15 0"/>
+   </components>
+  </object>
+  <object id="45" p:UUID="0000008a-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Brown [E1].stl_86.model" objectid="6" p:UUID="0000008a-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 2.81250006e-15 2.81250006e-15 0"/>
+   </components>
+  </object>
+  <object id="46" p:UUID="0000008b-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Brown [E1].stl_86.model" objectid="6" p:UUID="0000008b-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 2.81250006e-15 2.81250006e-15 0"/>
+   </components>
+  </object>
+  <object id="47" p:UUID="0000008c-71cb-4c03-9d28-80fed5dfa1dc" type="model">
+   <components>
+    <component p:path="/3D/Objects/Cube_66.model" objectid="10" p:UUID="0000008c-b206-40ff-9872-83e8017abed1" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>
+   </components>
+  </object>
+ </resources>
+ <build p:UUID="2c7c17d8-22b5-4d84-8835-1976022ea369">
+  <item objectid="5" p:UUID="00000005-b1ec-4553-aec9-835e5b724bb4" transform="1 0 0 0 1 0 0 0 1 47.6571195 200.081879 19.4340022" printable="1"/>
+  <item objectid="7" p:UUID="00000007-b1ec-4553-aec9-835e5b724bb4" transform="2 0 0 0 2 0 0 0 2 216.494666 -83.690038 35.4960175" printable="0"/>
+  <item objectid="8" p:UUID="00000008-b1ec-4553-aec9-835e5b724bb4" transform="1.71 0 0 0 1.71 0 0 0 1.71 182.880686 160.900022 30.3490949" printable="1"/>
+  <item objectid="9" p:UUID="00000009-b1ec-4553-aec9-835e5b724bb4" transform="1.94 0 0 0 1.94 0 0 0 1.94 157.411808 -82.790241 34.4311369" printable="0"/>
+  <item objectid="11" p:UUID="0000000b-b1ec-4553-aec9-835e5b724bb4" transform="2 0 0 0 2 0 0 0 2 168.55383 -137.483362 25.6000004" printable="0"/>
+  <item objectid="12" p:UUID="0000000c-b1ec-4553-aec9-835e5b724bb4" transform="1.53 0 0 0 1.53 0 0 0 1.53 132.294705 168.23923 27.1544534" printable="1"/>
+  <item objectid="14" p:UUID="0000000e-b1ec-4553-aec9-835e5b724bb4" transform="1.5 0 0 0 1.5 0 0 0 1.5 149.081474 123.87076 26.6220131" printable="1"/>
+  <item objectid="15" p:UUID="0000000f-b1ec-4553-aec9-835e5b724bb4" transform="1.88 0 0 0 1.88 0 0 0 1.88 114.76201 -121.029193 33.3662564" printable="0"/>
+  <item objectid="16" p:UUID="00000010-b1ec-4553-aec9-835e5b724bb4" transform="1.47 0 0 0 1.47 0 0 0 1.47 194.212403 112.523693 26.0895728" printable="1"/>
+  <item objectid="17" p:UUID="00000011-b1ec-4553-aec9-835e5b724bb4" transform="1.95 0 0 0 1.95 0 0 0 1.95 219.11383 -138.642946 24.9600004" printable="0"/>
+  <item objectid="18" p:UUID="00000012-b1ec-4553-aec9-835e5b724bb4" transform="1.41 0 0 0 1.41 0 0 0 1.41 228.049834 142.470098 25.0246923" printable="1"/>
+  <item objectid="19" p:UUID="00000013-b1ec-4553-aec9-835e5b724bb4" transform="1.89 0 0 0 1.89 0 0 0 1.89 169.96183 -187.275362 24.1920004" printable="0"/>
+  <item objectid="20" p:UUID="00000014-b1ec-4553-aec9-835e5b724bb4" transform="1.42 0 0 0 1.42 0 0 0 1.42 228.398116 183.79119 18.1760003" printable="1"/>
+  <item objectid="21" p:UUID="00000015-b1ec-4553-aec9-835e5b724bb4" transform="1.82 0 0 0 1.82 0 0 0 1.82 118.477749 -176.387085 32.3013759" printable="0"/>
+  <item objectid="22" p:UUID="00000016-b1ec-4553-aec9-835e5b724bb4" transform="1.35 0 0 0 1.35 0 0 0 1.35 162.814498 81.291597 23.9598118" printable="1"/>
+  <item objectid="23" p:UUID="00000017-b1ec-4553-aec9-835e5b724bb4" transform="1.84 0 0 0 1.84 0 0 0 1.84 217.70583 -187.154946 23.5520004" printable="0"/>
+  <item objectid="24" p:UUID="00000018-b1ec-4553-aec9-835e5b724bb4" transform="1.24 0 0 0 1.24 0 0 0 1.24 235.369036 101.379257 22.0075308" printable="1"/>
+  <item objectid="25" p:UUID="00000019-b1ec-4553-aec9-835e5b724bb4" transform="1.76 0 0 0 1.76 0 0 0 1.76 173.533651 -237.861121 31.2364954" printable="0"/>
+  <item objectid="26" p:UUID="0000001a-b1ec-4553-aec9-835e5b724bb4" transform="1.26 0 0 0 1.26 0 0 0 1.26 201.186663 72.350814 16.1280002" printable="1"/>
+  <item objectid="27" p:UUID="0000001b-b1ec-4553-aec9-835e5b724bb4" transform="1.79 0 0 0 1.79 0 0 0 1.79 122.85783 -226.592631 22.9120003" printable="0"/>
+  <item objectid="28" p:UUID="0000001c-b1ec-4553-aec9-835e5b724bb4" transform="1.18 0 0 0 1.18 0 0 0 1.18 123.85114 90.059853 20.9426503" printable="1"/>
+  <item objectid="29" p:UUID="0000001d-b1ec-4553-aec9-835e5b724bb4" transform="1.74 0 0 0 1.74 0 0 0 1.74 222.197993 -232.978946 22.2720003" printable="0"/>
+  <item objectid="30" p:UUID="0000001e-b1ec-4553-aec9-835e5b724bb4" transform="1.65 0 0 0 1.65 0 0 0 1.65 72.230971 -152.53977 29.2842144" printable="0"/>
+  <item objectid="31" p:UUID="0000001f-b1ec-4553-aec9-835e5b724bb4" transform="1.16 0 0 0 1.16 0 0 0 1.16 109.739962 129.59253 14.8480002" printable="1"/>
+  <item objectid="32" p:UUID="00000020-b1ec-4553-aec9-835e5b724bb4" transform="1.68 0 0 0 1.68 0 0 0 1.68 69.70681 -198.787919 21.5040003" printable="0"/>
+  <item objectid="33" p:UUID="00000021-b1ec-4553-aec9-835e5b724bb4" transform="1.11 0 0 0 1.11 0 0 0 1.11 233.522663 66.575562 14.2080002" printable="1"/>
+  <item objectid="34" p:UUID="00000022-b1ec-4553-aec9-835e5b724bb4" transform="1.05 0 0 0 1.05 0 0 0 1.05 169.618662 45.606292 13.4400002" printable="1"/>
+  <item objectid="35" p:UUID="00000023-b1ec-4553-aec9-835e5b724bb4" transform="1.59 0 0 0 1.59 0 0 0 1.59 137.98013 -273.348993 28.2193339" printable="0"/>
+  <item objectid="36" p:UUID="00000024-b1ec-4553-aec9-835e5b724bb4" transform="1.63 0 0 0 1.63 0 0 0 1.63 79.08183 -241.155919 20.8640003" printable="0"/>
+  <item objectid="37" p:UUID="00000025-b1ec-4553-aec9-835e5b724bb4" transform="1.58 0 0 0 1.58 0 0 0 1.58 182.047212 -284.47888 20.2240003" printable="0"/>
+  <item objectid="38" p:UUID="00000026-b1ec-4553-aec9-835e5b724bb4" transform="1.53 0 0 0 1.53 0 0 0 1.53 94.553048 -281.603919 19.5840003" printable="0"/>
+  <item objectid="39" p:UUID="00000027-b1ec-4553-aec9-835e5b724bb4" transform="1.47 0 0 0 1.47 0 0 0 1.47 221.087212 -274.066946 18.8160003" printable="0"/>
+  <item objectid="40" p:UUID="00000028-b1ec-4553-aec9-835e5b724bb4" transform="1.37 0 0 0 1.37 0 0 0 1.37 40.68183 -237.82792 17.5360003" printable="0"/>
+  <item objectid="41" p:UUID="00000029-b1ec-4553-aec9-835e5b724bb4" transform="1.29 0 0 0 1.29 0 0 0 1.29 28.858423 -200.946495 22.8949313" printable="0"/>
+  <item objectid="42" p:UUID="0000002a-b1ec-4553-aec9-835e5b724bb4" transform="1.32 0 0 0 1.32 0 0 0 1.32 58.073048 -278.915919 16.8960003" printable="0"/>
+  <item objectid="43" p:UUID="0000002b-b1ec-4553-aec9-835e5b724bb4" transform="1.21 0 0 0 1.21 0 0 0 1.21 32.00015 -166.113069 15.4880002" printable="0"/>
+  <item objectid="44" p:UUID="0000002c-b1ec-4553-aec9-835e5b724bb4" transform="1.12 0 0 0 1.12 0 0 0 1.12 70.902635 -111.022487 19.8777698" printable="0"/>
+  <item objectid="45" p:UUID="0000002d-b1ec-4553-aec9-835e5b724bb4" transform="1.06 0 0 0 1.06 0 0 0 1.06 35.702866 -134.728827 18.8128893" printable="0"/>
+  <item objectid="46" p:UUID="0000002e-b1ec-4553-aec9-835e5b724bb4" transform="1 0 0 0 1 0 0 0 1 90.028895 -85.629155 17.7480087" printable="0"/>
+  <item objectid="47" p:UUID="0000002f-b1ec-4553-aec9-835e5b724bb4" transform="1 0 0 0 1 0 0 0 1 41.307508 -106.032586 12.8000002" printable="0"/>
+ </build>
+</model>

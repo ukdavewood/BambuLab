@@ -1,0 +1,648 @@
+#!/usr/bin/python
+"""
+ ZetCode PyQt6 tutorial
+ In this example, we select a file with a
+ QFileDialog and display its contents
+ in a QTextEdit.
+ Author: Jan Bodnar
+ Website: zetcode.com
+ """
+from PyQt6.QtWidgets import (QMainWindow, QTextEdit,
+         QFileDialog, QApplication)
+from PyQt6.QtGui import QIcon, QAction
+from pathlib import Path
+import sys
+
+filename =""
+
+     #!/usr/bin/python3
+
+# V1 - layer size stats - for single colour purge target models
+
+
+# Todo
+#  1. Check if selected objects fit on plate
+#  2. take into account extra size when selecting objects - i.e. Get objects of smaller size if nearly as much purge benefit
+#  3. Mark taken objects too - once successful print confirmed.
+#  4. Cache Gcode processing for large files
+#  5. Improve selection
+#  6. Allow multiple instances of same objects
+
+
+
+
+
+
+import sys
+import re
+import os
+
+import io
+
+import pprint
+import json
+
+
+from zipfile import ZipFile
+
+import xml.etree.ElementTree as ET
+
+def find_flush(ex):
+ 
+ 
+
+
+ def UpdateDimensions(x0,y0,flush):
+    #print("UD:",x0,y0,flush)
+    if x0 == -999:
+        x0 = xPrev
+    if y0 == -999:
+        y0 = yPrev
+    
+    x1 = xPrev
+    y1 = yPrev
+
+    if x0>x1:
+        xt = x0
+        x0 = x1
+        x1 = xt
+
+    if y0>y1:
+        yt = y0
+        y0 = y1
+        y1 = yt
+
+    if not flush:
+        if x0 < Object_Dim[0]:
+            Object_Dim[0] = x0
+        if y0 < Object_Dim[1]:
+            Object_Dim[1] = y0
+        if x1 > Object_Dim[2]:
+            Object_Dim[2] = x1
+        if y1 > Object_Dim[3]:
+            Object_Dim[3] = y1
+
+
+ layers = {}
+
+
+
+ LAYERNUM = "; layer num/total_layer_count: "
+            
+ if len(sys.argv) == 3:
+    sourceFile=sys.argv[1]
+    flushFiles=sys.argv[2]
+ else:
+    ex.print("no argv")
+    sourceFile="~/Documents/GitHub/BambuLab/Gcode/Cube28.gcode"
+    sourceFile="~/Documents/GitHub/BambuLab/Gcode/Cube1 2 28.gcode"
+
+ ex.filename = sourceFile
+ ex.flush_dir = flushFiles
+
+ with ZipFile(sourceFile, "r") as f3mf:
+
+    for name in f3mf.namelist():
+        buffer = f3mf.read(name)
+        if name.endswith(".gcode"):     
+            ex.printN(name)
+            with io.TextIOWrapper(f3mf.open(name), encoding="utf-8") as f:
+                lines = f.readlines()
+
+
+
+                extrude = float(0)
+                layer = "0"
+                total_extrude = float(0)
+                extrude_minus = float(0)
+                flush = False
+                total_flush_extrude = float(0)
+                extrudeT = []
+                flushT = []
+                T = 0
+                xPrev = -999
+                yPrev = -999
+                printing_object = False
+
+                Prime_TDim = [1000.0,1000.0,0,0]
+                Object_Dim = [1000.0,1000.0,0,0]
+                Purge_Dim = [1000.0,1000.0,0.0,0.0]
+
+                Tools_on_layer = []
+
+                flushP = float(0)
+
+                Tool = ""
+
+ 
+                #  { "1":  { "E" : 11.1, "F": 9.5}, }
+
+
+
+
+
+                for lIndex in range(len(lines)):
+                    oline = lines[lIndex]
+                    # Parse gcode line
+                    if oline.startswith(LAYERNUM):   # Extruder translations
+                        data = oline[len(LAYERNUM):]
+                        layerNum = data.split("/")[0]
+                        totalLayer = data.split("/")[1]
+                        # print("layer,extrude:",layer,round(extrude,2),Tools_on_layer)
+                        if layer in layers:
+                            layers[layer]["E"] = round(extrude,2)
+                        else:
+                            layers[layer] = {"E": round(extrude,2)}
+                        Tools_on_layer.clear()
+                        Tools_on_layer.append(Tool)
+                        layer = layerNum
+                        total_extrude += extrude
+                        extrude = 0
+                    
+                    if layer == "2" and oline.startswith('; LAYER_HEIGHT: '):
+                        LayerHeight = round(float(oline.split(' ')[2].strip()),2)
+                        # print("Layer Height",LayerHeight)
+                        layers["LayerHeight"] = LayerHeight
+
+                    if oline.startswith("T"):
+                        Tool = oline.split('\n')[0]
+                        Tools_on_layer.append(Tool)
+
+
+                    if oline.startswith("; FLUSH_START"):
+                        flush=True
+                        flushP = total_flush_extrude
+                    if oline.startswith("; FLUSH_END"):
+                        flush=False
+                        Tools_on_layer.append("F"+str(round(total_flush_extrude-flushP,2)))
+                        if layer in layers and "F" in layers[layer]:
+                                layers[layer]["F"] = round(layers[layer]["F"] + total_flush_extrude-flushP,2)
+                        else:
+                            layers[layer] = {}
+                            layers[layer]["F"] = round(total_flush_extrude-flushP , 2)            
+
+                    
+                    if oline.startswith("; start printing object"):
+                        printing_object = True
+                    if oline.startswith("; stop printing object"):
+                        printing_object = False
+
+                    if oline.startswith("G0 ") or oline.startswith("G1 ") or oline.startswith("G2 ") or oline.startswith("G3 ") :
+                        parms = oline.split(';')[0].split(" ")
+                        xVal = -999
+                        yVal = -999
+                        amount = ""
+                        for p in parms:
+                            if p[0:1] == "E":
+                                amount = p[1:]
+                                extrude = extrude + float(amount)
+                                if float(amount) < 0:
+                                    extrude_minus += float(amount)
+                                if flush:
+                                    total_flush_extrude += float(amount)
+                            if p[0:1] == "X":
+                                xVal = float(p[1:])
+                            if p[0:1] == "Y":
+                                yVal = float(p[1:])
+                            # /TODO/ Also need logic for G2, G3
+
+
+                        if amount != "" and layer != "0" and printing_object:
+                            UpdateDimensions(xVal, yVal, flush)
+
+                        if xVal != -999:
+                            xPrev = xVal
+
+                        if yVal != -999:
+                            yPrev = yVal
+
+                    if oline.startswith(";===== wipe nozzle end"):
+                        ex.print("extrude at wipe nozzle end "+str(round(extrude,2)))
+                            
+                # print("layer,extrude:",layer,round(extrude,2),Tools_on_layer)
+                total_extrude += extrude
+                ex.print("Total extrude:"+str(round(total_extrude,2)))
+                ex.print("extrude minus:"+str(round(extrude_minus,2)))
+
+                ex.printN(f" Adjusted total Extrude = {round((total_extrude-29)/1000,2)}M")   
+                ex.printN(f" Total Flush Extrude = {round(total_flush_extrude/1000,2)}M")
+
+                ex.print(f"Object_Dim: {Object_Dim}")
+                # print("Layers",layers)
+
+
+#  create table of files, plates, objects sizes and layears
+#  scan through project 3mfs in first itteration to get object coordinates, then gcode.3mfs
+#  then 
+
+ flush = {}
+ OBJECTSTART = "; start printing object, unique label id:"
+ OBJECTEND = "; stop printing object, unique label id:"
+
+
+#  Itteration 1 - get files, plates, objects
+
+ files = {}
+
+ for filename in os.listdir(flushFiles):
+    ex.print(filename)
+
+    if filename.endswith(".gcode.3mf"):
+       objects = {}
+       layer = { "E": 0 }
+       extent = { }
+       with ZipFile(flushFiles+"/"+filename, "r") as f3mf:
+            ex.print("Flush File 3mf:",filename)
+            for name in f3mf.namelist():
+                ex.print(name)
+                if name.endswith(".gcode"):
+                    temp = name.split("_")[1]
+                    plate = temp.split(".")[0]
+                    ex.print("plate:",plate)
+                    layerNum = 0
+                    object_extrude = 0
+                    LayerHeight = 0
+
+
+                    with io.TextIOWrapper(f3mf.open(name), encoding="utf-8") as f:
+                        lines = f.readlines()
+                        ex.print("Gcode - lines:",len(lines))
+                        InObject = False
+
+                        for lIndex in range(len(lines)):
+                            oline = lines[lIndex]
+                            
+
+                            if oline.startswith('; LAYER_HEIGHT: '):
+                                LayerHeight = round(float(oline.split(' ')[2].strip()),2)
+                                # print("Flush Layer Height",LayerHeight)
+                                
+
+                            if oline.startswith(LAYERNUM):   # Extruder translations
+                                data = oline[len(LAYERNUM):]
+                                layerNum = data.split("/")[0]
+                                totalLayer = data.split("/")[1]
+                            
+                            if oline.startswith(OBJECTSTART):
+                                InObject = True
+                                object_extrude = 0
+                                id = oline[len(OBJECTSTART):].strip()
+                                #print(f"ObjectS:<{id}>,Layer:{layerNum}")
+                                if id not in objects:
+                                    extent = { "plate" : plate, "X1": 999.0, "Y1": 999.0, "X2": 0.0, "Y2": 0.0, "Ext": 0, "Layers": 0}
+                                    objects[id] = { "extent": extent, "layers": {} }
+                                else:
+                                    extent = objects[id]["extent"]
+
+                                yPrev = -999.0
+                                xPrev = -999.0
+
+
+                            if InObject and (oline.startswith("G0 ") or oline.startswith("G1 ") or oline.startswith("G2 ") or oline.startswith("G3 ")) :
+                                parms = oline.split(';')[0].split(" ")
+                                xPrev = xVal
+                                yPrev = yVal
+                                xVal = -999.0
+                                yVal = -999.0
+                                amount = ""
+                                for p in parms:
+                                    if p[0:1] == "E":
+                                        amount = p[1:]
+                                        object_extrude = object_extrude + float(amount)
+
+                                    if p[0:1] == "X":
+                                        xVal = round(float(p[1:]),2)
+
+                                    if p[0:1] == "Y":
+                                        yVal = round(float(p[1:]),2)
+
+                                    # /TODO/ Also need logic for G2, G3
+
+                                if amount != "":
+                                    if xPrev != -999.0:
+                                        if xPrev < extent["X1"]:
+                                            extent["X1"] = xPrev
+                                        if xPrev > extent["X2"]:
+                                            extent["X2"] = xPrev
+                                    if xVal != -999.0:
+                                        if xVal < extent["X1"]:
+                                            extent["X1"] = xVal
+                                        if xVal > extent["X2"]:
+                                            extent["X2"] = xVal
+                                    if yPrev != -999.0:
+                                        if yPrev < extent["Y1"]:
+                                            extent["Y1"] = yPrev
+                                        if yPrev > extent["Y2"]:
+                                            extent["Y2"] = yPrev
+                                    if yVal != -999.0:
+                                        if yVal < extent["Y1"]:
+                                            extent["Y1"] = yVal
+                                        if yVal > extent["Y2"]:
+                                            extent["Y2"] = yVal
+
+                            if oline.startswith(OBJECTEND):
+                                InObject = False
+                                id = oline[len(OBJECTEND):].strip()
+                                #print(f"ObjectE:<{id}>,Layer:{layerNum}")
+                                objects[id]["extent"]["Ext"] = round(objects[id]["extent"]["Ext"] + object_extrude,2)
+                                objects[id]["extent"]["Layers"] = layerNum
+                                objects[id]["extent"]["LayerHeight"] = LayerHeight
+                                objects[id]["extent"] = extent
+                                objects[id]["layers"][layerNum] = {"E": round(object_extrude,2)}
+
+    #    print("objects:",objects)
+
+
+
+       files[filename] = objects
+
+    elif filename.endswith(".3mf"):
+        with ZipFile(flushFiles+"/"+filename, "r") as f3mf:
+
+                ex.print("Flush File 3mf:",filename)
+                for name in f3mf.namelist():
+ 
+                    ex.print(name)
+
+                    if name == 'Metadata/model_settings.config':
+
+                        buffer = f3mf.read(name)
+
+                        #print(buffer)
+                        xml = buffer.decode("utf-8")
+                        #print(xml);
+                        root = ET.fromstring(xml)
+                        # print("root.tag",root.tag)
+                        # for child in root:
+                        #     print(child.tag,child.attrib)
+
+                    if name == '3D/3dmodel.model':
+
+                        buffer = f3mf.read(name)
+
+                        #print(buffer)
+                        xml = buffer.decode("utf-8")
+                        #print(xml)
+                        root = ET.fromstring(xml)
+                        #print("root.attrib",root.attrib)
+                        ns = re.match(r'{.*}', root.tag).group(0)
+                        p = "{http://schemas.microsoft.com/3dmanufacturing/production/2015/06}"
+                        #print("ns,p:",ns,p)
+                        for node in root.findall(f"./{ns}resources/{ns}object"):
+                            id = node.attrib['id']
+                            ex.print("id:",node.attrib['id'])
+                            for node2 in node.findall(f"./{ns}components/{ns}component"):
+                                #print(node2.attrib)
+                                path = node2.attrib[f"{p}path"]
+                                transform1 = node2.attrib['transform']
+                                ex.print("Path,transform:",path,transform1)
+                                for item in root.findall(f"./{ns}build/{ns}item[@objectid='{id}']"):
+                                    #print("**item:",item.attrib)
+                                    transform2 = item.attrib['transform']
+                                    ex.print("transform2:",transform2)
+
+ selected_objects = []
+ remaining_flush = total_flush_extrude
+ objects_left = True
+ count = 0
+
+ minimum_percentage = 0.2
+ min_flush_benefit = 200
+
+
+#  selection methods
+#   V1 - highest flush
+#   V2 -  smallest object that takes > x% of remaining flush and still flushes at least 100mm
+
+ while remaining_flush > 10 and objects_left and count < 20:
+
+
+    ex.print("**Itteration",count)
+    count += 1
+    highest_flush = 0
+    smallest_object_extrude = -1
+    highest_file = ""
+    highest_object = ""
+    for file_key,objects in files.items():
+        #print("files:",file_key)
+        for object_id,object in objects.items():
+            ex.print("Checking for match")
+            if "Selected" not in object and "LayerHeight" in layers and "LayerHeight" in object["extent"] and layers["LayerHeight"] == object["extent"]["LayerHeight"]:
+                ex.print("unselected layer height match found")
+                flush_total = 0.0
+                #print("object:",object_id)
+                for key,layer in layers.items():
+                    # print ("Layer:",key)
+                    if key != "LayerHeight" and "F" in layer:
+                        # print("Check for F",layer["F"],key)
+                        if key in object["layers"]:
+                            # print("Object layer found:",object["layers"][key])
+                            if object["layers"][key]["E"] > layer["F"]:
+                                flush_total += layer["F"]
+                            else:
+                                flush_total += object["layers"][key]["E"]
+                #print("Flush total:",round(flush_total/1000,2),"M")
+    #             if flush_total > highest_flush:  # v1
+    #                 highest_flush = flush_total
+    #                 highest_file = file_key
+    #                 highest_object = object_id
+
+    # print("selected object:",highest_file,highest_object,round(highest_flush/1000,2),"M")
+    # if highest_flush > 100:
+        #print("Files:",files)
+    # V2
+                if flush_total > min_flush_benefit and flush_total / remaining_flush > minimum_percentage:
+                    if smallest_object_extrude == -1 or object["extent"]["Ext"] < smallest_object_extrude:
+                        highest_flush = flush_total
+                        highest_file = file_key
+                        highest_object = object_id
+                        smallest_object_extrude = object["extent"]["Ext"]
+
+    ex.print("selected object:",highest_file,highest_object,round(highest_flush/1000,2),"M - Size",round(smallest_object_extrude/1000,2) ) # v2
+    # print("selected object:",highest_file,highest_object,round(highest_flush/1000,2),"M")  # v1
+    if highest_flush > min_flush_benefit:
+        # print("Files:",files)                   
+
+        files[highest_file][highest_object]["Selected"] = highest_flush
+        #  now reduce the availble flush from this object
+        remaining_flush = 0
+        flush_total = 0
+        for key,layer in layers.items():
+            # print ("Layer:",key)
+
+            if key != "LayerHeight" and "F" in layer and layer["F"] > 0:
+                # print("Check for F",layer["F"],key)
+                if key in files[highest_file][highest_object]["layers"]:
+                    # print("Object layer found:",object["layers"][key])
+                    if files[highest_file][highest_object]["layers"][key]["E"] > layer["F"]:
+                        flush_total += layer["F"]
+                        layer["F"] = 0.0
+                    else:
+                        flush_total += files[highest_file][highest_object]["layers"][key]["E"]
+                        layer["F"] -= files[highest_file][highest_object]["layers"][key]["E"]
+                        remaining_flush += layer["F"]
+                else:
+                    remaining_flush += layer["F"]
+        #print("Flush total:",round(flush_total/1000,2),"M")
+        ex.printN(count," Remaining Flush:", round(remaining_flush/1000,2),"M")
+
+    else:
+        ex.printN("Remaining flush saving too small - finishing object selection")
+        objects_left= False
+
+# print("Files:",files)
+
+# Transform - Metadata/model.settings
+# 200%    <assemble_item object_id="2" instance_id="0" transform="2 0 0 0 2 0 0 0 2 0 0 17.748008728027344" offset="0 0 0" />
+# 150%    <assemble_item object_id="2" instance_id="0" transform="1.5 0 0 0 1.5 0 0 0 1.5 0 0 17.748008728027344" offset="0 0 0" />
+# 100%    <assemble_item object_id="2" instance_id="0" transform="1 0 0 0 1 0 0 0 1 0 0 17.748008728027344" offset="0 0 0" />
+
+#  Next stage is to create copies of flush project files with just selected objects printable, also with flush selected
+
+ ex.print("now go through selections and create modifled project 3mf files")
+
+ for filename,objects in files.items():
+    bSelected = False
+    for object_id, object in objects.items():
+        if "Selected" in object:
+            bSelected = True
+            ex.print(filename,object_id,object["extent"])
+    if bSelected:
+        projectfile = filename.replace("gcode.3mf","3mf")
+        ex.printN(projectfile)
+        if not os.path.isfile(flushFiles+"/"+projectfile):
+            ex.print("Project file not found")
+        else:
+            with ZipFile(flushFiles+"/"+projectfile, "r") as f3mf:
+                with ZipFile(flushFiles+"/NEW"+projectfile, "w") as f3mf_o:
+                    buffer = f3mf.read("Metadata/model_settings.config")
+                    xml_ms = buffer.decode("utf-8")
+                    root_ms = root = ET.fromstring(xml_ms)
+
+
+                    for name in f3mf.namelist():
+                        buffer = f3mf.read(name)
+
+                        if name == '3D/3dmodel.model':
+
+                            xml = buffer.decode("utf-8")
+                            # print(xml)
+                            ns1 = "http://schemas.microsoft.com/3dmanufacturing/core/2015/02"
+                            ET.register_namespace('',ns1)
+                            p = "{http://schemas.microsoft.com/3dmanufacturing/production/2015/06}"
+                            p2 = "http://schemas.microsoft.com/3dmanufacturing/production/2015/06"
+                            ET.register_namespace('p',p2)
+                            ET.register_namespace("slic3rpe","http://schemas.slic3r.org/3mf/2017/06")
+                            root = ET.fromstring(xml)
+                            # print("root.attrib",root.attrib)
+                            ns = re.match(r'{.*}', root.tag).group(0)
+
+                            # print("ns,p:",ns,p)
+                            for node in root.findall(f"./{ns}resources/{ns}object"):
+                                id = node.attrib['id']
+
+                                for mod_inst in root_ms.findall("./plate/model_instance"):
+                                    obj_id = mod_inst.find("metadata[@key='object_id']")
+                                    if obj_id.attrib["value"] == id:
+                                        identify = mod_inst.find("metadata[@key='identify_id']")
+                                        # print("identify:",identify.attrib)
+                                        identify_id = identify.attrib['value']
+                                        if identify_id not in objects:
+                                            ex.printN("identify id not found in gcode objects",identify_id)
+                                        else:
+                                            if "Selected" in objects[identify_id]:
+                                                ex.printN("Selected",identify_id)
+                                            else:
+                                                # print("Not selected",identify_id)
+                                                for item in root.findall(f"./{ns}build/{ns}item[@objectid='{id}']"):
+                                                    # print("found item to set to non printable")
+                                                    item.set("printable","0")            
+
+                                
+
+
+                            buffer =  ET.tostring(root, encoding='UTF-8', xml_declaration = True)
+                            #print(buffer)
+                            
+
+                            f3mf_o.writestr(name,buffer)  
+    ex.print("finished")
+
+
+
+class Example(QMainWindow):
+     def __init__(self):
+         super().__init__()
+         self.flush_dir=""
+         self.filename=""
+         self.progress = ""
+         self.progress2 = ""
+         self.initUI()
+    
+     def print(self, *values: object):
+        #  print(values)
+         self.progress2 = ""
+         for value in values:
+            self.progress2 = self.progress2 + " " + str(value)
+         self.updateText()
+         QApplication.processEvents()
+     def printN(self, *values: object):
+        #  print(values)
+
+         for value in values:
+            self.progress = self.progress + " " + str(value)
+         self.progress = self.progress + '\n'
+         self.updateText()
+         QApplication.processEvents()
+     def updateText(self):
+
+         self.textEdit.setText("file:"+self.filename+"\nFlush:"+self.flush_dir+"\n"+self.progress+self.progress2)
+         self.repaint()  #/***/
+     def initUI(self):
+         print("2:",self.flush_dir)
+         self.textEdit = QTextEdit()
+         self.setCentralWidget(self.textEdit)
+
+         self.statusBar()
+         openFile = QAction(QIcon('open.png'), 'Open', self)
+         openFile.setShortcut('Ctrl+O')
+         openFile.setStatusTip('Open new File')
+         openFile.triggered.connect(self.showDialog)
+         menubar = self.menuBar()
+         fileMenu = menubar.addMenu('&File')
+         fileMenu.addAction(openFile)
+         self.setGeometry(300, 300, 550, 450)
+         self.setWindowTitle('Find Flush')
+         self.show()
+     def showDialog(self):
+        #  home_dir = str(Path.home())
+        #  fname = QFileDialog.getOpenFileName(self, 'Open file', home_dir)
+        #  if fname[0]:
+        #      f = open(fname[0], 'r')
+        #      with f:
+        #          data = f.read()
+        #          self.textEdit.setText(data)
+                 find_flush(self)
+                 print("find_flush completed")
+
+
+
+
+def main():
+
+     filename = ""
+     app = QApplication(sys.argv)
+     ex = Example()
+
+
+
+     sys.exit(app.exec())
+if __name__ == '__main__':
+     main()
+
+
+                                        
+            
+
+
+
