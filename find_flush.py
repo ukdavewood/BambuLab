@@ -568,6 +568,31 @@ def find_flush(ex):
                             f3mf_o.writestr(name,buffer)  
     ex.print("finished")
 
+class FlushProg(QTextEdit):
+     def __init__(self, title, parent):
+         super().__init__(title, parent)
+         self.setAcceptDrops(True)
+         self.filename = ""
+         self.flush_dir = ""
+         self.progress = ""
+         self.progress2 = ""
+     def dragEnterEvent(self, e):
+         if e.mimeData().hasFormat('text/uri-list') and len(e.mimeData().urls()) == 1 \
+              and e.mimeData().urls()[0].isLocalFile():
+             e.accept()
+         else:
+             print("ignore:",e.mimeData().formats())
+             e.ignore()
+     def dropEvent(self, e):
+         path = e.mimeData().urls()[0].path()
+         if path.endswith('/'):
+             self.flush_dir = path
+         else:
+             self.filename = path
+         self.updateText()
+     def updateText(self):
+         self.setText("file:"+self.filename+"\nFlush:"+self.flush_dir+"\n"+self.progress+self.progress2)
+
 
 
 class Example(QMainWindow):
@@ -575,35 +600,43 @@ class Example(QMainWindow):
          super().__init__()
          self.flush_dir=""
          self.filename=""
-         self.progress = ""
-         self.progress2 = ""
+        #  self.progress = ""
+        #  self.progress2 = ""
          self.initUI()
     
      def print(self, *values: object):
         #  print(values)
-         self.progress2 = ""
+         self.textEdit.progress2 = ""
          for value in values:
-            self.progress2 = self.progress2 + " " + str(value)
+            self.textEdit.progress2 = self.textEdit.progress2 + " " + str(value)
          self.updateText()
          QApplication.processEvents()
      def printN(self, *values: object):
         #  print(values)
 
          for value in values:
-            self.progress = self.progress + " " + str(value)
-         self.progress = self.progress + '\n'
+            self.textEdit.progress = self.textEdit.progress + " " + str(value)
+         self.textEdit.progress = self.textEdit.progress + '\n'
          self.updateText()
          QApplication.processEvents()
      def updateText(self):
 
-         self.textEdit.setText("file:"+self.filename+"\nFlush:"+self.flush_dir+"\n"+self.progress+self.progress2)
-         self.repaint()  #/***/
+         self.textEdit.updateText()
+
      def initUI(self):
          print("2:",self.flush_dir)
-         self.textEdit = QTextEdit()
+         self.textEdit = FlushProg("TextEdit",self)
+         if len(sys.argv) > 1:
+             self.textEdit.filename = sys.argv[1]
+         if len(sys.argv) > 2:
+             self.textEdit.flush_dir = sys.argv[2]
+         self.updateText()
+             
+
          self.setCentralWidget(self.textEdit)
 
-         self.statusBar()
+         self.statusBar().showMessage('Ready')
+
          openFile = QAction(QIcon('open.png'), 'Open', self)
          openFile.setShortcut('Ctrl+O')
          openFile.setStatusTip('Open new File')
@@ -611,9 +644,16 @@ class Example(QMainWindow):
          menubar = self.menuBar()
          fileMenu = menubar.addMenu('&File')
          fileMenu.addAction(openFile)
+         toolbar = self.addToolBar('Exit')
+         toolbar.addAction(openFile)
+
          self.setGeometry(300, 300, 550, 450)
          self.setWindowTitle('Find Flush')
          self.show()
+
+
+
+
      def showDialog(self):
         #  home_dir = str(Path.home())
         #  fname = QFileDialog.getOpenFileName(self, 'Open file', home_dir)
@@ -622,6 +662,7 @@ class Example(QMainWindow):
         #      with f:
         #          data = f.read()
         #          self.textEdit.setText(data)
+                 self.progress=""
                  find_flush(self)
                  print("find_flush completed")
 
