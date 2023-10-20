@@ -1,35 +1,8 @@
 #!/usr/bin/python
-"""
- ZetCode PyQt6 tutorial
- In this example, we select a file with a
- QFileDialog and display its contents
- in a QTextEdit.
- Author: Jan Bodnar
- Website: zetcode.com
- """
-from PyQt6.QtWidgets import (QMainWindow, QTextEdit,
-         QFileDialog, QApplication)
-from PyQt6.QtGui import QIcon, QAction
+
+
+
 from pathlib import Path
-import sys
-
-filename =""
-
-     #!/usr/bin/python3
-
-# V1 - layer size stats - for single colour purge target models
-
-
-# Todo
-#  1. Check if selected objects fit on plate
-#  2. take into account extra size when selecting objects - i.e. Get objects of smaller size if nearly as much purge benefit
-#  3. Mark taken objects too - once successful print confirmed.
-#  4. Cache Gcode processing for large files
-#  5. Improve selection
-#  6. Allow multiple instances of same objects
-
-
-
 
 
 
@@ -47,11 +20,12 @@ from zipfile import ZipFile
 
 import xml.etree.ElementTree as ET
 
+
 def find_flush(ex,sourceFile,flushFiles):
  
+
  
-
-
+ 
  def UpdateDimensions(x0,y0,flush):
     #print("UD:",x0,y0,flush)
     if x0 == -999:
@@ -84,7 +58,9 @@ def find_flush(ex,sourceFile,flushFiles):
 
 
  layers = {}
+ source_Layerheight = 0
 
+ 
 
 
  LAYERNUM = "; layer num/total_layer_count: "
@@ -99,6 +75,12 @@ def find_flush(ex,sourceFile,flushFiles):
 
 #  ex.filename = sourceFile
 #  ex.flush_dir = flushFiles
+
+ try:
+     os.mkdir(sourceFile+".flush")
+ except:
+     for filename in os.listdir(sourceFile+".flush"):
+        os.remove(sourceFile+".flush/"+filename)
 
  with ZipFile(sourceFile, "r") as f3mf:
 
@@ -160,13 +142,15 @@ def find_flush(ex,sourceFile,flushFiles):
                         extrude = 0
                     
                     if layer == "2" and oline.startswith('; LAYER_HEIGHT: '):
-                        LayerHeight = round(float(oline.split(' ')[2].strip()),2)
+                        source_LayerHeight = round(float(oline.split(' ')[2].strip()),2)
                         # print("Layer Height",LayerHeight)
-                        layers["LayerHeight"] = LayerHeight
+                        # layers["LayerHeight"] = LayerHeight
 
                     if oline.startswith("T"):
                         Tool = oline.split('\n')[0]
                         Tools_on_layer.append(Tool)
+                        print("Tool:",Tool)
+                        
 
 
                     if oline.startswith("; FLUSH_START"):
@@ -180,6 +164,11 @@ def find_flush(ex,sourceFile,flushFiles):
                         else:
                             layers[layer] = {}
                             layers[layer]["F"] = round(total_flush_extrude-flushP , 2)            
+                        
+                        if layer in layers and Tool in layers[layer]:
+                                layers[layer][Tool] = round(layers[layer][Tool] + total_flush_extrude-flushP,2)
+                        else:
+                            layers[layer][Tool] = round(total_flush_extrude-flushP , 2)            
 
                     
                     if oline.startswith("; start printing object"):
@@ -226,6 +215,20 @@ def find_flush(ex,sourceFile,flushFiles):
 
                 ex.printN(f" Adjusted total Extrude = {round((total_extrude-29)/1000,2)}M")   
                 ex.printN(f" Total Flush Extrude = {round(total_flush_extrude/1000,2)}M")
+
+                top_layer = {}
+                top_flush = 0
+                top_layer_id = ""
+                for layer in layers:
+                    print(layer)
+                    if layer != "LayerHeight" and "F" in layers[layer]:
+                        fl =  layers[layer]["F"]
+                        if fl > top_flush:
+                            top_layer = layers[layer]
+                            top_flush = layers[layer]["F"]
+                            top_layer_id = layer
+
+                ex.printN("top Layer:",top_layer_id,top_layer)
 
                 ex.print(f"Object_Dim: {Object_Dim}")
                 # print("Layers",layers)
@@ -410,15 +413,48 @@ def find_flush(ex,sourceFile,flushFiles):
  count = 0
 
  minimum_percentage = 0.2
- min_flush_benefit = 200
+ min_flush_benefit = 600
 
+ IterConf = {
+     "3": {
+         "A": "Smallest",
+         "Grp": 1,
+         "MinP": 0.2,
+         "MinB": 600
+        },
+     "10": {
+         "A": "Best",
+         "Grp": 2,
+         "MinP": 0.2,
+         "MinB": 600
+        },
+     "16": {
+         "A": "Best",
+         "Grp": 2,
+         "MinP": 0.2,
+         "MinB": 600
+        }
+ }
+
+ max_iter = 0
+ for iter in IterConf:
+    max_iter = int(iter)
+ 
 
 #  selection methods
 #   V1 - highest flush
 #   V2 -  smallest object that takes > x% of remaining flush and still flushes at least 100mm
 
- while remaining_flush > 10 and objects_left and count < 20:
+ while remaining_flush > 10 and objects_left and count < max_iter:
 
+    ConfFound = False
+    for iter in IterConf:
+        if ConfFound == False and int(iter) > count:
+            Conf = IterConf[iter]
+            minimum_percentage = Conf["MinP"]
+            min_flush_benefit = Conf["MinB"]
+            ex.printN(Conf)
+            ConfFound = True
 
     ex.print("**Itteration",count)
     count += 1
@@ -430,7 +466,7 @@ def find_flush(ex,sourceFile,flushFiles):
         #print("files:",file_key)
         for object_id,object in objects.items():
             ex.print("Checking for match")
-            if "Selected" not in object and "LayerHeight" in layers and "LayerHeight" in object["extent"] and layers["LayerHeight"] == object["extent"]["LayerHeight"]:
+            if "Selected" not in object and "LayerHeight" in object["extent"] and source_LayerHeight == object["extent"]["LayerHeight"]:
                 ex.print("unselected layer height match found")
                 flush_total = 0.0
                 #print("object:",object_id)
@@ -461,7 +497,7 @@ def find_flush(ex,sourceFile,flushFiles):
                         highest_object = object_id
                         smallest_object_extrude = object["extent"]["Ext"]
 
-    ex.print("selected object:",highest_file,highest_object,round(highest_flush/1000,2),"M - Size",round(smallest_object_extrude/1000,2) ) # v2
+    ex.printN(highest_file,highest_object,round(highest_flush/1000,2),"M - Size",round(smallest_object_extrude/1000,2) ) # v2
     # print("selected object:",highest_file,highest_object,round(highest_flush/1000,2),"M")  # v1
     if highest_flush > min_flush_benefit:
         # print("Files:",files)                   
@@ -502,7 +538,9 @@ def find_flush(ex,sourceFile,flushFiles):
 
 #  Next stage is to create copies of flush project files with just selected objects printable, also with flush selected
 
- ex.print("now go through selections and create modifled project 3mf files")
+ ex.print("now go through selections and create modifled project 3mf flush files")
+
+
 
  for filename,objects in files.items():
     bSelected = False
@@ -517,7 +555,7 @@ def find_flush(ex,sourceFile,flushFiles):
             ex.print("Project file not found")
         else:
             with ZipFile(flushFiles+"/"+projectfile, "r") as f3mf:
-                with ZipFile(flushFiles+"/NEW"+projectfile, "w") as f3mf_o:
+                with ZipFile(sourceFile+".flush/new."+projectfile, "w") as f3mf_o:
                     buffer = f3mf.read("Metadata/model_settings.config")
                     xml_ms = buffer.decode("utf-8")
                     root_ms = root = ET.fromstring(xml_ms)
@@ -568,127 +606,6 @@ def find_flush(ex,sourceFile,flushFiles):
                             #print(buffer)
                             
 
-                            f3mf_o.writestr(name,buffer)  
+                        f3mf_o.writestr(name,buffer)  
+                        
     ex.print("finished")
-
-class FlushProg(QTextEdit):
-     def __init__(self, title, parent):
-         super().__init__(title, parent)
-         self.setAcceptDrops(True)
-         self.filename = ""
-         self.flush_dir = ""
-         self.progress = ""
-         self.progress2 = ""
-     def dragEnterEvent(self, e):
-         if e.mimeData().hasFormat('text/uri-list') and len(e.mimeData().urls()) == 1 \
-              and e.mimeData().urls()[0].isLocalFile():
-             e.accept()
-         else:
-             print("ignore:",e.mimeData().formats())
-             e.ignore()
-     def dropEvent(self, e):
-         path = e.mimeData().urls()[0].path()
-         if path.endswith('/'):
-             self.flush_dir = path
-         else:
-             self.filename = path
-         self.updateText()
-     def updateText(self):
-         self.setText("file:"+self.filename+"\nFlush:"+self.flush_dir+"\n"+self.progress+self.progress2)
-
-
-
-class Example(QMainWindow):
-     def __init__(self):
-         super().__init__()
-         self.flush_dir=""
-         self.filename=""
-        #  self.progress = ""
-        #  self.progress2 = ""
-         self.initUI()
-    
-     def print(self, *values: object):
-        #  print(values)
-         self.textEdit.progress2 = ""
-         for value in values:
-            self.textEdit.progress2 = self.textEdit.progress2 + " " + str(value)
-         self.updateText()
-         print(values)
-         QApplication.processEvents()
-     def printN(self, *values: object):
-        #  print(values)
-
-         for value in values:
-            self.textEdit.progress = self.textEdit.progress + " " + str(value)
-         self.textEdit.progress = self.textEdit.progress + '\n'
-         self.updateText()
-         print(values)
-         QApplication.processEvents()
-     def updateText(self):
-
-         self.textEdit.updateText()
-
-     def initUI(self):
-         print("2:",self.flush_dir)
-         self.textEdit = FlushProg("TextEdit",self)
-         if len(sys.argv) > 1:
-             self.textEdit.filename = sys.argv[1]
-         if len(sys.argv) > 2:
-             self.textEdit.flush_dir = sys.argv[2]
-         self.updateText()
-             
-
-         self.setCentralWidget(self.textEdit)
-
-         self.statusBar().showMessage('Ready')
-
-         openFile = QAction(QIcon('open.png'), 'Open', self)
-         openFile.setShortcut('Ctrl+O')
-         openFile.setStatusTip('Open new File')
-         openFile.triggered.connect(self.showDialog)
-         menubar = self.menuBar()
-         fileMenu = menubar.addMenu('&File')
-         fileMenu.addAction(openFile)
-         toolbar = self.addToolBar('Exit')
-         toolbar.addAction(openFile)
-
-         self.setGeometry(300, 300, 550, 450)
-         self.setWindowTitle('Find Flush')
-         self.show()
-
-
-
-
-     def showDialog(self):
-        #  home_dir = str(Path.home())
-        #  fname = QFileDialog.getOpenFileName(self, 'Open file', home_dir)
-        #  if fname[0]:
-        #      f = open(fname[0], 'r')
-        #      with f:
-        #          data = f.read()
-        #          self.textEdit.setText(data)
-                 self.progress=""
-                 find_flush(self,self.textEdit.filename,self.textEdit.flush_dir)
-                 print("find_flush completed")
-
-
-
-
-def main():
-
-     filename = ""
-     app = QApplication(sys.argv)
-     ex = Example()
-
-
-
-     sys.exit(app.exec())
-if __name__ == '__main__':
-     main()
-
-
-                                        
-            
-
-
-

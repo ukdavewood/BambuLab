@@ -23,8 +23,8 @@ insert = { }
 <metadata key="wall_loops" value="3"/>
 <metadata key="flush_into_infill" value="1"/>
 <metadata key="flush_into_objects" value="1"/>
-
-
+this is a simple test
+this is a simple test  ggggg
 <config>
   <object id="2">
     <metadata key="name" value="Sphere"/>
@@ -35,9 +35,23 @@ insert = { }
       <mesh_stat edges_fixed="0" degenerate_facets="0" facets_removed="0" facets_reversed="0" backwards_edges="0"/>
     </part>
   </object>
+
+
+
+  <object id="4">
+  <object id="4">
+  <object id="4">
+  <object id="4">
+  <object id="4">
+  <object id="4">
+  <object id="4">
   <object id="4">
     <metadata key="name" value="Cube"/>
     <metadata key="bottom_shell_layers" value="5"/>
+    <metadata key="sparse_infill_pattern" value="gyroid"/>
+    <metadata key="extruder" value="1"/>
+    <metadata key="sparse_infill_density" value="25%"/>
+    <metadata key="sparse_infill_pattern" value="gyroid"/>
     <metadata key="extruder" value="1"/>
     <metadata key="sparse_infill_density" value="25%"/>
     <metadata key="sparse_infill_pattern" value="gyroid"/>
