@@ -453,13 +453,14 @@ def find_flush(ex,sourceFile,flushFiles):
             Conf = IterConf[iter]
             minimum_percentage = Conf["MinP"]
             min_flush_benefit = Conf["MinB"]
-            ex.printN(Conf)
+            ex.print(Conf)
             ConfFound = True
 
     ex.print("**Itteration",count)
     count += 1
     highest_flush = 0
     smallest_object_extrude = -1
+    best_extrude_ratio = -1
     highest_file = ""
     highest_object = ""
     for file_key,objects in files.items():
@@ -474,10 +475,16 @@ def find_flush(ex,sourceFile,flushFiles):
                     # print ("Layer:",key)
                     if key != "LayerHeight" and "F" in layer:
                         # print("Check for F",layer["F"],key)
+                        maxE = 0
+                        for key2 in layer:
+                            if key2.startswith("T"):
+                                if layer[key2] > maxE:
+                                    maxE = layer[key2]
+
                         if key in object["layers"]:
                             # print("Object layer found:",object["layers"][key])
-                            if object["layers"][key]["E"] > layer["F"]:
-                                flush_total += layer["F"]
+                            if object["layers"][key]["E"] > maxE:
+                                flush_total += maxE
                             else:
                                 flush_total += object["layers"][key]["E"]
                 #print("Flush total:",round(flush_total/1000,2),"M")
@@ -496,10 +503,15 @@ def find_flush(ex,sourceFile,flushFiles):
                         highest_file = file_key
                         highest_object = object_id
                         smallest_object_extrude = object["extent"]["Ext"]
+                    if best_extrude_ratio == -1 or flush_total / object["extent"]["Ext"] > best_extrude_ratio:
+                        best_extrude_ratio = flush_total / object["extent"]["Ext"]
+                        best_ratio_file = file_key
+                        best_ratio_object = object_id
 
-    ex.printN(highest_file,highest_object,round(highest_flush/1000,2),"M - Size",round(smallest_object_extrude/1000,2) ) # v2
+
     # print("selected object:",highest_file,highest_object,round(highest_flush/1000,2),"M")  # v1
-    if highest_flush > min_flush_benefit:
+    if smallest_object_extrude != -1:
+        ex.printN(highest_file,highest_object,round(highest_flush/1000,2),"M - Size",round(smallest_object_extrude/1000,2) ) # v2
         # print("Files:",files)                   
 
         files[highest_file][highest_object]["Selected"] = highest_flush
@@ -512,13 +524,23 @@ def find_flush(ex,sourceFile,flushFiles):
             if key != "LayerHeight" and "F" in layer and layer["F"] > 0:
                 # print("Check for F",layer["F"],key)
                 if key in files[highest_file][highest_object]["layers"]:
+                    maxE = 0
+                    maxET = ""
+                    for key2 in layer:
+                        if key2.startswith("T"):
+                            if layer[key2] > maxE:
+                                maxE = layer[key2]
+                                maxET = key2
                     # print("Object layer found:",object["layers"][key])
-                    if files[highest_file][highest_object]["layers"][key]["E"] > layer["F"]:
+                    if files[highest_file][highest_object]["layers"][key]["E"] > maxE:
                         flush_total += layer["F"]
-                        layer["F"] = 0.0
-                    else:
+                        layer[maxET] = 0.0
+                        layer["F"] -= maxE
+                        remaining_flush += layer["F"]
+                    else:                        
                         flush_total += files[highest_file][highest_object]["layers"][key]["E"]
                         layer["F"] -= files[highest_file][highest_object]["layers"][key]["E"]
+                        layer[maxET] -= files[highest_file][highest_object]["layers"][key]["E"]
                         remaining_flush += layer["F"]
                 else:
                     remaining_flush += layer["F"]

@@ -96,6 +96,7 @@ class Example(QMainWindow):
      def updateText(self):
 
          self.textEdit.updateText()
+         self.textEdit.verticalScrollBar().setValue(self.textEdit.verticalScrollBar().maximum())
 
      def initUI(self):
          print("2:",self.flush_dir)
@@ -154,6 +155,7 @@ class Example(QMainWindow):
                  for file in os.listdir(self.textEdit.filename+".flush/"):
                       if file.startswith("new."):
                         delete_non_print(self,self.textEdit.filename+".flush/"+file)
+                        os.rename(self.textEdit.filename+".flush/"+file,self.textEdit.filename+".flush/"+file+"bak")
                  print("delete process completed")
 
      def Prepare(self):
@@ -161,6 +163,7 @@ class Example(QMainWindow):
                  for file in os.listdir(self.textEdit.filename+".flush/"):
                       if file.startswith("dnp."):
                         pre_prepare(self,self.textEdit.filename+".flush/"+file)
+                        os.rename(self.textEdit.filename+".flush/"+file,self.textEdit.filename+".flush/"+file+"bak")
                  print("prepare process completed")
 
 
