@@ -58,9 +58,11 @@ try:
 
 
 
+        outFile = sourceFile.replace('.u.','.upd.')
+        if outFile == sourceFile:
+            outFile = sourceFile+".updated.3mf" 
 
-
-        with ZipFile(sourceFile+".updated.3mf", "w") as f3mf_o:
+        with ZipFile(outFile, "w") as f3mf_o:
                 for name in f3mf.namelist():
                     buffer = f3mf.read(name)
 

@@ -21,17 +21,21 @@ filename =""
 
 
 # Todo
-#  1. Check if selected objects fit on plate
+#  7. Create some good flush objects
+# 12. Better logging and error handling
+#  9. Remove Prime tower post processor
+# 11. Prime tower holder modeller
+#  6. Better automate import of flush object / update process
+#       CMD+I, select files,  A,  Shift+CMD+S,   CMD+R
 #  3. Mark taken objects too - once successful print confirmed.
 #  4. Cache Gcode processing for large files
-#  5. Improve icons
-#  6. Better automate import of flush object / update process
-#  7. Create some good flush objects
+#  1. Check if selected objects fit on plate
 #  8. Multiple flush folders with priority / non priority
-#  9. Remove Prime tower post processor
 # 10. Analyse actual flush/flush into object - with graphics
-# 11. Prime tower holder modeller
-# 12. Better logging and error handling
+
+# Done
+# 14. u.3mf.updated - to just upd.3mf
+#  5. Improve icons
 # 13. bambu studio re-open - bring to front
 
 
@@ -45,6 +49,9 @@ import io
 from ff import  find_flush 
 from dnp import delete_non_print
 from prepare import pre_prepare
+
+basedir = os.path.dirname(__file__)
+icondir = os.path.join(basedir,"icons")
 
 
 class FlushProg(QTextEdit):
@@ -120,7 +127,7 @@ class Example(QMainWindow):
          self.statusBar().showMessage('Ready')
          menubar = self.menuBar()
 
-         allFile = QAction(QIcon('open.png'), 'Open', self)
+         allFile = QAction(QIcon(os.path.join(icondir,'ff.png')), 'Open', self)
          allFile.setShortcut('Ctrl+O')
          allFile.setStatusTip('Flush all')
          allFile.triggered.connect(self.All)
@@ -129,21 +136,21 @@ class Example(QMainWindow):
          fileMenu.addAction(allFile)
          toolbar.addAction(allFile)
          
-         ffFile = QAction(QIcon('open.png'), 'Open', self)
+         ffFile = QAction(QIcon(os.path.join(icondir,'open.png')), 'Open', self)
          ffFile.setShortcut('Ctrl+O')
          ffFile.setStatusTip('Find Flush Files')
          ffFile.triggered.connect(self.Flush)
          fileMenu.addAction(ffFile)
          toolbar.addAction(ffFile)
          
-         delFile = QAction(QIcon('del.png'), 'del', self)
+         delFile = QAction(QIcon(os.path.join(icondir,'del.png')), 'del', self)
          delFile.setShortcut('Ctrl+D')
          delFile.setStatusTip('Delete process Files')
          delFile.triggered.connect(self.Delete)
          fileMenu.addAction(delFile)
          toolbar.addAction(delFile)
 
-         preFile = QAction(QIcon('pre.png'), 'pre', self)
+         preFile = QAction(QIcon(os.path.join(icondir,'upd.png')), 'pre', self)
          preFile.setShortcut('Ctrl+P')
          preFile.setStatusTip('Pre Prepare Files')
          preFile.triggered.connect(self.Prepare)

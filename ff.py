@@ -59,6 +59,7 @@ def find_flush(ex,sourceFile,flushFiles):
 
  layers = {}
  source_Layerheight = 0
+ top_layer_id = ""
 
  
 
@@ -516,14 +517,14 @@ def find_flush(ex,sourceFile,flushFiles):
     selected_object = None
     if selection_type == "Smallest":
         if smallest_object_extrude != -1:
-            ex.printN(highest_file,highest_object,round(highest_flush/1000,2),"M - Size",round(smallest_object_extrude*100,2) ) # v2
+            ex.printN(highest_file,highest_object,round(highest_flush/1000,2),"M - Size",round(smallest_object_extrude,2) ) # v2
             # print("Files:",files)  
             selected_object = highest_object
             selected_file =  highest_file 
             selected_flush = highest_flush            
     if selection_type == "Best":
         if best_extrude_ratio != -1:
-            ex.printN(best_ratio_file,best_ratio_object,round(best_flush/1000,2),"M - Size",round(best_extrude_ratio,2) ) # v2
+            ex.printN(best_ratio_file,best_ratio_object,round(best_flush/1000,2),"M - ratio",round(best_extrude_ratio*100,1),'%' ) # v2
             # print("Files:",files)  
             selected_object = best_ratio_object
             selected_file =  best_ratio_file
@@ -561,7 +562,11 @@ def find_flush(ex,sourceFile,flushFiles):
                     else:
                         remaining_flush += layer["F"]
             #print("Flush total:",round(flush_total/1000,2),"M")
-            ex.printN(count," Remaining Flush:", round(remaining_flush/1000,2),"M")
+            top_layer = layers[top_layer_id]
+            for key in top_layer:
+                top_layer[key] = round(top_layer[key],2)
+            # ex.printN(top_layer_id,top_layer)
+            ex.printN(count," Remaining :", round(remaining_flush/1000,2),"M ***",top_layer_id,top_layer)
 
     else:
         ex.printN("Remaining flush saving too small - finishing object selection")
