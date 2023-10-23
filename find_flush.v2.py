@@ -22,11 +22,18 @@ filename =""
 
 # Todo
 #  1. Check if selected objects fit on plate
-#  2. take into account extra size when selecting objects - i.e. Get objects of smaller size if nearly as much purge benefit
 #  3. Mark taken objects too - once successful print confirmed.
 #  4. Cache Gcode processing for large files
-#  5. Improve selection
-#  6. Allow multiple instances of same objects
+#  5. Improve icons
+#  6. Better automate import of flush object / update process
+#  7. Create some good flush objects
+#  8. Multiple flush folders with priority / non priority
+#  9. Remove Prime tower post processor
+# 10. Analyse actual flush/flush into object - with graphics
+# 11. Prime tower holder modeller
+# 12. Better logging and error handling
+# 13. bambu studio re-open - bring to front
+
 
 
 import sys
@@ -113,14 +120,21 @@ class Example(QMainWindow):
          self.statusBar().showMessage('Ready')
          menubar = self.menuBar()
 
-         openFile = QAction(QIcon('open.png'), 'Open', self)
-         openFile.setShortcut('Ctrl+O')
-         openFile.setStatusTip('Open new File')
-         openFile.triggered.connect(self.Flush)
+         allFile = QAction(QIcon('open.png'), 'Open', self)
+         allFile.setShortcut('Ctrl+O')
+         allFile.setStatusTip('Flush all')
+         allFile.triggered.connect(self.All)
          toolbar = self.addToolBar('Exit')
          fileMenu = menubar.addMenu('&File')
-         fileMenu.addAction(openFile)
-         toolbar.addAction(openFile)
+         fileMenu.addAction(allFile)
+         toolbar.addAction(allFile)
+         
+         ffFile = QAction(QIcon('open.png'), 'Open', self)
+         ffFile.setShortcut('Ctrl+O')
+         ffFile.setStatusTip('Find Flush Files')
+         ffFile.triggered.connect(self.Flush)
+         fileMenu.addAction(ffFile)
+         toolbar.addAction(ffFile)
          
          delFile = QAction(QIcon('del.png'), 'del', self)
          delFile.setShortcut('Ctrl+D')
@@ -142,6 +156,14 @@ class Example(QMainWindow):
 
 
 
+
+     def All(self):
+                 self.Flush()
+                 self.Delete()
+                 self.Prepare()
+                 
+
+                 self.printN("All find_flush completed")
 
      def Flush(self):
                  self.progress=""

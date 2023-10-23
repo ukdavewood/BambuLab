@@ -414,10 +414,11 @@ def find_flush(ex,sourceFile,flushFiles):
 
  minimum_percentage = 0.2
  min_flush_benefit = 600
+ selection_type = "Smallest"
 
  IterConf = {
      "3": {
-         "A": "Smallest",
+         "A": "Best",
          "Grp": 1,
          "MinP": 0.2,
          "MinB": 600
@@ -425,14 +426,14 @@ def find_flush(ex,sourceFile,flushFiles):
      "10": {
          "A": "Best",
          "Grp": 2,
-         "MinP": 0.2,
-         "MinB": 600
+         "MinP": 0.1,
+         "MinB": 200
         },
      "16": {
          "A": "Best",
          "Grp": 2,
-         "MinP": 0.2,
-         "MinB": 600
+         "MinP": 0.1,
+         "MinB": 300
         }
  }
 
@@ -453,6 +454,7 @@ def find_flush(ex,sourceFile,flushFiles):
             Conf = IterConf[iter]
             minimum_percentage = Conf["MinP"]
             min_flush_benefit = Conf["MinB"]
+            selection_type = Conf["A"]
             ex.print(Conf)
             ConfFound = True
 
@@ -507,45 +509,59 @@ def find_flush(ex,sourceFile,flushFiles):
                         best_extrude_ratio = flush_total / object["extent"]["Ext"]
                         best_ratio_file = file_key
                         best_ratio_object = object_id
+                        best_flush = flush_total
 
 
     # print("selected object:",highest_file,highest_object,round(highest_flush/1000,2),"M")  # v1
-    if smallest_object_extrude != -1:
-        ex.printN(highest_file,highest_object,round(highest_flush/1000,2),"M - Size",round(smallest_object_extrude/1000,2) ) # v2
-        # print("Files:",files)                   
+    selected_object = None
+    if selection_type == "Smallest":
+        if smallest_object_extrude != -1:
+            ex.printN(highest_file,highest_object,round(highest_flush/1000,2),"M - Size",round(smallest_object_extrude*100,2) ) # v2
+            # print("Files:",files)  
+            selected_object = highest_object
+            selected_file =  highest_file 
+            selected_flush = highest_flush            
+    if selection_type == "Best":
+        if best_extrude_ratio != -1:
+            ex.printN(best_ratio_file,best_ratio_object,round(best_flush/1000,2),"M - Size",round(best_extrude_ratio,2) ) # v2
+            # print("Files:",files)  
+            selected_object = best_ratio_object
+            selected_file =  best_ratio_file
+            selected_flush = best_flush             
 
-        files[highest_file][highest_object]["Selected"] = highest_flush
-        #  now reduce the availble flush from this object
-        remaining_flush = 0
-        flush_total = 0
-        for key,layer in layers.items():
-            # print ("Layer:",key)
+    if selected_object is not None:
+            files[selected_file][selected_object]["Selected"] = selected_flush
+            #  now reduce the availble flush from this object
+            remaining_flush = 0
+            flush_total = 0
+            for key,layer in layers.items():
+                # print ("Layer:",key)
 
-            if key != "LayerHeight" and "F" in layer and layer["F"] > 0:
-                # print("Check for F",layer["F"],key)
-                if key in files[highest_file][highest_object]["layers"]:
-                    maxE = 0
-                    maxET = ""
-                    for key2 in layer:
-                        if key2.startswith("T"):
-                            if layer[key2] > maxE:
-                                maxE = layer[key2]
-                                maxET = key2
-                    # print("Object layer found:",object["layers"][key])
-                    if files[highest_file][highest_object]["layers"][key]["E"] > maxE:
-                        flush_total += layer["F"]
-                        layer[maxET] = 0.0
-                        layer["F"] -= maxE
+                if key != "LayerHeight" and "F" in layer and layer["F"] > 0:
+                    # print("Check for F",layer["F"],key)
+                    if key in files[selected_file][selected_object]["layers"]:
+                        maxE = 0
+                        maxET = ""
+                        for key2 in layer:
+                            if key2.startswith("T"):
+                                if layer[key2] > maxE:
+                                    maxE = layer[key2]
+                                    maxET = key2
+                        # print("Object layer found:",object["layers"][key])
+                        if files[selected_file][selected_object]["layers"][key]["E"] > maxE:
+                            flush_total += layer["F"]
+                            layer[maxET] = 0.0
+                            layer["F"] -= maxE
+                            remaining_flush += layer["F"]
+                        else:                        
+                            flush_total += files[selected_file][selected_object]["layers"][key]["E"]
+                            layer["F"] -= files[selected_file][selected_object]["layers"][key]["E"]
+                            layer[maxET] -= files[selected_file][selected_object]["layers"][key]["E"]
+                            remaining_flush += layer["F"]
+                    else:
                         remaining_flush += layer["F"]
-                    else:                        
-                        flush_total += files[highest_file][highest_object]["layers"][key]["E"]
-                        layer["F"] -= files[highest_file][highest_object]["layers"][key]["E"]
-                        layer[maxET] -= files[highest_file][highest_object]["layers"][key]["E"]
-                        remaining_flush += layer["F"]
-                else:
-                    remaining_flush += layer["F"]
-        #print("Flush total:",round(flush_total/1000,2),"M")
-        ex.printN(count," Remaining Flush:", round(remaining_flush/1000,2),"M")
+            #print("Flush total:",round(flush_total/1000,2),"M")
+            ex.printN(count," Remaining Flush:", round(remaining_flush/1000,2),"M")
 
     else:
         ex.printN("Remaining flush saving too small - finishing object selection")

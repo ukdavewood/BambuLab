@@ -37,6 +37,8 @@ try:
 
     logging.debug(sourceFile)
 
+    count = 0
+
     with ZipFile(sourceFile, "r") as f3mf:
 
         buffer = f3mf.read("3D/3dmodel.model")
@@ -80,6 +82,7 @@ try:
                             for metadata in part.findall("metadata[@key='source_file']"):
                                 source_file = metadata.attrib["value"]
                                 logging.info(metadata.attrib)
+                            upd = 0
                             if "[" in source_file and "]" in source_file:
                                 updates = source_file.split('[')[1]
                                 updates = updates.split("]")[0]
@@ -90,6 +93,7 @@ try:
                                             extruder_meta = object.find("metadata[@key='extruder']")
                                             extruder_meta.set('value',update[1:])
                                             logging.info(extruder_meta.attrib)
+                                            upd = 1
                                         else:
                                             logging.error("extruder not set due to non numeric E value:",update)
                                     if update == 'FF':
@@ -104,6 +108,7 @@ try:
                                             WL = '<metadata key="wall_loops" value="' + update[1:] + '"/>'
                                             insert = ET.fromstring(WL)
                                             object.insert(2,insert)
+                                            upd = 1
                                         else:
                                             logging.info("walls not set due to non numeric W value:",update)
                                     if update[0:1] == "I":
@@ -111,6 +116,7 @@ try:
                                             i = '<metadata key="sparse_infill_density" value="' + update[1:] + '%"/>'
                                             insert = ET.fromstring(i)
                                             object.insert(2,insert)
+                                            upd = 1
                                         else:
                                             logging.info("infill not set due to non numeric I value:",update)
                                     if update[0:1] == "P":
@@ -122,6 +128,7 @@ try:
                                             b = '<metadata key="bottom_shell_layers" value="' + update[1:] + '"/>'
                                             insert = ET.fromstring(b)
                                             object.insert(2,insert)
+                                            upd = 1
                                         else:
                                             logging.info("bottom shell not set due to non numeric B value:",update)
                                     if update[0:1] == "T":
@@ -129,8 +136,10 @@ try:
                                             t = '<metadata key="top_shell_layers" value="' + update[1:] + '"/>'
                                             insert = ET.fromstring(t)
                                             object.insert(2,insert)
+                                            upd = 1
                                         else:
                                             logging.info("top shell not set due to non numeric T value:",update)
+                            count = count + upd
 
                         ET.indent(root,' ')
 
@@ -139,7 +148,7 @@ try:
                         
 
                     f3mf_o.writestr(name,buffer) 
-                    print("ok") 
+    print("ok",count,"objects updated") 
 
 except AssertionError as error:
     logging.error(error)
