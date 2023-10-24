@@ -238,6 +238,10 @@ def find_flush(ex,sourceFile,flushFiles):
   ex.printN("no layers found")
   return
 
+ if ex.cancel:
+  ex.printN("Cancelled")
+  return
+
 #  create table of files, plates, objects sizes and layears
 #  scan through project 3mfs in first itteration to get object coordinates, then gcode.3mfs
 #  then 
@@ -250,15 +254,35 @@ def find_flush(ex,sourceFile,flushFiles):
 #  Itteration 1 - get files, plates, objects
 
  files = {}
+ file_priorities = {}
+ priority = 1
+ for file_path in flushFiles.split(";"):
+    for filename in os.listdir(file_path):
+        if str.lower(filename) != "archive" and os.path.isdir(os.path.join(file_path,filename)):
+            ex.printN("Folder:",filename)
+            new_path = os.path.join(file_path,filename)
+            for filename2 in os.listdir(new_path):                
+                if filename2.endswith(".gcode.3mf"):
+                    file_priorities[os.path.join(new_path,filename2)] = priority
 
- for filename in os.listdir(flushFiles):
-    ex.print(filename)
+        if filename.endswith(".gcode.3mf"):
+            file_priorities[os.path.join(file_path,filename)] = priority
+    priority += 1
+
+
+
+ for filename in file_priorities:
+    ex.printN(filename)
+
+    if ex.cancel:
+        ex.printN("Cancelled")
+        return
 
     if filename.endswith(".gcode.3mf"):
        objects = {}
        layer = { "E": 0 }
        extent = { }
-       with ZipFile(flushFiles+"/"+filename, "r") as f3mf:
+       with ZipFile(filename, "r") as f3mf:
             ex.print("Flush File 3mf:",filename)
             for name in f3mf.namelist():
                 ex.print(name)
@@ -357,6 +381,7 @@ def find_flush(ex,sourceFile,flushFiles):
                                 objects[id]["extent"] = extent
                                 objects[id]["layers"][layerNum] = {"E": round(object_extrude,2)}
 
+
     #    print("objects:",objects)
 
 
@@ -364,7 +389,7 @@ def find_flush(ex,sourceFile,flushFiles):
        files[filename] = objects
 
     elif filename.endswith(".3mf"):
-        with ZipFile(flushFiles+"/"+filename, "r") as f3mf:
+        with ZipFile(filename, "r") as f3mf:
 
                 ex.print("Flush File 3mf:",filename)
                 for name in f3mf.namelist():
@@ -416,25 +441,24 @@ def find_flush(ex,sourceFile,flushFiles):
  minimum_percentage = 0.2
  min_flush_benefit = 600
  selection_type = "Smallest"
+ priority_adjust = 0.1
 
  IterConf = {
-     "3": {
-         "A": "Best",
-         "Grp": 1,
-         "MinP": 0.2,
-         "MinB": 600
-        },
+
      "10": {
-         "A": "Best",
+         "A": "Smallest",
          "Grp": 2,
          "MinP": 0.1,
-         "MinB": 200
+         "MinB": 100,
+         "PriorityAdj": 0.1
         },
-     "16": {
+
+     "32": {
          "A": "Best",
          "Grp": 2,
          "MinP": 0.1,
-         "MinB": 300
+         "MinB": 200,
+         "PriorityAdj": 0.1
         }
  }
 
@@ -449,6 +473,10 @@ def find_flush(ex,sourceFile,flushFiles):
 
  while remaining_flush > 10 and objects_left and count < max_iter:
 
+    if ex.cancel:
+        ex.printN("Cancelled")
+        return
+
     ConfFound = False
     for iter in IterConf:
         if ConfFound == False and int(iter) > count:
@@ -456,6 +484,7 @@ def find_flush(ex,sourceFile,flushFiles):
             minimum_percentage = Conf["MinP"]
             min_flush_benefit = Conf["MinB"]
             selection_type = Conf["A"]
+            priority_adjust = Conf["PriorityAdj"]
             ex.print(Conf)
             ConfFound = True
 
@@ -467,6 +496,7 @@ def find_flush(ex,sourceFile,flushFiles):
     highest_file = ""
     highest_object = ""
     for file_key,objects in files.items():
+        priority_factor = 1+(file_priorities[file_key]-1)*priority_adjust
         #print("files:",file_key)
         for object_id,object in objects.items():
             ex.print("Checking for match")
@@ -501,12 +531,12 @@ def find_flush(ex,sourceFile,flushFiles):
         #print("Files:",files)
     # V2
                 if flush_total > min_flush_benefit and flush_total / remaining_flush > minimum_percentage:
-                    if smallest_object_extrude == -1 or object["extent"]["Ext"] < smallest_object_extrude:
+                    if smallest_object_extrude == -1 or object["extent"]["Ext"]*(priority_factor) < smallest_object_extrude:
                         highest_flush = flush_total
                         highest_file = file_key
                         highest_object = object_id
                         smallest_object_extrude = object["extent"]["Ext"]
-                    if best_extrude_ratio == -1 or flush_total / object["extent"]["Ext"] > best_extrude_ratio:
+                    if best_extrude_ratio == -1 or (flush_total*priority_factor) / object["extent"]["Ext"] > best_extrude_ratio:
                         best_extrude_ratio = flush_total / object["extent"]["Ext"]
                         best_ratio_file = file_key
                         best_ratio_object = object_id
@@ -517,14 +547,14 @@ def find_flush(ex,sourceFile,flushFiles):
     selected_object = None
     if selection_type == "Smallest":
         if smallest_object_extrude != -1:
-            ex.printN(highest_file,highest_object,round(highest_flush/1000,2),"M - Size",round(smallest_object_extrude,2) ) # v2
+            ex.printN(os.path.basename(highest_file),highest_object,round(highest_flush/1000,2),"M - Size",round(smallest_object_extrude,2) ) # v2
             # print("Files:",files)  
             selected_object = highest_object
             selected_file =  highest_file 
             selected_flush = highest_flush            
     if selection_type == "Best":
         if best_extrude_ratio != -1:
-            ex.printN(best_ratio_file,best_ratio_object,round(best_flush/1000,2),"M - ratio",round(best_extrude_ratio*100,1),'%' ) # v2
+            ex.printN(os.path.basename(best_ratio_file),best_ratio_object,round(best_flush/1000,2),"M - ratio",round(best_extrude_ratio*100,1),'%' ) # v2
             # print("Files:",files)  
             selected_object = best_ratio_object
             selected_file =  best_ratio_file
@@ -594,11 +624,13 @@ def find_flush(ex,sourceFile,flushFiles):
     if bSelected:
         projectfile = filename.replace("gcode.3mf","3mf")
         ex.printN(projectfile)
-        if not os.path.isfile(flushFiles+"/"+projectfile):
+        if not os.path.isfile(projectfile):
             ex.print("Project file not found")
         else:
-            with ZipFile(flushFiles+"/"+projectfile, "r") as f3mf:
-                with ZipFile(sourceFile+".flush/new."+projectfile, "w") as f3mf_o:
+            with ZipFile(projectfile, "r") as f3mf:
+                new_file = 'P'+str(file_priorities[filename])+"_"+os.path.basename(projectfile)
+                ex.printN("new_file:",new_file)
+                with ZipFile(sourceFile+".flush/new."+new_file, "w") as f3mf_o:
                     buffer = f3mf.read("Metadata/model_settings.config")
                     xml_ms = buffer.decode("utf-8")
                     root_ms = root = ET.fromstring(xml_ms)

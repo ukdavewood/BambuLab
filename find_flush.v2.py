@@ -1,12 +1,5 @@
 #!/usr/bin/python
-"""
- ZetCode PyQt6 tutorial
- In this example, we select a file with a
- QFileDialog and display its contents
- in a QTextEdit.
- Author: Jan Bodnar
- Website: zetcode.com
- """
+
 from PyQt6.QtWidgets import (QMainWindow, QTextEdit,
          QFileDialog, QApplication)
 from PyQt6.QtGui import QIcon, QAction
@@ -15,25 +8,25 @@ import sys
 
 filename =""
 
-     #!/usr/bin/python3
-
 # V1 - layer size stats - for single colour purge target models
 
 
 # Todo
 #  7. Create some good flush objects
-# 12. Better logging and error handling
 #  9. Remove Prime tower post processor
 # 11. Prime tower holder modeller
+# 16. Within Itteration if too small don't retry next time
 #  6. Better automate import of flush object / update process
 #       CMD+I, select files,  A,  Shift+CMD+S,   CMD+R
 #  3. Mark taken objects too - once successful print confirmed.
 #  4. Cache Gcode processing for large files
 #  1. Check if selected objects fit on plate
-#  8. Multiple flush folders with priority / non priority
+# 12. Better logging and error handling
 # 10. Analyse actual flush/flush into object - with graphics
 
 # Done
+# 15. Cancel button
+#  8. Multiple flush folders with priority / non priority
 # 14. u.3mf.updated - to just upd.3mf
 #  5. Improve icons
 # 13. bambu studio re-open - bring to front
@@ -59,9 +52,10 @@ class FlushProg(QTextEdit):
          super().__init__(title, parent)
          self.setAcceptDrops(True)
          self.filename = ""
-         self.flush_dir = ""
+         self.flush_dir_list = ""
          self.progress = ""
          self.progress2 = ""
+         self.cancel = False
      def dragEnterEvent(self, e):
          if e.mimeData().hasFormat('text/uri-list') and len(e.mimeData().urls()) == 1 \
               and e.mimeData().urls()[0].isLocalFile():
@@ -72,19 +66,19 @@ class FlushProg(QTextEdit):
      def dropEvent(self, e):
          path = e.mimeData().urls()[0].path()
          if path.endswith('/'):
-             self.flush_dir = path
+             self.flush_dir_list = path+";"+self.flush_dir_list
          else:
              self.filename = path
          self.updateText()
      def updateText(self):
-         self.setText("file:"+self.filename+"\nFlush:"+self.flush_dir+"\n"+self.progress+self.progress2)
+         self.setText("file:"+self.filename+"\nFlush:"+self.flush_dir_list+"\n"+self.progress+self.progress2)
 
 
 
 class Example(QMainWindow):
      def __init__(self):
          super().__init__()
-         self.flush_dir=""
+         self.flush_dir_list=""
          self.filename=""
         #  self.progress = ""
         #  self.progress2 = ""
@@ -113,12 +107,12 @@ class Example(QMainWindow):
          self.textEdit.verticalScrollBar().setValue(self.textEdit.verticalScrollBar().maximum())
 
      def initUI(self):
-         print("2:",self.flush_dir)
+         print("2:",self.flush_dir_list)
          self.textEdit = FlushProg("TextEdit",self)
          if len(sys.argv) > 1:
              self.textEdit.filename = sys.argv[1]
          if len(sys.argv) > 2:
-             self.textEdit.flush_dir = sys.argv[2]
+             self.textEdit.flush_dir_list = sys.argv[2]
          self.updateText()
              
 
@@ -157,6 +151,13 @@ class Example(QMainWindow):
          fileMenu.addAction(preFile)
          toolbar.addAction(preFile)
 
+         cancelBut = QAction(QIcon(os.path.join(icondir,'cancel.png')), 'pre', self)
+         cancelBut.setShortcut('Ctrl+C')
+         cancelBut.setStatusTip('Cancel scheduled')
+         cancelBut.triggered.connect(self.setCancel)
+         fileMenu.addAction(cancelBut)
+         toolbar.addAction(cancelBut)
+
          self.setGeometry(300, 300, 550, 450)
          self.setWindowTitle('Find Flush')
          self.show()
@@ -165,35 +166,57 @@ class Example(QMainWindow):
 
 
      def All(self):
-                 self.Flush()
-                 self.Delete()
-                 self.Prepare()
-                 
+                 self.cancel = False
+                 try:
+                    self.Flush()
+                    if not self.cancel:
+                         self.Delete()
+                    if not self.cancel:
+                         self.Prepare()
+                    
 
-                 self.printN("All find_flush completed")
+                    self.printN("All find_flush completed")
+                 except:
+                      self.printN("Error:",sys.exc_info())
 
      def Flush(self):
-                 self.progress=""
-                 find_flush(self,self.textEdit.filename,self.textEdit.flush_dir)
+                 self.cancel = False
+                 try:
+                    self.progress=""
+                    find_flush(self,self.textEdit.filename,self.textEdit.flush_dir_list)
 
 
-                 print("find_flush completed")
+                    print("find_flush completed")
+                 except:
+                      self.printN("Error:",sys.exc_info())
 
      def Delete(self):
-                 self.progress=""
-                 for file in os.listdir(self.textEdit.filename+".flush/"):
-                      if file.startswith("new."):
-                        delete_non_print(self,self.textEdit.filename+".flush/"+file)
-                        os.rename(self.textEdit.filename+".flush/"+file,self.textEdit.filename+".flush/"+file+"bak")
-                 print("delete process completed")
+                 self.cancel = False
+                 try:
+                    self.progress=""
+                    for file in os.listdir(self.textEdit.filename+".flush/"):
+                        if file.startswith("new."):
+                            delete_non_print(self,self.textEdit.filename+".flush/"+file)
+                            os.rename(self.textEdit.filename+".flush/"+file,self.textEdit.filename+".flush/"+file+"bak")
+                    print("delete process completed")
+                 except:
+                      self.printN("Error:",sys.exc_info())
 
      def Prepare(self):
-                 self.progress=""
-                 for file in os.listdir(self.textEdit.filename+".flush/"):
-                      if file.startswith("dnp."):
-                        pre_prepare(self,self.textEdit.filename+".flush/"+file)
-                        os.rename(self.textEdit.filename+".flush/"+file,self.textEdit.filename+".flush/"+file+"bak")
-                 print("prepare process completed")
+                 self.cancel = False
+                 try:
+                    
+                    self.progress=""
+                    for file in os.listdir(self.textEdit.filename+".flush/"):
+                        if file.startswith("dnp."):
+                            pre_prepare(self,self.textEdit.filename+".flush/"+file)
+                            os.rename(self.textEdit.filename+".flush/"+file,self.textEdit.filename+".flush/"+file+"bak")
+                    print("prepare process completed")
+                 except:
+                      self.printN("Error:",sys.exc_info())
+
+     def setCancel(self):
+                 self.cancel = True
 
 
 def main():
