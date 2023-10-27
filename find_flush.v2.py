@@ -13,18 +13,18 @@ filename =""
 
 # Todo
 #  7. Create some good flush objects
-#  9. Remove Prime tower post processor
 # 11. Prime tower holder modeller
 # 16. Within Itteration if too small don't retry next time
 #  6. Better automate import of flush object / update process
 #       CMD+I, select files,  A,  Shift+CMD+S,   CMD+R
 #  3. Mark taken objects too - once successful print confirmed.
 #  4. Cache Gcode processing for large files
-#  1. Check if selected objects fit on plate
+#  1. Check if selected objects fit on plate, plus take area into account
 # 12. Better logging and error handling
 # 10. Analyse actual flush/flush into object - with graphics
 
 # Done
+#  9. Remove Prime tower post processor
 # 15. Cancel button
 #  8. Multiple flush folders with priority / non priority
 # 14. u.3mf.updated - to just upd.3mf

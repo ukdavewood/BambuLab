@@ -57,11 +57,11 @@ def delete_non_print(ex,sourceFile):
 
     if count < 1 :
         ex.printN("No objects found to delete")
-        return()
+    
 
-    if count < 1 :
-        ex.printN("All objects non printable - exiting")
-        return()
+    # if count < 1 :
+    #     ex.printN("All objects non printable - exiting")
+    #     return()
 
     ex.print("Delete list:",delete_list)
     

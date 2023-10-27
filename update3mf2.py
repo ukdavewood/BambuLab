@@ -21,7 +21,7 @@ from zipfile import ZipFile
 import xml.etree.ElementTree as ET
 
 import logging
-logging.basicConfig(filename='/var/log/dwpython/dw3mf.log', encoding='utf-8', level=logging.DEBUG)
+logging.basicConfig(filename='/var/log/dwpython/dw3mf.log', encoding='utf-8', level=logging.INFO)
 
 try:
 
@@ -84,12 +84,14 @@ try:
                             for metadata in part.findall("metadata[@key='source_file']"):
                                 source_file = metadata.attrib["value"]
                                 logging.info(metadata.attrib)
+                                print(metadata.attrib)
                             upd = 0
                             if "[" in source_file and "]" in source_file:
                                 updates = source_file.split('[')[1]
                                 updates = updates.split("]")[0]
                                 for update in updates.split(","):
-                                    logging.info("update:",update)
+                                    print("updatePR:"+update)
+                                    logging.info("update:"+update)
                                     if update[0:1] == "E":
                                         if update[1:].isdigit():
                                             extruder_meta = object.find("metadata[@key='extruder']")

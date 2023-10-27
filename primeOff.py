@@ -84,7 +84,7 @@ try:
                                 if oline.startswith("G0") or oline.startswith("G1"):
                                     for p in oline.split(";")[0].split(" "):
                                         if p.startswith("X"):
-                                            x = float(str.strip(p[1:]))
+                                            x = float((p[1:].strip()))
                                         if p.startswith("Y"):
                                             y = float(str.strip(p[1:]))
 

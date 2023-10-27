@@ -256,14 +256,17 @@ def find_flush(ex,sourceFile,flushFiles):
  files = {}
  file_priorities = {}
  priority = 1
+ 
  for file_path in flushFiles.split(";"):
     for filename in os.listdir(file_path):
         if str.lower(filename) != "archive" and os.path.isdir(os.path.join(file_path,filename)):
             ex.printN("Folder:",filename)
             new_path = os.path.join(file_path,filename)
+            sub_priority = 0.01
             for filename2 in os.listdir(new_path):                
                 if filename2.endswith(".gcode.3mf"):
-                    file_priorities[os.path.join(new_path,filename2)] = priority
+                    file_priorities[os.path.join(new_path,filename2)] = priority + sub_priority
+                    sub_priority += 0.01
 
         if filename.endswith(".gcode.3mf"):
             file_priorities[os.path.join(file_path,filename)] = priority
@@ -628,7 +631,7 @@ def find_flush(ex,sourceFile,flushFiles):
             ex.print("Project file not found")
         else:
             with ZipFile(projectfile, "r") as f3mf:
-                new_file = 'P'+str(file_priorities[filename])+"_"+os.path.basename(projectfile)
+                new_file = 'P'+str(round(file_priorities[filename],2))+"_"+os.path.basename(projectfile)
                 ex.printN("new_file:",new_file)
                 with ZipFile(sourceFile+".flush/new."+new_file, "w") as f3mf_o:
                     buffer = f3mf.read("Metadata/model_settings.config")
