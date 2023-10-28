@@ -1,1 +1,8 @@
 cd /Users/davidwood/Documents/GitHub/BambuPurge/BambuLab ; /usr/bin/env /opt/homebrew/opt/python@3.11/bin/python3.11  /Users/davidwood/Documents/GitHub/BambuPurge/BambuLab/extract3mf.py /Users/davidwood/Documents/GitHub/BambuPurge/BambuLab/Gcode/Xmas\ Pud.gcode.3mf
+
+
+    <metadata key="flush_into_infill" value="1"/>
+    <metadata key="flush_into_objects" value="1"/>
+
+    1.  Routine to copy attributes like walls, infill and set flush into source file name
+    2.  Routine to then extract it back out, plus also extruder number
