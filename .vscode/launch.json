@@ -13,7 +13,7 @@
             "console": "integratedTerminal",
             "justMyCode": true,
             "args": [
-                "/Users/davidwood/Documents/GitHub/BambuLab/Gcode/A1 Azura 4 colour.3mf",
+                "/Users/davidwood/Documents/GitHub/BambuLab/Gcode/A1 Azura 4 colour.nfto.gcode.3mf",
                 "/Users/davidwood/Documents/GitHub/BambuLab/Gcode/flush/;/Users/davidwood/Documents/flush/"
             ]
         }

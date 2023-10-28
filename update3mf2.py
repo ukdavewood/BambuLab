@@ -78,6 +78,33 @@ try:
                             
                             logging.info(object.attrib)
 
+                            for part in object.findall("part"):
+                                print("part:",part.attrib)
+                                for metadata in part.findall("metadata[@key='source_file']"):
+                                    source_file = metadata.attrib["value"]
+                                    logging.info(metadata.attrib)
+                                    print(metadata.attrib)
+                                    if "[" in source_file and "]" in source_file:
+                                        updates = source_file.split('[')[1]
+                                        updates = updates.split("]")[0]
+                                        for update in updates.split(","):
+                                            print("updatePR:"+update)
+                                            logging.info("update:"+update)
+                                            if update[0:1] == "E":
+                                                if update[1:].isdigit():
+                                                    extruder_meta = part.find("metadata[@key='extruder']")
+                                                    if extruder_meta is not None:
+                                                        extruder_meta.set('value',update[1:])
+                                                        print("updated extruder")
+                                                    
+                                                        logging.info(extruder_meta.attrib)
+                                                    else:
+                                                        print("need to insert extruder...")
+                                                    upd = 1
+                                                else:
+                                                    logging.error("extruder not set due to non numeric E value:",update)
+                                                                    
+
                             part = object.find("part")
                             logging.info(part.attrib)
                             source_file = ""
