@@ -13,8 +13,8 @@
             "console": "integratedTerminal",
             "justMyCode": true,
             "args": [
-                "/Users/davidwood/Documents/GitHub/BambuLab/Gcode/A1 Azura 4 colour.nfto.gcode.3mf",
-                "/Users/davidwood/Documents/GitHub/BambuLab/Gcode/flush/;/Users/davidwood/Documents/flush/"
+                "/Users/davidwood/Documents/GitHub/BambuPurge/BambuLab/Gcode/A1 Azura V2.gcode.3mf",
+                "/Users/Shared/stl2/AA To Print/Flush/Table Leg Stls"
             ]
         }
     ]

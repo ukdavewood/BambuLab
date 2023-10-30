@@ -256,17 +256,18 @@ def find_flush(ex,sourceFile,flushFiles):
  files = {}
  file_priorities = {}
  priority = 1
+ sub_priority = 0.01
  
  for file_path in flushFiles.split(";"):
     for filename in os.listdir(file_path):
         if str.lower(filename) != "archive" and os.path.isdir(os.path.join(file_path,filename)):
             ex.printN("Folder:",filename)
             new_path = os.path.join(file_path,filename)
-            sub_priority = 0.01
+            sub_priority += 0.01
             for filename2 in os.listdir(new_path):                
                 if filename2.endswith(".gcode.3mf"):
                     file_priorities[os.path.join(new_path,filename2)] = priority + sub_priority
-                    sub_priority += 0.01
+
 
         if filename.endswith(".gcode.3mf"):
             file_priorities[os.path.join(file_path,filename)] = priority
@@ -446,28 +447,14 @@ def find_flush(ex,sourceFile,flushFiles):
  selection_type = "Smallest"
  priority_adjust = 0.1
 
- IterConf = {
-
-     "10": {
-         "A": "Smallest",
-         "Grp": 2,
-         "MinP": 0.1,
-         "MinB": 100,
-         "PriorityAdj": 0.1
-        },
-
-     "32": {
-         "A": "Best",
-         "Grp": 2,
-         "MinP": 0.1,
-         "MinB": 200,
-         "PriorityAdj": 0.1
-        }
- }
+ 
 
  max_iter = 0
- for iter in IterConf:
+ for iter in ex.IterConf:
     max_iter = int(iter)
+
+ if ex.max_iter != -1:
+    max_iter = ex.max_iter
  
 
 #  selection methods
@@ -481,9 +468,9 @@ def find_flush(ex,sourceFile,flushFiles):
         return
 
     ConfFound = False
-    for iter in IterConf:
+    for iter in ex.IterConf:
         if ConfFound == False and int(iter) > count:
-            Conf = IterConf[iter]
+            Conf = ex.IterConf[iter]
             minimum_percentage = Conf["MinP"]
             min_flush_benefit = Conf["MinB"]
             selection_type = Conf["A"]

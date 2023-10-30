@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 from PyQt6.QtWidgets import (QMainWindow, QTextEdit,
-         QFileDialog, QApplication)
+         QInputDialog, QLineEdit,QFileDialog, QApplication)
 from PyQt6.QtGui import QIcon, QAction
 from pathlib import Path
 import sys
@@ -9,10 +9,13 @@ import sys
 filename =""
 
 # V1 - layer size stats - for single colour purge target models
+# Icons provided by https://p.yusukekamiyamane.com
+
+
 
 
 # Todo
-#  7. Create some good flush objects
+# 17. File / Folder selection dialogs, plus ability to change parameters
 # 11. Prime tower holder modeller
 # 16. Within Itteration if too small don't retry next time
 #  6. Better automate import of flush object / update process
@@ -24,6 +27,7 @@ filename =""
 # 10. Analyse actual flush/flush into object - with graphics
 
 # Done
+#  7. Create some good flush objects
 #  9. Remove Prime tower post processor
 # 15. Cancel button
 #  8. Multiple flush folders with priority / non priority
@@ -45,6 +49,8 @@ from prepare import pre_prepare
 
 basedir = os.path.dirname(__file__)
 icondir = os.path.join(basedir,"icons")
+
+
 
 
 class FlushProg(QTextEdit):
@@ -76,6 +82,36 @@ class FlushProg(QTextEdit):
 
 
 class Example(QMainWindow):
+     
+     IterConf = {
+
+     "6": {
+         "A": "Best",
+         "Grp": 2,
+         "MinP": 0.1,
+         "MinB": 100,
+         "PriorityAdj": 0.1
+        },
+
+     "12": {
+         "A": "Smallest",
+         "Grp": 2,
+         "MinP": 0.1,
+         "MinB": 100,
+         "PriorityAdj": 0.1
+        },
+
+     "20": {
+         "A": "Best",
+         "Grp": 2,
+         "MinP": 0.1,
+         "MinB": 200,
+         "PriorityAdj": 0.1
+        }
+     }
+     max_iter = -1
+     overall_max_iter = -1
+
      def __init__(self):
          super().__init__()
          self.flush_dir_list=""
@@ -101,6 +137,22 @@ class Example(QMainWindow):
          self.updateText()
         #  print(values)
          QApplication.processEvents()
+
+
+     def settingsDialog(self):
+
+        for iter in self.IterConf:
+                self.overall_max_iter = int(iter)
+        if self.max_iter == -1:
+             self.max_iter = self.overall_max_iter
+
+        val, ok = QInputDialog.getInt(self, 'settings',
+                                        'Max number of selections:',self.max_iter, 1, self.overall_max_iter)
+
+        if ok:
+            self.print(str(val))
+            self.max_iter = int(val)
+
      def updateText(self):
 
          self.textEdit.updateText()
@@ -121,7 +173,7 @@ class Example(QMainWindow):
          self.statusBar().showMessage('Ready')
          menubar = self.menuBar()
 
-         allFile = QAction(QIcon(os.path.join(icondir,'ff.png')), 'Open', self)
+         allFile = QAction(QIcon(os.path.join(icondir,'block-share.png')), 'Process All', self)
          allFile.setShortcut('Ctrl+O')
          allFile.setStatusTip('Flush all')
          allFile.triggered.connect(self.All)
@@ -130,28 +182,44 @@ class Example(QMainWindow):
          fileMenu.addAction(allFile)
          toolbar.addAction(allFile)
          
-         ffFile = QAction(QIcon(os.path.join(icondir,'open.png')), 'Open', self)
+         gcode = QAction(QIcon(os.path.join(icondir,'open-source.png')), 'gcode', self)
+         gcode.setShortcut('Ctrl+G')
+         gcode.setStatusTip('gcode file')
+         gcode.triggered.connect(self.gcodeDlg)
+         fileMenu.addAction(gcode)
+         toolbar.addAction(gcode)
+         
+         ffFile = QAction(QIcon(os.path.join(icondir,'block-small.png')), 'Find FLush', self)
          ffFile.setShortcut('Ctrl+O')
          ffFile.setStatusTip('Find Flush Files')
          ffFile.triggered.connect(self.Flush)
          fileMenu.addAction(ffFile)
          toolbar.addAction(ffFile)
+
+
          
-         delFile = QAction(QIcon(os.path.join(icondir,'del.png')), 'del', self)
+         delFile = QAction(QIcon(os.path.join(icondir,'node-select.png')), 'del', self)
          delFile.setShortcut('Ctrl+D')
          delFile.setStatusTip('Delete process Files')
          delFile.triggered.connect(self.Delete)
          fileMenu.addAction(delFile)
          toolbar.addAction(delFile)
 
-         preFile = QAction(QIcon(os.path.join(icondir,'upd.png')), 'pre', self)
+         settings = QAction(QIcon(os.path.join(icondir,'screwdriver.png')), 'pre', self)
+         settings.setShortcut('Ctrl+P')
+         settings.setStatusTip('Pre Prepare Files')
+         settings.triggered.connect(self.settingsDialog)
+         fileMenu.addAction(settings)
+         toolbar.addAction(settings)
+
+         preFile = QAction(QIcon(os.path.join(icondir,'disk-small-black.png')), 'pre', self)
          preFile.setShortcut('Ctrl+P')
          preFile.setStatusTip('Pre Prepare Files')
          preFile.triggered.connect(self.Prepare)
          fileMenu.addAction(preFile)
          toolbar.addAction(preFile)
 
-         cancelBut = QAction(QIcon(os.path.join(icondir,'cancel.png')), 'pre', self)
+         cancelBut = QAction(QIcon(os.path.join(icondir,'control-stop-square.png')), 'pre', self)
          cancelBut.setShortcut('Ctrl+C')
          cancelBut.setStatusTip('Cancel scheduled')
          cancelBut.triggered.connect(self.setCancel)
@@ -187,6 +255,17 @@ class Example(QMainWindow):
 
 
                     print("find_flush completed")
+                 except:
+                      self.printN("Error:",sys.exc_info())
+
+     def gcodeDlg(self):
+                 self.cancel = False
+                 try:
+                    home_dir = str(Path.home())
+                    self.textEdit.filename = QFileDialog.getOpenFileName(self, 'Open file', home_dir)[0]
+
+
+                    self.print("Get gcode completed")
                  except:
                       self.printN("Error:",sys.exc_info())
 
